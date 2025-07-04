@@ -73,32 +73,17 @@ export const registerUser = (email: string, password: string, name: string): Use
 
 // Salva usuário atual (login) - usa cookie para integração com middleware
 export const setCurrentUser = (user: User): void => {
-    console.log('💾 Debug auth - Setting user:', user);
     setCookie('current_user', JSON.stringify(user));
-
-    // Verifica se foi salvo corretamente
-    setTimeout(() => {
-        const saved = getCookie('current_user');
-        console.log('✅ Debug auth - Cookie after save:', saved);
-    }, 100);
 };
 
 // Busca usuário atual - usa cookie para integração com middleware
 export const getCurrentUser = (): User | null => {
     const userCookie = getCookie('current_user');
 
-    // Debug temporário
-    if (typeof window !== 'undefined') {
-        console.log('🔍 Debug auth - Cookie raw:', document.cookie);
-        console.log('🔍 Debug auth - User cookie:', userCookie);
-    }
-
     if (!userCookie) return null;
 
     try {
-        const user = JSON.parse(userCookie);
-        console.log('🔍 Debug auth - Parsed user:', user);
-        return user;
+        return JSON.parse(userCookie);
     } catch (error) {
         console.error('❌ Error parsing user cookie:', error);
         return null;

@@ -50,7 +50,7 @@ export default function LoginPage() {
         const user = validateLogin(email, password);
         if (user) {
             login(user);
-            router.push('/dashboard');
+            router.push(`/dashboard/${user.role}`);
         } else {
             setError('Senha incorreta');
         }

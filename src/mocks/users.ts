@@ -5,7 +5,7 @@ export const mockUsers: User[] = [
     {
         id: '1',
         email: 'medico@example.com',
-        password: '123456',
+        password: '123123',
         name: 'Dr. João Silva',
         role: 'medico',
         createdAt: '2024-01-01T00:00:00.000Z',
@@ -14,7 +14,7 @@ export const mockUsers: User[] = [
     {
         id: '2',
         email: 'admin@example.com',
-        password: '123456',
+        password: '123123',
         name: 'Admin Sistema',
         role: 'admin',
         createdAt: '2024-01-01T00:00:00.000Z',
@@ -23,7 +23,7 @@ export const mockUsers: User[] = [
     {
         id: '3',
         email: 'medico2@example.com',
-        password: '123456',
+        password: '123123',
         name: 'Dra. Maria Santos',
         role: 'medico',
         createdAt: '2024-01-01T00:00:00.000Z',
@@ -32,7 +32,7 @@ export const mockUsers: User[] = [
     {
         id: '4',
         email: 'paciente@example.com',
-        password: '123456',
+        password: '123123',
         name: 'Carlos Oliveira',
         role: 'paciente',
         createdAt: '2024-01-01T00:00:00.000Z',

@@ -55,7 +55,7 @@ function CadastroForm() {
             if (newUser) {
                 // Login automático após cadastro
                 login(newUser);
-                router.push('/dashboard');
+                router.push(`/dashboard/${newUser.role}`);
             } else {
                 setError('Email já cadastrado');
             }

@@ -26,7 +26,14 @@ export function middleware(request: NextRequest) {
 
     // Se é uma rota de auth e há usuário, redireciona para dashboard
     if (isAuthRoute && currentUser) {
-        return NextResponse.redirect(new URL('/dashboard', request.url))
+        try {
+            const user = JSON.parse(currentUser);
+            // Redireciona para a dashboard específica baseada na role
+            return NextResponse.redirect(new URL(`/dashboard/${user.role}`, request.url))
+        } catch {
+            // Se não conseguir parsear o cookie, redireciona para dashboard geral
+            return NextResponse.redirect(new URL('/dashboard', request.url))
+        }
     }
 
     return NextResponse.next()
