@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/hooks/useAuth';
+import Navbar from '@/components/navbar/navbar';
 
 export default function DashboardPacientePage() {
     const { user, loading, logout } = useAuth();
@@ -42,30 +43,9 @@ export default function DashboardPacientePage() {
     }
 
     return (
-        <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+        <div className="min-h-screen bg-background">
             {/* Header */}
-            <header className="bg-white dark:bg-gray-800 shadow">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex justify-between items-center py-6">
-                        <div className="flex items-center">
-                            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-                                Dashboard - Paciente
-                            </h1>
-                        </div>
-                        <div className="flex items-center space-x-4">
-                            <span className="text-sm text-gray-600 dark:text-gray-400">
-                                Bem-vindo, {user.name}
-                            </span>
-                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
-                                Paciente
-                            </span>
-                            <Button variant="outline" onClick={handleLogout}>
-                                Sair
-                            </Button>
-                        </div>
-                    </div>
-                </div>
-            </header>
+            <Navbar user={user} onLogout={handleLogout} />
 
             {/* Main Content */}
             <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">

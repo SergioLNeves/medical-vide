@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/hooks/useAuth';
+import Navbar from '@/components/navbar/navbar';
 
 export default function DashboardMedicoPage() {
     const { user, loading, logout } = useAuth();
@@ -44,28 +45,7 @@ export default function DashboardMedicoPage() {
     return (
         <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
             {/* Header */}
-            <header className="bg-white dark:bg-gray-800 shadow">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex justify-between items-center py-6">
-                        <div className="flex items-center">
-                            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-                                Dashboard - Médico
-                            </h1>
-                        </div>
-                        <div className="flex items-center space-x-4">
-                            <span className="text-sm text-gray-600 dark:text-gray-400">
-                                Dr(a). {user.name}
-                            </span>
-                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
-                                Médico
-                            </span>
-                            <Button variant="outline" onClick={handleLogout}>
-                                Sair
-                            </Button>
-                        </div>
-                    </div>
-                </div>
-            </header>
+            <Navbar user={user} onLogout={handleLogout} />
 
             {/* Main Content */}
             <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">

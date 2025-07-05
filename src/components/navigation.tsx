@@ -19,7 +19,7 @@ export function Navigation() {
                             <Link href="/auth/login">
                                 <Button variant="outline">Login</Button>
                             </Link>
-                            <Link href="/auth/cadastro">
+                            <Link href="/auth/register">
                                 <Button>Cadastrar</Button>
                             </Link>
                         </div>

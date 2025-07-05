@@ -32,9 +32,9 @@ export default function LoginPage() {
         if (checkEmailExists(email)) {
             setStep('password');
         } else {
-            // Redireciona para cadastro se email não existir
+            // Redireciona para register se email não existir
             // Adiciona o email como parâmetro na URL
-            router.push(`/auth/cadastro?email=${encodeURIComponent(email)}`);
+            router.push(`/auth/register?email=${encodeURIComponent(email)}`);
         }
     };
 

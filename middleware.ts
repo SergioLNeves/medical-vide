@@ -6,7 +6,7 @@ export function middleware(request: NextRequest) {
     const protectedRoutes = ['/dashboard']
 
     // Rotas que só devem ser acessadas sem autenticação (usuário deslogado)
-    const authRoutes = ['/auth/login', '/auth/cadastro']
+    const authRoutes = ['/auth/login', '/auth/register']
 
     const { pathname } = request.nextUrl
 
