@@ -92,28 +92,3 @@ export class AgendaService {
         return updated !== null;
     }
 }
-
-// Exemplo de uso:
-/*
-// Inicializar o banco de dados
-MockDatabase.initialize();
-
-// Buscar agendas de um paciente
-const patientAgendas = AgendaService.getPatientAgendas('paciente@example.com');
-
-// Criar nova agenda
-const newAgenda = AgendaService.createAgenda(
-    'paciente@example.com',
-    'Consulta Ginecologia',
-    '2025-07-10',
-    '15:30',
-    'Consulta de rotina',
-    'medico@example.com'
-);
-
-// Atualizar status
-AgendaService.updateAgendaStatus(newAgenda.id, 'confirmado');
-
-// Buscar próximas agendas
-const upcomingAgendas = AgendaService.getUpcomingAgendas('paciente@example.com');
-*/
