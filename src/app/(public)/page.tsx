@@ -136,7 +136,7 @@ export default function LoginPage() {
                     </form>
 
                     <div className='flex justify-end'>
-                        <Button variant={'link'} className='text-primary pr-0' onClick={() => router.push('/auth/register')}>
+                        <Button variant={'link'} className='text-primary pr-0' onClick={() => router.push('/register')}>
                             Cadastre-se
                         </Button>
                     </div>

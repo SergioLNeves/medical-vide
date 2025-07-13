@@ -3,7 +3,7 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/hooks/useAuth';
-import Navbar from '@/app/(private)/(dashboard)/_components/navbar/navbar';
+import Navbar from '@/app/(private)/_components/navbar/navbar';
 import CardFunction from '@/components/card-function/card-function';
 import InfoPaciente from '../_components/info-pacients/info-paciente';
 import { Calendar } from "lucide-react";

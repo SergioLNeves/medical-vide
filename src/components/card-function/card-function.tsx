@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { JSX } from "react";
+import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card";
 
 interface CardFunctionProps {
     icon: JSX.Element,
@@ -11,29 +12,27 @@ interface CardFunctionProps {
 
 export default function CardFunction(CardFunctionProps: CardFunctionProps) {
     return (
-        <div className="bg-card overflow-hidden shadow rounded-lg">
-            <div className="p-5">
-                <div className="flex items-center">
-                    <div className="flex-shrink-0">
-                        <div className="w-8 h-8 bg-primary rounded-md flex items-center justify-center">
-                            <span className="text-primary-foreground text-sm">{CardFunctionProps.icon}</span>
-                        </div>
-                    </div>
-                    <dl className="ml-5 w-0 flex-1">
-                        <dt className="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">
-                            {CardFunctionProps.title}
-                        </dt>
-                        <dd className="text-lg font-medium text-gray-900 dark:text-white">
-                            {CardFunctionProps.description}
-                        </dd>
-                    </dl>
-                </div>
-                <div className="mt-4">
-                    <Button className="w-full" variant="outline" onClick={CardFunctionProps.onClick}>
+        <Card className="bg-card overflow-hidden shadow rounded-lg">
+            <CardHeader className="flex items-center">
+                <CardContent className="bg-accent p-2 rounded-md border border-foreground/5 mr-4">
+                    <span className="text-accent-foreground">{CardFunctionProps.icon}</span>
+                </CardContent>
+                <CardContent className=" flex flex-col gap-0.5">
+                    <CardTitle>
+                        {CardFunctionProps.title}
+                    </CardTitle>
+                    <CardDescription >
+                        {CardFunctionProps.description}
+                    </CardDescription>
+                </CardContent>
+            </CardHeader>
+            <CardContent>
+                <CardAction className="w-full">
+                    <Button className="w-full" variant="default" onClick={CardFunctionProps.onClick}>
                         {CardFunctionProps.buttonText}
                     </Button>
-                </div>
-            </div>
-        </div>
+                </CardAction>
+            </CardContent>
+        </Card>
     );
 }

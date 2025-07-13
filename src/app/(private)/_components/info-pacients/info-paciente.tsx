@@ -40,11 +40,8 @@ export default function InfoPaciente({ user }: { user: User }) {
         <Card>
             <CardHeader className='flex items-center justify-between'>
                 <CardTitle>
-                    Suas Informações
+                    Informações de {user.name}
                 </CardTitle>
-                <CardAction>
-                    <Button variant="link"> Editar </Button>
-                </CardAction>
             </CardHeader>
             <Separator />
             <CardContent>
