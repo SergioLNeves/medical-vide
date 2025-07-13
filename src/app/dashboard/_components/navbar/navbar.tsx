@@ -1,14 +1,11 @@
+import ModeToggle from '@/components/mode-toggle.tsx/mode-toggle';
 import { Button } from '@/components/ui/button';
 
 interface NavbarProps {
-    user: {
-        name: string;
-        role: string;
-    }
     onLogout?: () => void;
 }
 
-export default function Navbar({ user, onLogout }: NavbarProps) {
+export default function Navbar({ onLogout }: NavbarProps) {
     return (
         <header className="bg-sidebar shadow">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -19,6 +16,7 @@ export default function Navbar({ user, onLogout }: NavbarProps) {
                         </h2>
                     </div>
                     <div className="flex items-center space-x-4">
+                        <ModeToggle />
                         <Button variant="outline" size={'lg'} onClick={onLogout}>
                             Sair
                         </Button>

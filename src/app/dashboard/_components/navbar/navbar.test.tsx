@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from '@testing-library/react'
-import Navbar from '@/components/navbar/navbar'
+import Navbar from '@/app/dashboard/_components/navbar/navbar'
 import { User } from '@/mocks/types'
 
 describe('Navbar Component', () => {

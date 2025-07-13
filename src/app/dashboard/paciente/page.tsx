@@ -2,11 +2,10 @@
 
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Button } from '@/components/ui/button';
 import { useAuth } from '@/hooks/useAuth';
-import Navbar from '@/components/navbar/navbar';
+import Navbar from '@/app/dashboard/_components/navbar/navbar';
 import CardFunction from '@/components/card-function/card-function';
-import InfoPaciente from './components/info-paciente';
+import InfoPaciente from '../_components/info-pacients/info-paciente';
 import { Calendar } from "lucide-react";
 
 export default function DashboardPacientePage() {
@@ -47,7 +46,7 @@ export default function DashboardPacientePage() {
 
     return (
         <div className="min-h-screen bg-background">
-            <Navbar user={user} onLogout={handleLogout} />
+            <Navbar onLogout={handleLogout} />
             <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
                 <div className="px-4 py-6 sm:px-0 flex flex-col gap-4">
                     <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">

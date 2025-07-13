@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/hooks/useAuth';
-import Navbar from '@/components/navbar/navbar';
+import Navbar from '@/app/dashboard/_components/navbar/navbar';
 
 export default function DashboardAdminPage() {
     const { user, loading, logout } = useAuth();
