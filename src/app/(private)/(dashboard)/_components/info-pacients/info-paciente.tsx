@@ -34,7 +34,7 @@ export default function InfoPaciente({ user }: { user: User }) {
 
     };
 
-    const detailsToRender = Object.entries(fieldsToShow).filter(([_, value]) => value)
+    const detailsToRender = Object.entries(fieldsToShow).filter(([, value]) => value)
 
     return (
         <Card>
