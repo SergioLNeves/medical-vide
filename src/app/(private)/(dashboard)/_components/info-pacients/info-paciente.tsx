@@ -49,11 +49,11 @@ export default function InfoPaciente({ user }: { user: User }) {
             <Separator />
             <CardContent>
                 <section className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-                    {detailsToRender.map(([title, description], index) => (
+                    {detailsToRender.map(([title, description = ''], index) => (
                         <DetailList
                             key={index}
                             title={title}
-                            description={description || ''}
+                            description={description}
                         />
                     ))}
                 </section>
