@@ -14,6 +14,8 @@ export default function LoginPage() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const [emailError, setEmailError] = useState('');
+    const [passwordError, setPasswordError] = useState('');
 
     const router = useRouter();
     const { login } = useAuth();
@@ -27,20 +29,23 @@ export default function LoginPage() {
         e.preventDefault();
         setIsLoading(true);
 
+        // Limpar erros anteriores
+        setEmailError('');
+        setPasswordError('');
+
         try {
             if (!email.trim()) {
-                toast.error('Por favor, insira seu email');
+                setEmailError('Por favor, insira seu email');
                 return;
             }
 
             if (!password.trim()) {
-                toast.error('Por favor, insira sua senha');
+                setPasswordError('Por favor, insira sua senha');
                 return;
             }
 
             if (!checkEmailExists(email)) {
-                toast.info('Email não encontrado. Redirecionando para cadastro...');
-                router.push(`/auth/register?email=${encodeURIComponent(email)}`);
+                setEmailError('Email não encontrado');
                 return;
             }
 
@@ -50,10 +55,10 @@ export default function LoginPage() {
                 login(user);
                 router.push(`/dashboard/${user.role}`);
             } else {
-                toast.error('Senha incorreta. Tente novamente.');
+                setPasswordError('Senha incorreta. Tente novamente.');
             }
         } catch (error) {
-            toast.error('Erro ao fazer login. Tente novamente.');
+            setEmailError('Erro ao fazer login. Tente novamente.');
         } finally {
             setIsLoading(false);
         }
@@ -83,19 +88,22 @@ export default function LoginPage() {
                                 autoComplete="email"
                                 required
                                 value={email}
-                                onChange={(e) => setEmail(e.target.value)}
+                                onChange={(e) => {
+                                    setEmail(e.target.value);
+                                    if (emailError) setEmailError(''); // Limpa erro ao digitar
+                                }}
                                 placeholder="seu@email.com"
                                 disabled={isLoading}
-                                className='text-primary'
-
+                                className={`text-primary ${emailError ? 'border-red-500 focus-visible:ring-red-500' : ''}`}
                             />
+                            {emailError && (
+                                <p className="text-sm text-red-500 mt-1">{emailError}</p>
+                            )}
                         </div>
                         <div className='space-y-2'>
-
                             <Label htmlFor="password">
                                 Senha
                             </Label>
-
                             <Input
                                 id="password"
                                 name="password"
@@ -103,15 +111,20 @@ export default function LoginPage() {
                                 autoComplete="current-password"
                                 required
                                 value={password}
-                                onChange={(e) => setPassword(e.target.value)}
+                                onChange={(e) => {
+                                    setPassword(e.target.value);
+                                    if (passwordError) setPasswordError(''); // Limpa erro ao digitar
+                                }}
                                 placeholder="Digite sua senha"
                                 disabled={isLoading}
-                                className='text-primary'
+                                className={`text-primary ${passwordError ? 'border-red-500 focus-visible:ring-red-500' : ''}`}
                             />
+                            {passwordError && (
+                                <p className="text-sm text-red-500 mt-1">{passwordError}</p>
+                            )}
                             <div className='flex justify-end'>
                                 <Button variant={'link'} className='text-primary pr-0'>Esqueceu sua senha?</Button>
                             </div>
-
                         </div>
 
                         <Button
