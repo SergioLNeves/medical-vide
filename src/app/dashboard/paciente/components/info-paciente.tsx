@@ -1,4 +1,9 @@
+import { Button } from '@/components/ui/button';
+import { Card, CardAction, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Separator } from '@/components/ui/separator';
 import { User } from '@/mocks/types'
+
+
 
 const DetailList = ({ title, description }: { title: string; description: string }) => {
     return (
@@ -15,8 +20,8 @@ const DetailList = ({ title, description }: { title: string; description: string
 
 export default function InfoPaciente({ user }: { user: User }) {
 
+
     const fieldsToShow = {
-        'ID do Paciente': user.id,
         'Nome Completo': user.name,
         'Email': user.email,
         'CPF': user.complementInfo?.cpf,
@@ -32,11 +37,17 @@ export default function InfoPaciente({ user }: { user: User }) {
     const detailsToRender = Object.entries(fieldsToShow).filter(([_, value]) => value)
 
     return (
-        <div className="mt-6 bg-card overflow-hidden shadow rounded-lg">
-            <h3 className="text-xl font-bold text-primary-foreground bg-primary p-4">
-                Suas Informações
-            </h3>
-            <div className="px-4 py-5 sm:p-6">
+        <Card>
+            <CardHeader className='flex items-center justify-between'>
+                <CardTitle>
+                    Suas Informações
+                </CardTitle>
+                <CardAction>
+                    <Button variant="link"> Editar </Button>
+                </CardAction>
+            </CardHeader>
+            <Separator />
+            <CardContent>
                 <section className="grid grid-cols-1 gap-6 sm:grid-cols-2">
                     {detailsToRender.map(([title, description], index) => (
                         <DetailList
@@ -46,7 +57,7 @@ export default function InfoPaciente({ user }: { user: User }) {
                         />
                     ))}
                 </section>
-            </div>
-        </div>
+            </CardContent>
+        </Card>
     )
 }

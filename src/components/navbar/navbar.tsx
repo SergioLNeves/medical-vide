@@ -19,13 +19,7 @@ export default function Navbar({ user, onLogout }: NavbarProps) {
                         </h2>
                     </div>
                     <div className="flex items-center space-x-4">
-                        <span className="text-sm text-gray-600 dark:text-gray-400">
-                            Bem-vindo, {user.name}
-                        </span>
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
-                            {user.role}
-                        </span>
-                        <Button variant="outline" onClick={onLogout}>
+                        <Button variant="outline" size={'lg'} onClick={onLogout}>
                             Sair
                         </Button>
                     </div>
