@@ -5,12 +5,15 @@ import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { checkEmailExists, validateLogin, initializeUsers } from '@/lib/auth';
 import { useAuth } from '@/hooks/useAuth';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
+import { toast } from 'sonner';
 
 export default function LoginPage() {
-    const [step, setStep] = useState<'email' | 'password'>('email');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
 
     const router = useRouter();
     const { login } = useAuth();
@@ -20,72 +23,60 @@ export default function LoginPage() {
         initializeUsers();
     }, []);
 
-    const handleEmailSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        setError('');
+        setIsLoading(true);
 
-        if (!email.trim()) {
-            setError('Por favor, insira seu email');
-            return;
+        try {
+            if (!email.trim()) {
+                toast.error('Por favor, insira seu email');
+                return;
+            }
+
+            if (!password.trim()) {
+                toast.error('Por favor, insira sua senha');
+                return;
+            }
+
+            if (!checkEmailExists(email)) {
+                toast.info('Email não encontrado. Redirecionando para cadastro...');
+                router.push(`/auth/register?email=${encodeURIComponent(email)}`);
+                return;
+            }
+
+            const user = validateLogin(email, password);
+            if (user) {
+                toast.success(`Bem-vindo(a), ${user.name}!`);
+                login(user);
+                router.push(`/dashboard/${user.role}`);
+            } else {
+                toast.error('Senha incorreta. Tente novamente.');
+            }
+        } catch (error) {
+            toast.error('Erro ao fazer login. Tente novamente.');
+        } finally {
+            setIsLoading(false);
         }
-
-        if (checkEmailExists(email)) {
-            setStep('password');
-        } else {
-            // Redireciona para register se email não existir
-            // Adiciona o email como parâmetro na URL
-            router.push(`/auth/register?email=${encodeURIComponent(email)}`);
-        }
-    };
-
-    const handlePasswordSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        setError('');
-
-        if (!password.trim()) {
-            setError('Por favor, insira sua senha');
-            return;
-        }
-
-        const user = validateLogin(email, password);
-        if (user) {
-            login(user);
-            router.push(`/dashboard/${user.role}`);
-        } else {
-            setError('Senha incorreta');
-        }
-    };
-
-    const handleBackToEmail = () => {
-
-
-        setStep('email');
-        setPassword('');
-        setError('');
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-background">
-            <div className="max-w-md w-full space-y-8 p-8">
-                <div className="text-center">
-                    <h2 className="mt-6 text-3xl font-extrabold text-primary">
-                        {step === 'email' ? 'Acesse sua conta' : 'Digite sua senha'}
-                    </h2>
-                    <p className="mt-2 text-sm text-foreground">
-                        {step === 'email'
-                            ? 'Insira seu email para continuar'
-                            : `Bem-vindo de volta, ${email}`
-                        }
-                    </p>
-                </div>
-
-                {step === 'email' ? (
-                    <form className="mt-8 space-y-6" onSubmit={handleEmailSubmit}>
-                        <div>
-                            <label htmlFor="email" className="sr-only">
+        <div className="min-h-screen flex items-center justify-center bg-background p-4">
+            <Card className="w-full max-w-md">
+                <CardHeader>
+                    <CardTitle className='text-xl text-primary font-bold'>
+                        Entrar no Medical Vide
+                    </CardTitle>
+                    <CardDescription>
+                        Digite seu email e senha para acessar sua conta
+                    </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                    <form className="space-y-4" onSubmit={handleSubmit}>
+                        <div className='space-y-2'>
+                            <Label htmlFor="email">
                                 Email
-                            </label>
-                            <input
+                            </Label>
+                            <Input
                                 id="email"
                                 name="email"
                                 type="email"
@@ -93,35 +84,19 @@ export default function LoginPage() {
                                 required
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
-                                className="relative block w-full px-3 py-2 border
-                                border-primary placeholder-accent-foreground
-                                text-accent-foreground  bg-accent rounded-md
-                                focus:outline-none focus:ring-primary-500 focus:border-primary-500
-                                focus:z-10 sm:text-sm"
-                                placeholder="Digite seu email"
+                                placeholder="seu@email.com"
+                                disabled={isLoading}
+                                className='text-primary'
+
                             />
                         </div>
+                        <div className='space-y-2'>
 
-                        {error && (
-                            <div className="text-red-600 text-sm text-center">{error}</div>
-                        )}
-
-                        <Button
-                            type="submit"
-                            className="group relative w-full flex justify-center py-2 px-4"
-                        >
-                            Continuar
-                        </Button>
-
-
-                    </form>
-                ) : (
-                    <form className="mt-8 space-y-6" onSubmit={handlePasswordSubmit}>
-                        <div>
-                            <label htmlFor="password" className="sr-only">
+                            <Label htmlFor="password">
                                 Senha
-                            </label>
-                            <input
+                            </Label>
+
+                            <Input
                                 id="password"
                                 name="password"
                                 type="password"
@@ -129,39 +104,33 @@ export default function LoginPage() {
                                 required
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
-                                className="relative block w-full px-3 py-2 border
-                                border-primary placeholder-accent-foreground
-                                text-accent-foreground  bg-accent rounded-md
-                                focus:outline-none focus:ring-primary-500 focus:border-primary-500
-                                focus:z-10 sm:text-sm"
                                 placeholder="Digite sua senha"
-                                autoFocus
+                                disabled={isLoading}
+                                className='text-primary'
                             />
+                            <div className='flex justify-end'>
+                                <Button variant={'link'} className='text-primary pr-0'>Esqueceu sua senha?</Button>
+                            </div>
+
                         </div>
 
-                        {error && (
-                            <div className="text-red-600 text-sm text-center">{error}</div>
-                        )}
-
-                        <div className="flex space-x-3">
-                            <Button
-                                type="button"
-                                variant="secondary"
-                                onClick={handleBackToEmail}
-                                className="flex-1"
-                            >
-                                Voltar
-                            </Button>
-                            <Button
-                                type="submit"
-                                className="flex-1"
-                            >
-                                Entrar
-                            </Button>
-                        </div>
+                        <Button
+                            type="submit"
+                            className="w-full"
+                            disabled={isLoading}
+                            variant="outline"
+                        >
+                            {isLoading ? 'Entrando...' : 'Entrar'}
+                        </Button>
                     </form>
-                )}
-            </div>
+
+                    <div className='flex justify-end'>
+                        <Button variant={'link'} className='text-primary pr-0' onClick={() => router.push('/auth/register')}>
+                            Cadastre-se
+                        </Button>
+                    </div>
+                </CardContent>
+            </Card>
         </div>
     );
 }
