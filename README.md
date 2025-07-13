@@ -1,36 +1,58 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Medical Vide
 
-## Getting Started
+## Descrição
+Medical Vide é uma aplicação web desenvolvida para facilitar o gerenciamento de pacientes e agendamentos médicos. A plataforma oferece funcionalidades como autenticação de usuários, navegação entre diferentes dashboards e componentes reutilizáveis para interface.
 
-First, run the development server:
+## Arquitetura
+A aplicação utiliza a seguinte arquitetura:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **Next.js**: Framework para renderização do lado do cliente e servidor.
+- **Componentes Reutilizáveis**: Localizados na pasta `src/components/ui`, como botões, cards e separadores.
+- **Middleware**: Implementado para gerenciar autenticação e redirecionamento de usuários com base em suas permissões.
+- **Hooks**: Custom hooks como `useAuth` e `useIsMobile` para lógica reutilizável.
+- **Estrutura de Pastas**:
+  - `src/app`: Contém as páginas organizadas em rotas públicas e privadas.
+  - `src/components`: Componentes reutilizáveis para interface.
+  - `src/hooks`: Hooks personalizados.
+  - `src/lib`: Funções utilitárias e lógica de autenticação.
+  - `src/mocks`: Dados fictícios para testes e desenvolvimento.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Instalação
+1. Clone o repositório:
+   ```bash
+   git clone https://github.com/SergioLNeves/medical-vide.git
+   ```
+2. Instale as dependências:
+   ```bash
+   pnpm install
+   ```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Comandos Principais
+- **Iniciar o servidor de desenvolvimento**:
+  ```bash
+  pnpm dev
+  ```
+- **Build para produção**:
+  ```bash
+  pnpm build
+  ```
+- **Rodar testes**:
+  ```bash
+  pnpm test
+  ```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Estrutura Básica
+A aplicação segue uma estrutura modular, com componentes e páginas organizados de forma clara para facilitar a manutenção e escalabilidade.
 
-## Learn More
+- **Rotas Públicas**: Localizadas em `src/app/(public)`.
+- **Rotas Privadas**: Localizadas em `src/app/(private)`.
+- **Middleware**: Gerencia autenticação e redirecionamento.
 
-To learn more about Next.js, take a look at the following resources:
+## Tecnologias Utilizadas
+- Next.js
+- TypeScript
+- PNPM
+- ESLint
+- Jest
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Este README fornece uma visão geral básica do projeto. Para mais detalhes, consulte a documentação ou entre em contato com o desenvolvedor.
