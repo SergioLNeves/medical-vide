@@ -12,7 +12,7 @@ export default function SchedulePacientePage() {
     return (
         <main className="min-h-screen bg-background">
             <nav className="flex flex-row justify-between max-w-7xl mx-auto py-6 px-4 lg:px-8">
-                <Button variant="outline" onClick={() => router.push('/dashboard')}>
+                <Button variant="outline" onClick={() => router.back()}>
                     <ArrowLeft className="h-4 w-4" />
                     {!isMobile && <span className="ml-2">Voltar</span>}
                 </Button>

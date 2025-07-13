@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { checkEmailExists, validateLogin, initializeUsers } from '@/lib/auth';
 import { useAuth } from '@/hooks/useAuth';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
@@ -53,12 +53,10 @@ export default function LoginPage() {
             if (user) {
                 toast.success(`Bem-vindo(a), ${user.name}!`);
                 login(user);
-                router.push(`/dashboard/${user.role}`);
+                router.refresh();
             } else {
                 setPasswordError('Senha incorreta. Tente novamente.');
             }
-        } catch (error) {
-            setEmailError('Erro ao fazer login. Tente novamente.');
         } finally {
             setIsLoading(false);
         }

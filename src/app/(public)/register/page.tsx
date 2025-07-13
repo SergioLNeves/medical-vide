@@ -26,19 +26,7 @@ function RegisterForm() {
     const [loading, setLoading] = useState(false);
 
     const router = useRouter();
-    const searchParams = useSearchParams();
     const { login } = useAuth();
-
-    useEffect(() => {
-        // Inicializa os usuários mock no localStorage
-        initializeUsers();
-
-        // Pré-preenche o email se veio da tela de login
-        const emailParam = searchParams.get('email');
-        if (emailParam) {
-            setEmail(emailParam);
-        }
-    }, [searchParams]);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -71,7 +59,7 @@ function RegisterForm() {
     };
 
     const handleBackToLogin = () => {
-        router.push('/auth/login');
+        router.push('-1');
     };
 
     return (

@@ -1,7 +1,8 @@
 import { Button } from "@/components/ui/button";
+import { JSX } from "react";
 
 interface CardFunctionProps {
-    icon: any,
+    icon: JSX.Element,
     title: string,
     description: string,
     buttonText: string;
