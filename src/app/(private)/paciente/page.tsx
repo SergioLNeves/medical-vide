@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '@/hooks/useAuth';
 import Navbar from '@/app/(private)/_components/navbar/navbar';
 import CardFunction from '@/components/card-function/card-function';
-import InfoPaciente from '../_components/info-pacients/info-paciente';
+import InfoPaciente from './_components/info-pacients/info-paciente';
 import { Calendar } from "lucide-react";
 
 export default function DashboardPacientePage() {
@@ -26,7 +26,7 @@ export default function DashboardPacientePage() {
     if (!user) {
         return (
             <div className="min-h-screen flex items-center justify-center">
-                <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-500"></div>
+                <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-primary"></div>
             </div>
         );
     }
