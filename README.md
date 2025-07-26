@@ -1,9 +1,11 @@
 # Medical Vide
 
 ## Descrição
+
 Medical Vide é uma aplicação web desenvolvida para facilitar o gerenciamento de pacientes e agendamentos médicos. A plataforma oferece funcionalidades como autenticação de usuários, navegação entre diferentes dashboards e componentes reutilizáveis para interface.
 
 ## Arquitetura
+
 A aplicação utiliza a seguinte arquitetura:
 
 - **Next.js**: Framework para renderização do lado do cliente e servidor.
@@ -18,6 +20,7 @@ A aplicação utiliza a seguinte arquitetura:
   - `src/mocks`: Dados fictícios para testes e desenvolvimento.
 
 ## Instalação
+
 1. Clone o repositório:
    ```bash
    git clone https://github.com/SergioLNeves/medical-vide.git
@@ -28,6 +31,7 @@ A aplicação utiliza a seguinte arquitetura:
    ```
 
 ## Comandos Principais
+
 - **Iniciar o servidor de desenvolvimento**:
   ```bash
   pnpm dev
@@ -42,6 +46,7 @@ A aplicação utiliza a seguinte arquitetura:
   ```
 
 ## Estrutura Básica
+
 A aplicação segue uma estrutura modular, com componentes e páginas organizados de forma clara para facilitar a manutenção e escalabilidade.
 
 - **Rotas Públicas**: Localizadas em `src/app/(public)`.
@@ -49,10 +54,10 @@ A aplicação segue uma estrutura modular, com componentes e páginas organizado
 - **Middleware**: Gerencia autenticação e redirecionamento.
 
 ## Tecnologias Utilizadas
+
 - Next.js
 - TypeScript
 - PNPM
 - ESLint
-- Jest
 
 Este README fornece uma visão geral básica do projeto. Para mais detalhes, consulte a documentação ou entre em contato com o desenvolvedor.

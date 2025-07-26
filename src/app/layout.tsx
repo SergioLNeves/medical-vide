@@ -1,22 +1,22 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
-import { ThemeProvider } from "@/hooks/theme-provider";
-import { Toaster } from "sonner";
+import type { Metadata } from 'next';
+import { Geist, Geist_Mono } from 'next/font/google';
+import './globals.css';
+import { ThemeProvider } from '@/hooks/theme-provider';
+import { Toaster } from 'sonner';
 
 const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
+  variable: '--font-geist-sans',
+  subsets: ['latin'],
 });
 
 const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  variable: '--font-geist-mono',
+  subsets: ['latin'],
 });
 
 export const metadata: Metadata = {
-  title: "Medical System",
-  description: "Sistema médico com autenticação",
+  title: 'Medical System',
+  description: 'Sistema médico com autenticação',
 };
 
 export default function RootLayout({
