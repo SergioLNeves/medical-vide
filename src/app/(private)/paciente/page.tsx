@@ -3,10 +3,11 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/hooks/useAuth';
-import Navbar from '@/app/(private)/_components/navbar/navbar';
+import Navbar from '@/components/navbar/navbar';
 import CardFunction from '@/components/card-function/card-function';
 import InfoPaciente from './_components/info-pacients/info-paciente';
 import { Calendar } from 'lucide-react';
+import Loading from '@/components/loading/loading';
 
 export default function DashboardPacientePage() {
   const { user, logout } = useAuth();
@@ -24,14 +25,7 @@ export default function DashboardPacientePage() {
   };
 
   if (!user) {
-    return (
-      <div
-        className="flex min-h-screen items-center justify-center"
-        children={
-          <div className="border-primary h-16 w-16 animate-spin rounded-full border-t-4 border-b-4" />
-        }
-      />
-    );
+    return <Loading />;
   }
 
   return (

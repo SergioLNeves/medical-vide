@@ -58,7 +58,7 @@ export const validateLogin = (email: string, password: string): User | null => {
 export const registerUser = (
   email: string,
   password: string,
-  name: string,
+  name: string
 ): User | null => {
   // Verifica se email já existe
   if (checkEmailExists(email)) {

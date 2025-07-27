@@ -16,7 +16,7 @@ export default function InfoPaciente({ user }: { user: User }) {
   };
 
   const detailsToRender = Object.entries(fieldsToShow).filter(
-    ([, value]) => value,
+    ([, value]) => value
   );
 
   return (
