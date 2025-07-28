@@ -48,7 +48,7 @@ export default function RegisterPage() {
         return;
       }
 
-      const newUser = registerUser(email, password, name);
+      const newUser = registerUser(email, password, name, "paciente");
 
       if (newUser) {
         // Login automático após register
@@ -175,10 +175,6 @@ export default function RegisterPage() {
             </div>
           </div>
 
-          {error && (
-            <div className="text-center text-sm text-red-600">{error}</div>
-          )}
-
           <div className="flex space-x-3">
             <Button
               type="button"
@@ -192,15 +188,6 @@ export default function RegisterPage() {
             <Button type="submit" disabled={loading} className="flex-1">
               {loading ? 'Cadastrando...' : 'Cadastrar'}
             </Button>
-          </div>
-
-          <div className="text-center">
-            <p className="text-sm text-gray-600 dark:text-gray-400">
-              Apenas pacientes podem se cadastrar.
-            </p>
-            <p className="mt-1 text-xs text-gray-500 dark:text-gray-500">
-              Médicos e administradores são criados pelo sistema.
-            </p>
           </div>
         </form>
       </div>

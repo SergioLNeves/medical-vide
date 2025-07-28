@@ -28,7 +28,11 @@ const registerSchema = z
         }),
     })
 
-type RegisterFormData = z.infer<typeof registerSchema>;
+type RegisterFormData = {
+    fullName: string;
+    email: string;
+    role: string; // Permite qualquer string para permitir validação customizada
+};
 
 // código para gerar senha aleatória
 const generateRandomPassword = (): string => {
@@ -47,7 +51,7 @@ export default function CreateUserPage() {
     const [formData, setFormData] = useState<RegisterFormData>({
         fullName: '',
         email: '',
-        role: 'admin',
+        role: '', // Começa vazio para forçar seleção
     });
 
     const updateField = (field: keyof RegisterFormData, value: string) => {
@@ -72,6 +76,15 @@ export default function CreateUserPage() {
         setLoading(true);
 
         try {
+            // Validação customizada para role vazio
+            if (!formData.role || formData.role === '') {
+                setError('Por favor, selecione uma função para o usuário');
+                toast.error('Erro de validação', {
+                    description: 'Por favor, selecione uma função para o usuário'
+                });
+                return;
+            }
+
             // Valida os dados do formulário
             const validatedData = registerSchema.parse(formData);
 
@@ -90,7 +103,7 @@ export default function CreateUserPage() {
                 return;
             }
 
-            const newUser = registerUser(userDataWithPassword.email, userDataWithPassword.password, userDataWithPassword.fullName);
+            const newUser = registerUser(userDataWithPassword.email, userDataWithPassword.password, userDataWithPassword.fullName, userDataWithPassword.role);
 
             if (newUser) {
                 console.log('Senha:', userDataWithPassword.password);
@@ -99,7 +112,7 @@ export default function CreateUserPage() {
                 setFormData({
                     fullName: '',
                     email: '',
-                    role: 'admin',
+                    role: '', // Reseta para vazio
                 });
 
                 toast.success('Usuário criado com sucesso!', {

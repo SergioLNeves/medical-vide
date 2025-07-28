@@ -59,7 +59,7 @@ export const registerUser = (
   email: string,
   password: string,
   name: string,
-  role: 'admin' | 'medico' | 'paciente' = 'paciente'
+  role: 'admin' | 'medico' | 'paciente'
 ): User | null => {
   // Verifica se email já existe
   if (checkEmailExists(email)) {
