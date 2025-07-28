@@ -1,11 +1,12 @@
 'use client';
 
-import { useState, Suspense } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
-import { registerUser } from '@/lib/auth';
+import { checkEmailExists, registerUser } from '@/lib/auth';
 import { useAuth } from '@/hooks/useAuth';
 import { z } from 'zod';
+import Loading from '@/components/loading/loading';
 
 const registerSchema = z
   .object({
@@ -22,7 +23,7 @@ const registerSchema = z
     path: ['confirmPassword'],
   });
 
-function RegisterForm() {
+export default function RegisterPage() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -33,15 +34,19 @@ function RegisterForm() {
   const router = useRouter();
   const { login } = useAuth();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+    setLoading(true);
 
     try {
       const formData = { name, email, password, confirmPassword };
       registerSchema.parse(formData);
 
-      setLoading(true);
+      if (checkEmailExists(email)) {
+        setError('Email já cadastrado');
+        return;
+      }
 
       const newUser = registerUser(email, password, name);
 
@@ -53,19 +58,24 @@ function RegisterForm() {
         setError('Email já cadastrado');
       }
 
-      setLoading(false);
     } catch (error) {
       if (error instanceof z.ZodError) {
         setError(error.errors[0].message);
       } else {
         setError('Erro interno do sistema');
       }
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleBackToLogin = () => {
-    router.push('-1');
+    router.push('/');
   };
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <div className="bg-background flex min-h-screen items-center justify-center">
@@ -95,7 +105,8 @@ function RegisterForm() {
                 required
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:ring-blue-500 focus:outline-none sm:text-sm dark:border-gray-600 dark:bg-gray-800 dark:text-white"
+                disabled={loading}
+                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:ring-blue-500 focus:outline-none sm:text-sm dark:border-gray-600 dark:bg-gray-800 dark:text-white disabled:opacity-50"
                 placeholder="Digite seu nome completo"
               />
             </div>
@@ -115,7 +126,8 @@ function RegisterForm() {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:ring-blue-500 focus:outline-none sm:text-sm dark:border-gray-600 dark:bg-gray-800 dark:text-white"
+                disabled={loading}
+                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:ring-blue-500 focus:outline-none sm:text-sm dark:border-gray-600 dark:bg-gray-800 dark:text-white disabled:opacity-50"
                 placeholder="Digite seu email"
               />
             </div>
@@ -135,7 +147,8 @@ function RegisterForm() {
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:ring-blue-500 focus:outline-none sm:text-sm dark:border-gray-600 dark:bg-gray-800 dark:text-white"
+                disabled={loading}
+                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:ring-blue-500 focus:outline-none sm:text-sm dark:border-gray-600 dark:bg-gray-800 dark:text-white disabled:opacity-50"
                 placeholder="Digite sua senha (mín. 6 caracteres)"
               />
             </div>
@@ -155,7 +168,8 @@ function RegisterForm() {
                 required
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:ring-blue-500 focus:outline-none sm:text-sm dark:border-gray-600 dark:bg-gray-800 dark:text-white"
+                disabled={loading}
+                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:ring-blue-500 focus:outline-none sm:text-sm dark:border-gray-600 dark:bg-gray-800 dark:text-white disabled:opacity-50"
                 placeholder="Confirme sua senha"
               />
             </div>
@@ -171,6 +185,7 @@ function RegisterForm() {
               variant="outline"
               onClick={handleBackToLogin}
               className="flex-1"
+              disabled={loading}
             >
               Voltar
             </Button>
@@ -190,24 +205,5 @@ function RegisterForm() {
         </form>
       </div>
     </div>
-  );
-}
-
-export default function RegisterPage() {
-  return (
-    <Suspense
-      fallback={
-        <div className="flex min-h-screen items-center justify-center bg-gray-50 dark:bg-gray-900">
-          <div className="text-center">
-            <div className="mx-auto h-12 w-12 animate-spin rounded-full border-b-2 border-blue-600"></div>
-            <p className="mt-4 text-gray-600 dark:text-gray-400">
-              Carregando...
-            </p>
-          </div>
-        </div>
-      }
-    >
-      <RegisterForm />
-    </Suspense>
   );
 }

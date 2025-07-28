@@ -54,11 +54,12 @@ export const validateLogin = (email: string, password: string): User | null => {
   return null;
 };
 
-// Cadastra novo usuário (apenas pacientes)
+
 export const registerUser = (
   email: string,
   password: string,
-  name: string
+  name: string,
+  role: 'admin' | 'medico' | 'paciente' = 'paciente'
 ): User | null => {
   // Verifica se email já existe
   if (checkEmailExists(email)) {
@@ -69,7 +70,7 @@ export const registerUser = (
     email,
     password,
     name,
-    role: 'paciente',
+    role,
   });
 
   return newUser;

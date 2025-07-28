@@ -5,15 +5,16 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Navbar from '@/components/navbar/navbar';
 import Loading from '@/components/loading/loading';
-import { UserRoundCog, UserSearchIcon } from 'lucide-react';
+import { UserSearchIcon } from 'lucide-react';
 import { MockDatabase } from '@/mocks/database';
 import { User } from '@/mocks/types';
 import ListUsers from './_components/list-users';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 
 export default function DashboardAdminPage() {
   const { user, logout } = useAuth();
   const [users, setUsers] = useState<User[]>([]);
-
   const router = useRouter();
 
   // Redirect if user is not an admin
@@ -25,6 +26,9 @@ export default function DashboardAdminPage() {
     }
   }, [user, router]);
 
+  // Fetch users from the mock database when the component mounts
+  // This simulates fetching data from a real database
+  // In a real application, you would replace this with an API call
   useEffect(() => {
     const fetchedUsers = MockDatabase.getUsers();
     setUsers(fetchedUsers);
@@ -32,13 +36,24 @@ export default function DashboardAdminPage() {
 
   const handleLogout = () => {
     logout(); // Clear user session
-    router.refresh(); // Refresh the page to reflect the logout state
+    router.push('/'); // Refresh the page to reflect the logout state
+  };
+
+  const handleCreateUser = () => {
+    router.push('/admin/create-user')
+  }
+
+  const handleEditUser = (user: User) => {
+    console.log(`Editing user with ID: ${user.id}`, user);
+  }
+
+  const handleDeleteUser = (user: User) => {
+    console.log(`Deleting user with ID: ${user.id}`, user);
   };
 
   if (!user) {
     return <Loading />;
   }
-
   return (
     <main className="bg-background min-h-screen">
       <Navbar onLogout={handleLogout} />
@@ -49,25 +64,34 @@ export default function DashboardAdminPage() {
               Gerenciar Usuários
             </h1>
             <p className="text-muted-foreground max-w-3xl text-lg md:text-xl">
-              Adicione novos usuários, edite informações existentes e visualize detalhes dos usuários cadastrados no sistema. Gerencie permissões e mantenha o controle administrativo de forma simples e eficiente.
+              Gerencie todos os usuários do sistema de forma centralizada. Adicione novos usuários, edite perfis existentes, configure permissões e mantenha o controle total sobre o acesso à plataforma.
             </p>
           </section>
           <section className="flex flex-col gap-4">
-            <div className="flex items-center gap-4">
-              <div className="relative flex-1 max-w-md">
-                <UserSearchIcon className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                <input
+
+            <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+              <div className="relative flex-1 w-full md:max-w-md">
+                <Input
                   type="text"
                   placeholder="Filtrar por nome do usuário..."
-                  className="w-full rounded-md border border-input bg-background px-10 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                 />
               </div>
+              <Button
+                type='button'
+                onClick={handleCreateUser}
+                className='w-full md:w-sm'
+              >
+                <UserSearchIcon className="h-3 w-3" />
+                Adicionar Usuário
+              </Button>
             </div>
 
             <div className="rounded-md border">
-              <div className="overflow-x-auto">
-                <ListUsers users={users} />
-              </div>
+              <ListUsers
+                users={users}
+                onEditUser={handleEditUser}
+                onDeleteUser={handleDeleteUser}
+              />
             </div>
           </section>
         </div>

@@ -21,7 +21,7 @@ export default function DashboardPacientePage() {
 
   const handleLogout = () => {
     logout();
-    router.refresh();
+    router.push('/');
   };
 
   if (!user) {

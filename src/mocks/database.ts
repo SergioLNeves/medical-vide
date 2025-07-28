@@ -36,6 +36,14 @@ export class MockDatabase {
     );
   }
 
+  static getUserByName(name: string): User | null {
+    const users = this.getUsers();
+    return (
+      users.find((user) => user.name.trim() === name.trim()) ||
+      null
+    );
+  }
+
   static createUser(
     userData: Omit<User, 'id' | 'createdAt' | 'updatedAt'>
   ): User {
@@ -46,6 +54,7 @@ export class MockDatabase {
       ...userData,
       id: Date.now().toString(),
       email: userData.email.toLowerCase(),
+      name: userData.name.trim(),
       createdAt: now,
       updatedAt: now,
     };
