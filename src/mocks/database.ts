@@ -64,6 +64,19 @@ export class MockDatabase {
     return newUser;
   }
 
+  static deleteUser(id: string): boolean {
+    const users = this.getUsers();
+    const userIndex = users.findIndex(user => user.id === id);
+
+    if (userIndex === -1) {
+      return false; // Usuário não encontrado
+    }
+
+    users.splice(userIndex, 1);
+    localStorage.setItem(STORAGE_KEYS.users, JSON.stringify(users));
+    return true; // Usuário deletado com sucesso
+  }
+
   // ============ OPERAÇÕES DE AUTENTICAÇÃO ============
 
   static getCurrentUser(): User | null {

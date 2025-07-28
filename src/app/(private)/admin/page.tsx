@@ -9,26 +9,29 @@ import { UserSearchIcon } from 'lucide-react';
 import { MockDatabase } from '@/mocks/database';
 import { User } from '@/mocks/types';
 import ListUsers from './_components/list-users';
+import DeleteUserModal from './_components/delete-user-modal';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 
 export default function DashboardAdminPage() {
   const { user, logout } = useAuth();
   const [users, setUsers] = useState<User[]>([]);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [userToDelete, setUserToDelete] = useState<User | null>(null);
   const router = useRouter();
 
-  // Redirect if user is not an admin
-  // Only users with the 'admin' role can access this page
-  // If the user is logged in but has a different role, redirect them to their respective page
+  // Redireciona usuários não administradores para suas respectivas páginas
+  // Isso garante que apenas administradores possam acessar a página de administração
+  // Se o usuário não for admin, redireciona para a página do seu papel
   useEffect(() => {
     if (user && user.role !== 'admin') {
       router.push(`/${user?.role}`);
     }
   }, [user, router]);
 
-  // Fetch users from the mock database when the component mounts
-  // This simulates fetching data from a real database
-  // In a real application, you would replace this with an API call
+  // Busca usuários do localStorage ao carregar a página
+  // Isso simula a busca de dados de um banco de dados real
+  // Em uma aplicação real, você substituiria isso por uma chamada de API
   useEffect(() => {
     const fetchedUsers = MockDatabase.getUsers();
     setUsers(fetchedUsers);
@@ -39,16 +42,23 @@ export default function DashboardAdminPage() {
     router.push('/'); // Refresh the page to reflect the logout state
   };
 
-  const handleCreateUser = () => {
-    router.push('/admin/create-user')
-  }
-
   const handleEditUser = (user: User) => {
     console.log(`Editing user with ID: ${user.id}`, user);
   }
 
   const handleDeleteUser = (user: User) => {
-    console.log(`Deleting user with ID: ${user.id}`, user);
+    setUserToDelete(user);
+    setIsDeleteModalOpen(true);
+  };
+
+  const handleCloseDeleteModal = () => {
+    setIsDeleteModalOpen(false);
+    setUserToDelete(null);
+  };
+
+  const handleUserDeleted = (deletedUser: User) => {
+    // Remover usuário da lista local
+    setUsers(prevUsers => prevUsers.filter(u => u.id !== deletedUser.id));
   };
 
   if (!user) {
@@ -78,7 +88,7 @@ export default function DashboardAdminPage() {
               </div>
               <Button
                 type='button'
-                onClick={handleCreateUser}
+                onClick={() => router.push('/admin/create-user')}
                 className='w-full md:w-sm'
               >
                 <UserSearchIcon className="h-3 w-3" />
@@ -96,6 +106,14 @@ export default function DashboardAdminPage() {
           </section>
         </div>
       </div>
+
+      {/* Modal de Confirmação de Exclusão */}
+      <DeleteUserModal
+        isOpen={isDeleteModalOpen}
+        userToDelete={userToDelete}
+        onClose={handleCloseDeleteModal}
+        onUserDeleted={handleUserDeleted}
+      />
     </main>
   );
 }

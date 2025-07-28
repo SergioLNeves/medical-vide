@@ -54,7 +54,7 @@ export const validateLogin = (email: string, password: string): User | null => {
   return null;
 };
 
-
+// Cria um novo usuário
 export const registerUser = (
   email: string,
   password: string,
@@ -98,4 +98,9 @@ export const getCurrentUser = (): User | null => {
 // Remove usuário atual (logout) - remove cookie
 export const removeCurrentUser = (): void => {
   removeCookie('current_user');
+};
+
+// Deleta um usuário do localStorage
+export const deleteUser = (userId: string): boolean => {
+  return MockDatabase.deleteUser(userId);
 };

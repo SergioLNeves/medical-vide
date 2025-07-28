@@ -24,6 +24,7 @@ export default function ListUsers({ users, onEditUser, onDeleteUser }: ListUsers
                 <thead className="border-b bg-muted/50">
                     <tr>
                         <th className="px-4 py-3 text-left text-sm font-medium whitespace-nowrap">Nome</th>
+                        <th className="px-4 py-3 text-left text-sm font-medium whitespace-nowrap">Email</th>
                         <th className="px-4 py-3 text-left text-sm font-medium whitespace-nowrap">Role</th>
                         <th className="px-4 py-3 text-right text-sm font-medium whitespace-nowrap">Ações</th>
                     </tr>
@@ -32,6 +33,7 @@ export default function ListUsers({ users, onEditUser, onDeleteUser }: ListUsers
                     {users.map((user) => (
                         <tr key={user.id} className="hover:bg-muted/50">
                             <td className="px-4 py-3 text-sm whitespace-nowrap">{user.name}</td>
+                            <td className="px-4 py-3 text-sm whitespace-nowrap">{user.email}</td>
                             <td className="px-4 py-3 text-sm whitespace-nowrap">
                                 <Badge variant={getRoleBadgeVariant(user.role)}>
                                     {user.role}
