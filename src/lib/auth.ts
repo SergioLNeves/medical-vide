@@ -40,9 +40,9 @@ export const checkEmailExists = (email: string): boolean => {
   return MockDatabase.getUserByEmail(email) !== null;
 };
 
-// Busca usuário por email
-export const getUserByEmail = (email: string): User | null => {
-  return MockDatabase.getUserByEmail(email);
+// Busca usuário por name
+export const getUserByName = (name: string): User | null => {
+  return MockDatabase.getUserByName(name);
 };
 
 // Valida login

@@ -16,6 +16,8 @@ import { Button } from '@/components/ui/button';
 export default function DashboardAdminPage() {
   const { user, logout } = useAuth();
   const [users, setUsers] = useState<User[]>([]);
+  const [allUsers, setAllUsers] = useState<User[]>([]);
+  const [searchTerm, setSearchTerm] = useState('');
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [userToDelete, setUserToDelete] = useState<User | null>(null);
   const router = useRouter();
@@ -34,10 +36,24 @@ export default function DashboardAdminPage() {
   // Em uma aplicação real, você substituiria isso por uma chamada de API
   useEffect(() => {
     const fetchedUsers = MockDatabase.getUsers();
+    setAllUsers(fetchedUsers);
     setUsers(fetchedUsers);
   }, []);
 
-  const handleLogout = () => {
+  // Filtrar usuários baseado no termo de busca
+  useEffect(() => {
+    if (!searchTerm.trim()) {
+      // Se não há termo de busca, mostra todos os usuários
+      setUsers(allUsers);
+    } else {
+      // Filtra usuários por nome ou email
+      const filteredUsers = allUsers.filter(user =>
+        user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        user.email.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      setUsers(filteredUsers);
+    }
+  }, [searchTerm, allUsers]); const handleLogout = () => {
     logout(); // Clear user session
     router.push('/'); // Refresh the page to reflect the logout state
   };
@@ -57,8 +73,9 @@ export default function DashboardAdminPage() {
   };
 
   const handleUserDeleted = (deletedUser: User) => {
-    // Remover usuário da lista local
+    // Remover usuário da lista local e da lista completa
     setUsers(prevUsers => prevUsers.filter(u => u.id !== deletedUser.id));
+    setAllUsers(prevUsers => prevUsers.filter(u => u.id !== deletedUser.id));
   };
 
   if (!user) {
@@ -83,7 +100,9 @@ export default function DashboardAdminPage() {
               <div className="relative flex-1 w-full md:max-w-md">
                 <Input
                   type="text"
-                  placeholder="Filtrar por nome do usuário..."
+                  placeholder="Filtrar por nome ou email do usuário..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
                 />
               </div>
               <Button
