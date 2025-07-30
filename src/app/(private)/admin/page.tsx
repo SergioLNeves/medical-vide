@@ -12,6 +12,7 @@ import ListUsers from './_components/list-users';
 import DeleteUserModal from './_components/delete-user-modal';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import EditUserModal from './_components/edit-user-modal';
 
 export default function DashboardAdminPage() {
   const { user, logout } = useAuth();
@@ -20,6 +21,8 @@ export default function DashboardAdminPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [userToDelete, setUserToDelete] = useState<User | null>(null);
+  const [userToEdit, setUserToEdit] = useState<User | null>(null);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const router = useRouter();
 
   // Redireciona usuários não administradores para suas respectivas páginas
@@ -60,8 +63,21 @@ export default function DashboardAdminPage() {
     router.push('/'); // Refresh the page to reflect the logout state
   };
 
-  const handleEditUser = (user: User) => {
-    console.log(`Editing user with ID: ${user.id}`, user);
+  const handleUserUpdated = (user: User) => {
+    setUserToEdit(user)
+    setIsEditModalOpen(true);
+  }
+
+  const handleRefreshData = () => {
+    // Recarrega os dados dos usuários do localStorage
+    const fetchedUsers = MockDatabase.getUsers();
+    setAllUsers(fetchedUsers);
+    setUsers(fetchedUsers);
+  };
+
+  const handleCloseEditModal = () => {
+    setIsEditModalOpen(false);
+    setUserToEdit(null);
   };
 
   const handleDeleteUser = (user: User) => {
@@ -124,7 +140,7 @@ export default function DashboardAdminPage() {
             <div className="rounded-md border">
               <ListUsers
                 users={users}
-                onEditUser={handleEditUser}
+                onEditUser={handleUserUpdated}
                 onDeleteUser={handleDeleteUser}
               />
             </div>
@@ -132,10 +148,18 @@ export default function DashboardAdminPage() {
         </div>
       </div>
 
+      {/* Modal de Edição de Usuário */}
+      <EditUserModal
+        isOpen={isEditModalOpen}
+        user={userToEdit}
+        onClose={handleCloseEditModal}
+        onRefreshData={handleRefreshData}
+      />
+
       {/* Modal de Confirmação de Exclusão */}
       <DeleteUserModal
         isOpen={isDeleteModalOpen}
-        userToDelete={userToDelete}
+        user={userToDelete}
         onClose={handleCloseDeleteModal}
         onUserDeleted={handleUserDeleted}
       />

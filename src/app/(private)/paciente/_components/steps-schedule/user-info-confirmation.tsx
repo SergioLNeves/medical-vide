@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { User } from '@/mocks/types';
 
 type UserInfoConfirmationProps = {

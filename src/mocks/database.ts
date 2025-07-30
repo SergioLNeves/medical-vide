@@ -1,4 +1,4 @@
-import { User } from './types';
+import { User, UserRole } from './types';
 import { mockUsers } from './users';
 
 // Chaves do localStorage para cada tabela
@@ -72,6 +72,27 @@ export class MockDatabase {
     users.splice(userIndex, 1);
     localStorage.setItem(STORAGE_KEYS.users, JSON.stringify(users));
     return true; // Usuário deletado com sucesso
+  }
+
+  static updateUser(id: string, name: string, email: string, role: string): boolean {
+    const users = this.getUsers();
+    const userIndex = users.findIndex((user) => user.id === id);
+
+    if (userIndex === -1) {
+      return false; // Usuário não encontrado
+    }
+
+    // Atualiza os dados do usuário
+    users[userIndex] = {
+      ...users[userIndex],
+      name: name.trim(),
+      email: email.toLowerCase(),
+      role: role as UserRole,
+      updatedAt: new Date().toISOString()
+    };
+
+    localStorage.setItem(STORAGE_KEYS.users, JSON.stringify(users));
+    return true;
   }
 
   // ============ OPERAÇÕES DE AUTENTICAÇÃO ============
