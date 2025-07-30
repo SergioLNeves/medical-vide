@@ -64,9 +64,9 @@ export default function DashboardAdminPage() {
   };
 
   const handleUserUpdated = (user: User) => {
-    setUserToEdit(user)
+    setUserToEdit(user);
     setIsEditModalOpen(true);
-  }
+  };
 
   const handleRefreshData = () => {
     // Recarrega os dados dos usuários do localStorage

@@ -74,7 +74,12 @@ export class MockDatabase {
     return true; // Usuário deletado com sucesso
   }
 
-  static updateUser(id: string, name: string, email: string, role: string): boolean {
+  static updateUser(
+    id: string,
+    name: string,
+    email: string,
+    role: string
+  ): boolean {
     const users = this.getUsers();
     const userIndex = users.findIndex((user) => user.id === id);
 
@@ -88,7 +93,7 @@ export class MockDatabase {
       name: name.trim(),
       email: email.toLowerCase(),
       role: role as UserRole,
-      updatedAt: new Date().toISOString()
+      updatedAt: new Date().toISOString(),
     };
 
     localStorage.setItem(STORAGE_KEYS.users, JSON.stringify(users));
