@@ -38,10 +38,7 @@ export class MockDatabase {
 
   static getUserByName(name: string): User | null {
     const users = this.getUsers();
-    return (
-      users.find((user) => user.name.trim() === name.trim()) ||
-      null
-    );
+    return users.find((user) => user.name.trim() === name.trim()) || null;
   }
 
   static createUser(
@@ -66,7 +63,7 @@ export class MockDatabase {
 
   static deleteUser(id: string): boolean {
     const users = this.getUsers();
-    const userIndex = users.findIndex(user => user.id === id);
+    const userIndex = users.findIndex((user) => user.id === id);
 
     if (userIndex === -1) {
       return false; // Usuário não encontrado

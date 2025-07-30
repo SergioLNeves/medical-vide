@@ -52,6 +52,8 @@ export function middleware(request: NextRequest) {
   return NextResponse.next();
 }
 
+// Configuração do middleware doc Next.js
+// https://nextjs.org/docs/app/building-your-application/routing/middleware#matcher
 export const config: MiddlewareConfig = {
   matcher: [
     /*

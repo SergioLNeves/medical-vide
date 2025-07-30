@@ -48,7 +48,7 @@ export default function RegisterPage() {
         return;
       }
 
-      const newUser = registerUser(email, password, name, "paciente");
+      const newUser = registerUser(email, password, name, 'paciente');
 
       if (newUser) {
         // Login automático após register
@@ -57,7 +57,6 @@ export default function RegisterPage() {
       } else {
         setError('Email já cadastrado');
       }
-
     } catch (error) {
       if (error instanceof z.ZodError) {
         setError(error.errors[0].message);
@@ -106,7 +105,7 @@ export default function RegisterPage() {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 disabled={loading}
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:ring-blue-500 focus:outline-none sm:text-sm dark:border-gray-600 dark:bg-gray-800 dark:text-white disabled:opacity-50"
+                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:ring-blue-500 focus:outline-none disabled:opacity-50 sm:text-sm dark:border-gray-600 dark:bg-gray-800 dark:text-white"
                 placeholder="Digite seu nome completo"
               />
             </div>
@@ -127,7 +126,7 @@ export default function RegisterPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 disabled={loading}
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:ring-blue-500 focus:outline-none sm:text-sm dark:border-gray-600 dark:bg-gray-800 dark:text-white disabled:opacity-50"
+                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:ring-blue-500 focus:outline-none disabled:opacity-50 sm:text-sm dark:border-gray-600 dark:bg-gray-800 dark:text-white"
                 placeholder="Digite seu email"
               />
             </div>
@@ -148,7 +147,7 @@ export default function RegisterPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 disabled={loading}
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:ring-blue-500 focus:outline-none sm:text-sm dark:border-gray-600 dark:bg-gray-800 dark:text-white disabled:opacity-50"
+                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:ring-blue-500 focus:outline-none disabled:opacity-50 sm:text-sm dark:border-gray-600 dark:bg-gray-800 dark:text-white"
                 placeholder="Digite sua senha (mín. 6 caracteres)"
               />
             </div>
@@ -169,7 +168,7 @@ export default function RegisterPage() {
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 disabled={loading}
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:ring-blue-500 focus:outline-none sm:text-sm dark:border-gray-600 dark:bg-gray-800 dark:text-white disabled:opacity-50"
+                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:ring-blue-500 focus:outline-none disabled:opacity-50 sm:text-sm dark:border-gray-600 dark:bg-gray-800 dark:text-white"
                 placeholder="Confirme sua senha"
               />
             </div>

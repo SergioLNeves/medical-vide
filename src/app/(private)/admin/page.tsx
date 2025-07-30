@@ -47,20 +47,22 @@ export default function DashboardAdminPage() {
       setUsers(allUsers);
     } else {
       // Filtra usuários por nome ou email
-      const filteredUsers = allUsers.filter(user =>
-        user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        user.email.toLowerCase().includes(searchTerm.toLowerCase())
+      const filteredUsers = allUsers.filter(
+        (user) =>
+          user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          user.email.toLowerCase().includes(searchTerm.toLowerCase())
       );
       setUsers(filteredUsers);
     }
-  }, [searchTerm, allUsers]); const handleLogout = () => {
+  }, [searchTerm, allUsers]);
+  const handleLogout = () => {
     logout(); // Clear user session
     router.push('/'); // Refresh the page to reflect the logout state
   };
 
   const handleEditUser = (user: User) => {
     console.log(`Editing user with ID: ${user.id}`, user);
-  }
+  };
 
   const handleDeleteUser = (user: User) => {
     setUserToDelete(user);
@@ -74,8 +76,10 @@ export default function DashboardAdminPage() {
 
   const handleUserDeleted = (deletedUser: User) => {
     // Remover usuário da lista local e da lista completa
-    setUsers(prevUsers => prevUsers.filter(u => u.id !== deletedUser.id));
-    setAllUsers(prevUsers => prevUsers.filter(u => u.id !== deletedUser.id));
+    setUsers((prevUsers) => prevUsers.filter((u) => u.id !== deletedUser.id));
+    setAllUsers((prevUsers) =>
+      prevUsers.filter((u) => u.id !== deletedUser.id)
+    );
   };
 
   if (!user) {
@@ -84,20 +88,22 @@ export default function DashboardAdminPage() {
   return (
     <main className="bg-background min-h-screen">
       <Navbar onLogout={handleLogout} />
-      <div className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8 ">
-        <div className='flex flex-col gap-12 px-4 py-6 sm:px-0'>
-          <section className='gap-4 flex flex-col'>
+      <div className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
+        <div className="flex flex-col gap-12 px-4 py-6 sm:px-0">
+          <section className="flex flex-col gap-4">
             <h1 className="text-3xl font-bold md:text-4xl">
               Gerenciar Usuários
             </h1>
             <p className="text-muted-foreground max-w-3xl text-lg md:text-xl">
-              Gerencie todos os usuários do sistema de forma centralizada. Adicione novos usuários, edite perfis existentes, configure permissões e mantenha o controle total sobre o acesso à plataforma.
+              Gerencie todos os usuários do sistema de forma centralizada.
+              Adicione novos usuários, edite perfis existentes, configure
+              permissões e mantenha o controle total sobre o acesso à
+              plataforma.
             </p>
           </section>
           <section className="flex flex-col gap-4">
-
-            <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-              <div className="relative flex-1 w-full md:max-w-md">
+            <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
+              <div className="relative w-full flex-1 md:max-w-md">
                 <Input
                   type="text"
                   placeholder="Filtrar por nome ou email do usuário..."
@@ -106,9 +112,9 @@ export default function DashboardAdminPage() {
                 />
               </div>
               <Button
-                type='button'
+                type="button"
                 onClick={() => router.push('/admin/create-user')}
-                className='w-full md:w-sm'
+                className="w-full md:w-sm"
               >
                 <UserSearchIcon className="h-3 w-3" />
                 Adicionar Usuário
