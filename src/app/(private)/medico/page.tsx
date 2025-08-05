@@ -21,15 +21,6 @@ import {
     type Status
 } from '@/components/ui/kibo-ui/calendar';
 
-interface CalendarEvent {
-    id: string;
-    start: Date;
-    end: Date;
-    title: string;
-    color?: 'blue' | 'green' | 'pink' | 'purple' | 'default';
-}
-
-
 export default function MedicoPage() {
     const router = useRouter();
     const { user, logout } = useAuth();
@@ -47,17 +38,16 @@ export default function MedicoPage() {
         }
     }, [user, router]);
 
-    // Color mapping for schedule status
-    const colorMap: Record<string, string> = {
-        'blue': '#3b82f6',
-        'green': '#10b981',
-        'pink': '#ec4899',
-        'purple': '#8b5cf6',
-        'default': '#6b7280'
-    };
-
     // Convert schedules to calendar features for the current doctor
     const calendarFeatures: Feature[] = useMemo(() => {
+        const colorMap: Record<string, string> = {
+            'blue': '#3b82f6',
+            'green': '#10b981',
+            'pink': '#ec4899',
+            'purple': '#8b5cf6',
+            'default': '#6b7280'
+        };
+
         if (!user) return [];
 
         return mockSchedules
