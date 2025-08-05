@@ -22,3 +22,19 @@ export interface User {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface Schedule {
+  id: string;
+  medicoId: string;
+  pacienteId: string;
+  medicoName: string;
+  pacienteName: string;
+  start: Date;
+  end: Date;
+  title: string;
+  description?: string;
+  status: 'agendado' | 'realizado' | 'cancelado';
+  color?: 'blue' | 'green' | 'pink' | 'purple' | 'default';
+  createdAt: string;
+  updatedAt: string;
+}

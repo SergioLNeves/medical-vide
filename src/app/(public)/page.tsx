@@ -59,7 +59,7 @@ export default function LoginPage() {
       if (user) {
         toast.success(`Bem-vindo(a), ${user.name}!`);
         login(user);
-        router.push('/');
+        router.refresh();
       } else {
         setPasswordError('Senha incorreta. Tente novamente.');
       }
