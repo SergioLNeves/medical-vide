@@ -7,6 +7,7 @@ import {
 const publicRoutes = [
   { path: '/', whenAuthenticated: 'redirect' },
   { path: '/register', whenAuthenticated: 'redirect' },
+  { path: '/forgot-password', whenAuthenticated: 'redirect' },
 ] as const;
 
 const REDIRECT_WHEN_NOT_AUTHENTICATED = '/';

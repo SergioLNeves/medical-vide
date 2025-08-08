@@ -1,5 +1,6 @@
 'use client';
 
+import React from 'react';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
@@ -122,11 +123,6 @@ export default function LoginPage() {
               {passwordError && (
                 <p className="mt-1 text-sm text-red-500">{passwordError}</p>
               )}
-              <div className="flex justify-end">
-                <Button variant={'link'} className="text-primary pr-0">
-                  Esqueceu sua senha?
-                </Button>
-              </div>
             </div>
 
             <Button
@@ -138,16 +134,23 @@ export default function LoginPage() {
               {isLoading ? 'Entrando...' : 'Entrar'}
             </Button>
           </form>
-
-          <div className="flex justify-end">
-            <Button
-              variant={'link'}
-              className="text-primary pr-0"
-              onClick={() => router.push('/register')}
-            >
-              Cadastre-se
-            </Button>
+          <div className='flex justify-between'>
+            <div className="flex justify-end">
+              <Button variant={'link'} className="text-primary pr-0" onClick={() => router.push('/forgot-password')}>
+                Esqueceu sua senha?
+              </Button>
+            </div>
+            <div className="flex justify-end">
+              <Button
+                variant={'link'}
+                className="text-primary pr-0"
+                onClick={() => router.push('/register')}
+              >
+                Cadastre-se
+              </Button>
+            </div>
           </div>
+
         </CardContent>
       </Card>
     </div>
