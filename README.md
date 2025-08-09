@@ -1,63 +1,148 @@
 # Medical Vide
 
-## Descrição
+[![Último commit](https://img.shields.io/github/last-commit/SergioLNeves/medical-vide?style=flat-square)](https://github.com/SergioLNeves/medical-vide/commits)
+![Next.js](https://img.shields.io/badge/Next.js-15-black?style=flat-square&logo=nextdotjs)
+![React](https://img.shields.io/badge/React-19-61dafb?style=flat-square&logo=react&logoColor=000)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-3178c6?style=flat-square&logo=typescript&logoColor=fff)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-4-38b2ac?style=flat-square&logo=tailwindcss&logoColor=fff)
+![PNPM](https://img.shields.io/badge/PNPM-%F0%9F%93%A6-ffbf00?style=flat-square&logo=pnpm&logoColor=000)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen?style=flat-square)](./CONTRIBUTING.md)
 
-Medical Vide é uma aplicação web desenvolvida para facilitar o gerenciamento de pacientes e agendamentos médicos. A plataforma oferece funcionalidades como autenticação de usuários, navegação entre diferentes dashboards e componentes reutilizáveis para interface.
+Aplicação web para gerenciamento de pacientes e agendamentos médicos. Inclui autenticação, dashboards por perfil (admin, médico, paciente) e uma biblioteca de componentes reutilizáveis.
 
-## Arquitetura
+> Status: em desenvolvimento (WIP)
 
-A aplicação utiliza a seguinte arquitetura:
+---
 
-- **Next.js**: Framework para renderização do lado do cliente e servidor.
-- **Componentes Reutilizáveis**: Localizados na pasta `src/components/ui`, como botões, cards e separadores.
-- **Middleware**: Implementado para gerenciar autenticação e redirecionamento de usuários com base em suas permissões.
-- **Hooks**: Custom hooks como `useAuth` e `useIsMobile` para lógica reutilizável.
-- **Estrutura de Pastas**:
-  - `src/app`: Contém as páginas organizadas em rotas públicas e privadas.
-  - `src/components`: Componentes reutilizáveis para interface.
-  - `src/hooks`: Hooks personalizados.
-  - `src/lib`: Funções utilitárias e lógica de autenticação.
-  - `src/mocks`: Dados fictícios para testes e desenvolvimento.
+## Sumário
+- [Visão Geral](#visão-geral)
+- [Funcionalidades](#funcionalidades)
+- [Stack e Principais Dependências](#stack-e-principais-dependências)
+- [Requisitos](#requisitos)
+- [Instalação](#instalação)
+- [Uso](#uso)
+- [Estrutura de Pastas](#estrutura-de-pastas)
+- [Qualidade de Código](#qualidade-de-código)
+- [Testes](#testes)
+- [Roadmap](#roadmap)
+- [Contribuição](#contribuição)
+- [Licença](#licença)
+- [Contato](#contato)
+
+## Visão Geral
+O Medical Vide facilita o fluxo de marcações e gestão de pacientes. A arquitetura utiliza o App Router do Next.js, com rotas públicas e privadas protegidas por middleware, e componentes UI consistentes baseados em Tailwind e Radix.
+
+## Funcionalidades
+- Autenticação simulada via middleware e mocks (users, schedules).
+- Dashboards por perfil: admin, médico e paciente.
+- Agendamento de consultas e visualização de disponibilidade.
+- Biblioteca de componentes reutilizáveis (botões, cards, tabelas, dialogs, inputs, dropdowns etc.).
+- Tema claro/escuro com `next-themes`.
+- Tabelas reativas com `@tanstack/react-table`.
+- Validação com Zod e feedback com Sonner (toasts).
+
+## Stack e Principais Dependências
+- Framework e runtime
+  - Next.js (App Router) 15, React 19, TypeScript 5
+- Estilo e tema
+  - Tailwind CSS 4, @tailwindcss/postcss, tailwind-merge, next-themes, tw-animate-css
+- UI e acessibilidade
+  - Radix UI, Lucide React
+- Tabelas e listas
+  - @tanstack/react-table
+- Validação e utilitários
+  - Zod, date-fns
+- Estado e hooks
+  - Jotai, hooks customizados (`useAuth`, `useIsMobile`)
+- Notificações
+  - Sonner
+- Qualidade de código
+  - ESLint, Prettier (+ plugin Tailwind)
+- Testes
+  - Jest, Testing Library
+
+## Requisitos
+- Node.js 18+ (recomendado 20+)
+- PNPM
 
 ## Instalação
-
-1. Clone o repositório:
+1. Clone o repositório
    ```bash
    git clone https://github.com/SergioLNeves/medical-vide.git
+   cd medical-vide
    ```
-2. Instale as dependências:
+2. Instale as dependências
    ```bash
    pnpm install
    ```
 
-## Comandos Principais
-
-- **Iniciar o servidor de desenvolvimento**:
+## Uso
+- Desenvolvimento (Turbopack)
   ```bash
   pnpm dev
   ```
-- **Build para produção**:
+- Build de produção
   ```bash
   pnpm build
   ```
-- **Rodar testes**:
+- Iniciar servidor após o build
   ```bash
-  pnpm test
+  pnpm start
+  ```
+- Lint
+  ```bash
+  pnpm lint
+  ```
+- Formatar com Prettier
+  ```bash
+  pnpm format
   ```
 
-## Estrutura Básica
+### Variáveis de Ambiente (opcional)
+No momento, o projeto utiliza dados mockados. Se futuramente integrar APIs/serviços, recomenda-se um arquivo `.env.local` com chaves como:
+```
+NEXT_PUBLIC_API_BASE_URL=
+NEXT_PUBLIC_APP_NAME=Medical Vide
+```
 
-A aplicação segue uma estrutura modular, com componentes e páginas organizados de forma clara para facilitar a manutenção e escalabilidade.
+## Estrutura de Pastas
+```
+src/
+  app/
+    (public)/
+      page.tsx
+      forgot-password/
+      register/
+    (private)/
+      admin/
+      medico/
+      paciente/
+    layout.tsx
+    globals.css
+  components/
+    ui/              # Botões, cards, inputs, tabelas, dialogs etc.
+    navbar/          # Navbar
+    loading/         # Skeletons e loaders
+    card-function/
+  hooks/             # useAuth, useIsMobile, theme-provider
+  lib/               # auth.ts, utils.ts
+  mocks/             # database.ts, users.ts, schedule.ts, types.ts
+middleware.ts        # Proteção de rotas e redirecionamentos
+```
 
-- **Rotas Públicas**: Localizadas em `src/app/(public)`.
-- **Rotas Privadas**: Localizadas em `src/app/(private)`.
-- **Middleware**: Gerencia autenticação e redirecionamento.
+## Qualidade de Código
+- ESLint e Prettier configurados.
+- Tailwind plugin do Prettier para ordenação de classes.
+- Sugestão: adotar Conventional Commits para mensagens de commit.
 
-## Tecnologias Utilizadas
+## Testes
+- Ambiente de testes com Jest + Testing Library.
+- Comandos sugeridos:
+  ```bash
+  pnpm jest
+  pnpm jest --watch
+  ```
 
-- Next.js
-- TypeScript
-- PNPM
-- ESLint
-
-Este README fornece uma visão geral básica do projeto. Para mais detalhes, consulte a documentação ou entre em contato com o desenvolvedor.
+## Contato
+- Autor: Sergio L. Neves
+- GitHub: https://github.com/SergioLNeves
