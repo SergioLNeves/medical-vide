@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { useState, useEffect } from 'react';
+import { z } from 'zod';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { checkEmailExists, validateLogin, initializeUsers } from '@/lib/auth';
@@ -18,6 +19,10 @@ import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
 
 export default function LoginPage() {
+  const loginSchema = z.object({
+    email: z.string().min(1, 'Por favor, insira seu email').email('Por favor, insira um email válido'),
+    password: z.string().min(1, 'Por favor, insira sua senha'),
+  });
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -28,7 +33,6 @@ export default function LoginPage() {
   const { login } = useAuth();
 
   useEffect(() => {
-    // Inicializa os usuários mock no localStorage
     initializeUsers();
   }, []);
 
@@ -36,18 +40,16 @@ export default function LoginPage() {
     e.preventDefault();
     setIsLoading(true);
 
-    // Limpar erros anteriores
     setEmailError('');
     setPasswordError('');
 
     try {
-      if (!email.trim()) {
-        setEmailError('Por favor, insira seu email');
-        return;
-      }
-
-      if (!password.trim()) {
-        setPasswordError('Por favor, insira sua senha');
+      const result = loginSchema.safeParse({ email, password });
+      if (!result.success) {
+        result.error.errors.forEach((err) => {
+          if (err.path[0] === 'email') setEmailError(err.message);
+          if (err.path[0] === 'password') setPasswordError(err.message);
+        });
         return;
       }
 

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { z } from 'zod';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import {
@@ -16,6 +17,9 @@ import { toast } from 'sonner';
 import { ArrowLeft, Mail, CheckCircle } from 'lucide-react';
 
 export default function ForgotPasswordPage() {
+    const forgotSchema = z.object({
+        email: z.string().min(1, 'Por favor, insira seu email').email('Por favor, insira um email válido'),
+    });
     const [email, setEmail] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [emailSent, setEmailSent] = useState(false);
@@ -29,23 +33,15 @@ export default function ForgotPasswordPage() {
         setEmailError('');
 
         try {
-            if (!email.trim()) {
-                setEmailError('Por favor, insira seu email');
+            const result = forgotSchema.safeParse({ email });
+            if (!result.success) {
+                result.error.errors.forEach((err) => {
+                    if (err.path[0] === 'email') setEmailError(err.message);
+                });
                 return;
             }
-
-            if (!email.includes('@') || !email.includes('.')) {
-                setEmailError('Por favor, insira um email válido');
-                return;
-            }
-
-            // Simula o envio do email (fake)
-            await new Promise(resolve => setTimeout(resolve, 2000));
-
             setEmailSent(true);
             toast.success('Email de recuperação enviado com sucesso!');
-        } catch (error) {
-            toast.error('Erro ao enviar email de recuperação');
         } finally {
             setIsLoading(false);
         }
@@ -95,7 +91,6 @@ export default function ForgotPasswordPage() {
                             <p className="text-sm text-muted-foreground">
                                 Não recebeu o email? Verifique sua pasta de spam ou tente novamente.
                             </p>
-
                             <div className="space-y-2">
                                 <Button
                                     onClick={handleResendEmail}
@@ -104,7 +99,6 @@ export default function ForgotPasswordPage() {
                                 >
                                     Reenviar Email
                                 </Button>
-
                                 <Button
                                     onClick={handleBackToLogin}
                                     variant="ghost"
