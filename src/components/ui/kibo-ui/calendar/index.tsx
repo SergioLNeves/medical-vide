@@ -181,7 +181,7 @@ type OutOfBoundsDayProps = {
 };
 
 const OutOfBoundsDay = ({ day }: OutOfBoundsDayProps) => (
-  <div className="relative h-full w-full bg-secondary p-1 text-muted-foreground text-xs">
+  <div className="bg-secondary text-muted-foreground relative h-full w-full p-1 text-xs">
     {day}
   </div>
 );
@@ -192,7 +192,11 @@ export type CalendarBodyProps = {
   onDateClick?: (date: Date) => void;
 };
 
-export const CalendarBody = ({ features, children, onDateClick }: CalendarBodyProps) => {
+export const CalendarBody = ({
+  features,
+  children,
+  onDateClick,
+}: CalendarBodyProps) => {
   const [month] = useCalendarMonth();
   const [year] = useCalendarYear();
   const { startDay } = useContext(CalendarContext);
@@ -251,7 +255,7 @@ export const CalendarBody = ({ features, children, onDateClick }: CalendarBodyPr
   for (let i = 0; i < firstDay; i++) {
     const day =
       prevMonthData.prevMonthDaysArray[
-      prevMonthData.prevMonthDays - firstDay + i
+        prevMonthData.prevMonthDays - firstDay + i
       ];
 
     if (day) {
@@ -265,7 +269,7 @@ export const CalendarBody = ({ features, children, onDateClick }: CalendarBodyPr
 
     days.push(
       <div
-        className="relative flex h-full w-full flex-col gap-1 p-1 text-muted-foreground text-xs cursor-pointer hover:bg-gray-50 transition-colors"
+        className="text-muted-foreground relative flex h-full w-full cursor-pointer flex-col gap-1 p-1 text-xs transition-colors hover:bg-gray-50"
         key={day}
         onClick={() => onDateClick?.(currentDate)}
         role="button"
@@ -280,13 +284,11 @@ export const CalendarBody = ({ features, children, onDateClick }: CalendarBodyPr
         {day}
         <div>
           {featuresForDay.slice(0, 3).map((feature) => (
-            <div key={feature.id}>
-              {children({ feature })}
-            </div>
+            <div key={feature.id}>{children({ feature })}</div>
           ))}
         </div>
         {featuresForDay.length > 3 && (
-          <span className="block text-muted-foreground text-xs">
+          <span className="text-muted-foreground block text-xs">
             +{featuresForDay.length - 3} more
           </span>
         )}
@@ -463,7 +465,7 @@ export const CalendarHeader = ({ className }: CalendarHeaderProps) => {
   return (
     <div className={cn('grid flex-grow grid-cols-7', className)}>
       {daysData.map((day) => (
-        <div className="p-3 text-right text-muted-foreground text-xs" key={day}>
+        <div className="text-muted-foreground p-3 text-right text-xs" key={day}>
           {day}
         </div>
       ))}

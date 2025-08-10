@@ -4,7 +4,6 @@ import { useAuth } from '@/hooks/useAuth';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Navbar from '@/components/navbar/navbar';
-import Loading from '@/components/loading/loading';
 import { UserSearchIcon } from 'lucide-react';
 import { MockDatabase } from '@/mocks/database';
 import { User } from '@/mocks/types';
@@ -24,15 +23,6 @@ export default function DashboardAdminPage() {
   const [userToEdit, setUserToEdit] = useState<User | null>(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const router = useRouter();
-
-  // Redireciona usuários não administradores para suas respectivas páginas
-  // Isso garante que apenas administradores possam acessar a página de administração
-  // Se o usuário não for admin, redireciona para a página do seu papel
-  useEffect(() => {
-    if (user && user.role !== 'admin') {
-      router.push(`/${user?.role}`);
-    }
-  }, [user, router]);
 
   // Busca usuários do localStorage ao carregar a página
   // Isso simula a busca de dados de um banco de dados real
@@ -98,9 +88,10 @@ export default function DashboardAdminPage() {
     );
   };
 
-  if (!user) {
-    return <Loading />;
-  }
+  // Com o layout privado, sempre teremos um usuário aqui
+  // O TypeScript não sabe disso, então usamos uma declaração para garantir que user não é null
+  if (!user) return null; // Nunca deve acontecer por causa do layout
+
   return (
     <main className="bg-background min-h-screen">
       <Navbar onLogout={handleLogout} />

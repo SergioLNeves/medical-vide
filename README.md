@@ -15,6 +15,7 @@ Aplicação web para gerenciamento de pacientes e agendamentos médicos. Inclui 
 ---
 
 ## Sumário
+
 - [Visão Geral](#visão-geral)
 - [Funcionalidades](#funcionalidades)
 - [Stack e Principais Dependências](#stack-e-principais-dependências)
@@ -30,9 +31,11 @@ Aplicação web para gerenciamento de pacientes e agendamentos médicos. Inclui 
 - [Contato](#contato)
 
 ## Visão Geral
+
 O Medical Vide facilita o fluxo de marcações e gestão de pacientes. A arquitetura utiliza o App Router do Next.js, com rotas públicas e privadas protegidas por middleware, e componentes UI consistentes baseados em Tailwind e Radix.
 
 ## Funcionalidades
+
 - Autenticação simulada via middleware e mocks (users, schedules).
 - Dashboards por perfil: admin, médico e paciente.
 - Agendamento de consultas e visualização de disponibilidade.
@@ -42,6 +45,7 @@ O Medical Vide facilita o fluxo de marcações e gestão de pacientes. A arquite
 - Validação com Zod e feedback com Sonner (toasts).
 
 ## Stack e Principais Dependências
+
 - Framework e runtime
   - Next.js (App Router) 15, React 19, TypeScript 5
 - Estilo e tema
@@ -62,10 +66,12 @@ O Medical Vide facilita o fluxo de marcações e gestão de pacientes. A arquite
   - Jest, Testing Library
 
 ## Requisitos
+
 - Node.js 18+ (recomendado 20+)
 - PNPM
 
 ## Instalação
+
 1. Clone o repositório
    ```bash
    git clone https://github.com/SergioLNeves/medical-vide.git
@@ -77,6 +83,7 @@ O Medical Vide facilita o fluxo de marcações e gestão de pacientes. A arquite
    ```
 
 ## Uso
+
 - Desenvolvimento (Turbopack)
   ```bash
   pnpm dev
@@ -99,43 +106,45 @@ O Medical Vide facilita o fluxo de marcações e gestão de pacientes. A arquite
   ```
 
 ### Variáveis de Ambiente (opcional)
+
 No momento, o projeto utiliza dados mockados. Se futuramente integrar APIs/serviços, recomenda-se um arquivo `.env.local` com chaves como:
+
 ```
 NEXT_PUBLIC_API_BASE_URL=
 NEXT_PUBLIC_APP_NAME=Medical Vide
 ```
 
 ## Estrutura de Pastas
+
 ```
 src/
   app/
     (public)/
-      page.tsx
-      forgot-password/
-      register/
     (private)/
-      admin/
-      medico/
-      paciente/
     layout.tsx
     globals.css
   components/
-    ui/              # Botões, cards, inputs, tabelas, dialogs etc.
-    navbar/          # Navbar
-    loading/         # Skeletons e loaders
-    card-function/
-  hooks/             # useAuth, useIsMobile, theme-provider
-  lib/               # auth.ts, utils.ts
-  mocks/             # database.ts, users.ts, schedule.ts, types.ts
-middleware.ts        # Proteção de rotas e redirecionamentos
+  hooks/
+  lib/
+  mocks/
+middleware.ts
 ```
 
+- app: Rotas via App Router. (public) sem autenticação; (private) áreas Admin/Médico/Paciente; `layout.tsx` define o shell/metadata; `globals.css` configura tema e tokens de estilo.
+- components: Biblioteca de UI e blocos reutilizáveis (prioriza acessibilidade com Radix e consistência com Tailwind).
+- hooks: Hooks compartilhados (ex.: `useAuth`, `useIsMobile`, provider de tema).
+- lib: Utilitários e lógica de domínio (auth helpers, formatadores, funções comuns).
+- mocks: Dados fictícios para dev/testes (users, schedules, tipos).
+- middleware.ts: Protege rotas privadas e redireciona conforme o perfil do usuário.
+
 ## Qualidade de Código
+
 - ESLint e Prettier configurados.
 - Tailwind plugin do Prettier para ordenação de classes.
 - Sugestão: adotar Conventional Commits para mensagens de commit.
 
 ## Testes
+
 - Ambiente de testes com Jest + Testing Library.
 - Comandos sugeridos:
   ```bash
@@ -144,5 +153,6 @@ middleware.ts        # Proteção de rotas e redirecionamentos
   ```
 
 ## Contato
+
 - Autor: Sergio L. Neves
 - GitHub: https://github.com/SergioLNeves

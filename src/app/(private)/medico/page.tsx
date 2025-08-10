@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
 import React from 'react';
-import { useAuth } from "@/hooks/useAuth";
-import { useEffect, useMemo, useState } from "react";
-import Loading from "@/components/loading/loading";
-import Navbar from "@/components/navbar/navbar";
+import { useAuth } from '@/hooks/useAuth';
+import { useMemo, useState } from 'react';
+import Loading from '@/components/loading/loading';
+import Navbar from '@/components/navbar/navbar';
 import { useRouter } from 'next/navigation';
 import { mockSchedules } from '@/mocks/schedule';
 import DayScheduleModal from './_components/day-schedule-modal';
@@ -18,7 +18,7 @@ import {
     CalendarMonthPicker,
     CalendarYearPicker,
     type Feature,
-    type Status
+    type Status,
 } from '@/components/ui/kibo-ui/calendar';
 
 export default function MedicoPage() {
@@ -32,27 +32,21 @@ export default function MedicoPage() {
         router.push('/'); // Refresh the page to reflect the logout state
     };
 
-    useEffect(() => {
-        if (user && user.role !== 'medico') {
-            router.push(`/${user?.role}`);
-        }
-    }, [user, router]);
-
     // Convert schedules to calendar features for the current doctor
     const calendarFeatures: Feature[] = useMemo(() => {
         const colorMap: Record<string, string> = {
-            'blue': '#3b82f6',
-            'green': '#10b981',
-            'pink': '#ec4899',
-            'purple': '#8b5cf6',
-            'default': '#6b7280'
+            blue: '#3b82f6',
+            green: '#10b981',
+            pink: '#ec4899',
+            purple: '#8b5cf6',
+            default: '#6b7280',
         };
 
         if (!user) return [];
 
         return mockSchedules
-            .filter(schedule => schedule.medicoId === user.id)
-            .map(schedule => ({
+            .filter((schedule) => schedule.medicoId === user.id)
+            .map((schedule) => ({
                 id: schedule.id,
                 name: schedule.title,
                 startAt: schedule.start,
@@ -60,8 +54,8 @@ export default function MedicoPage() {
                 status: {
                     id: schedule.status,
                     name: schedule.status,
-                    color: colorMap[schedule.color || 'default']
-                } as Status
+                    color: colorMap[schedule.color || 'default'],
+                } as Status,
             }));
     }, [user]);
 
@@ -79,20 +73,18 @@ export default function MedicoPage() {
             <div className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
                 <div className="flex flex-col gap-12 px-4 py-6 sm:px-0">
                     <section className="flex flex-col gap-4">
-                        <h1 className="text-3xl font-bold md:text-4xl">
-                            Painel do Médico
-                        </h1>
+                        <h1 className="text-3xl font-bold md:text-4xl">Painel do Médico</h1>
                         <p className="text-muted-foreground max-w-3xl text-lg md:text-xl">
-                            Bem-vindo ao seu painel médico. Gerencie suas consultas,
-                            visualize agendamentos e acompanhe seus pacientes de forma
-                            eficiente e organizada.
+                            Bem-vindo ao seu painel médico. Gerencie suas consultas, visualize
+                            agendamentos e acompanhe seus pacientes de forma eficiente e
+                            organizada.
                         </p>
                     </section>
                     <section>
-                        <h2 className="text-2xl font-semibold mb-4">Agenda de Consultas</h2>
+                        <h2 className="mb-4 text-2xl font-semibold">Agenda de Consultas</h2>
                         <CalendarProvider locale="pt-BR" className="max-w-6xl">
-                            <div className="border rounded-lg overflow-hidden">
-                                <div className="bg-white p-4 border-b">
+                            <div className="overflow-hidden rounded-lg border">
+                                <div className="border-b bg-white p-4">
                                     <CalendarDate>
                                         <CalendarDatePicker>
                                             <CalendarMonthPicker className="mr-2" />
@@ -100,12 +92,15 @@ export default function MedicoPage() {
                                         </CalendarDatePicker>
                                     </CalendarDate>
                                 </div>
-                                <CalendarHeader className="bg-gray-50 border-b" />
-                                <CalendarBody features={calendarFeatures} onDateClick={handleDateClick}>
+                                <CalendarHeader className="border-b bg-gray-50" />
+                                <CalendarBody
+                                    features={calendarFeatures}
+                                    onDateClick={handleDateClick}
+                                >
                                     {({ feature }) => (
                                         <CalendarItem
                                             feature={feature}
-                                            className="text-xs mb-1 p-1 rounded"
+                                            className="mb-1 rounded p-1 text-xs"
                                         />
                                     )}
                                 </CalendarBody>
@@ -123,5 +118,5 @@ export default function MedicoPage() {
                 medicoId={user?.id || ''}
             />
         </main>
-    )
+    );
 }

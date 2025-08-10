@@ -1,32 +1,22 @@
-'use client';
-
-import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/hooks/useAuth';
 import Navbar from '@/components/navbar/navbar';
 import CardFunction from '@/components/card-function/card-function';
 import InfoPaciente from './_components/info-pacients/info-paciente';
 import { Calendar } from 'lucide-react';
-import Loading from '@/components/loading/loading';
 
 export default function DashboardPacientePage() {
   const { user, logout } = useAuth();
   const router = useRouter();
-
-  useEffect(() => {
-    if (user && user.role !== 'paciente') {
-      router.push(`/${user?.role}`);
-    }
-  }, [user, router]);
 
   const handleLogout = () => {
     logout();
     router.push('/');
   };
 
-  if (!user) {
-    return <Loading />;
-  }
+  // Com o layout privado, sempre teremos um usuário aqui
+  // O TypeScript não sabe disso, então usamos uma declaração para garantir que user não é null
+  if (!user) return null; // Nunca deve acontecer por causa do layout
 
   return (
     <main className="bg-background min-h-screen">

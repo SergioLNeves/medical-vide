@@ -20,7 +20,10 @@ import { toast } from 'sonner';
 
 export default function LoginPage() {
   const loginSchema = z.object({
-    email: z.string().min(1, 'Por favor, insira seu email').email('Por favor, insira um email válido'),
+    email: z
+      .string()
+      .min(1, 'Por favor, insira seu email')
+      .email('Por favor, insira um email válido'),
     password: z.string().min(1, 'Por favor, insira sua senha'),
   });
   const [email, setEmail] = useState('');
@@ -136,9 +139,13 @@ export default function LoginPage() {
               {isLoading ? 'Entrando...' : 'Entrar'}
             </Button>
           </form>
-          <div className='flex justify-between'>
+          <div className="flex justify-between">
             <div className="flex justify-end">
-              <Button variant={'link'} className="text-primary pr-0" onClick={() => router.push('/forgot-password')}>
+              <Button
+                variant={'link'}
+                className="text-primary pr-0"
+                onClick={() => router.push('/forgot-password')}
+              >
                 Esqueceu sua senha?
               </Button>
             </div>
@@ -152,7 +159,6 @@ export default function LoginPage() {
               </Button>
             </div>
           </div>
-
         </CardContent>
       </Card>
     </div>
