@@ -1,0 +1,18 @@
+{
+    "users": [
+        {
+            "id": "1",
+            "name": "Test Patient",
+            "email": "patient@example.com",
+            "password": "password123",
+            "role": "paciente"
+        },
+        {
+            "id": "2",
+            "name": "Test Doctor",
+            "email": "doctor@example.com",
+            "password": "password123",
+            "role": "medico"
+        }
+    ]
+}

@@ -63,7 +63,7 @@ O Medical Vide facilita o fluxo de marcações e gestão de pacientes. A arquite
 - Qualidade de código
   - ESLint, Prettier (+ plugin Tailwind)
 - Testes
-  - Jest, Testing Library
+  - Cypress
 
 ## Requisitos
 
@@ -145,11 +145,13 @@ middleware.ts
 
 ## Testes
 
-- Ambiente de testes com Jest + Testing Library.
-- Comandos sugeridos:
+- Testes end-to-end com Cypress.
+- Comandos para testes:
   ```bash
-  pnpm jest
-  pnpm jest --watch
+  # Testes end-to-end com Cypress
+  pnpm cypress:open  # Interface gráfica
+  pnpm cypress:run   # Linha de comando
+  pnpm test         # Inicia servidor e executa testes
   ```
 
 ## Contato
