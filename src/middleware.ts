@@ -33,15 +33,24 @@ export function middleware(request: NextRequest) {
   //Verifica se o usuário está autenticado e se a rota é pública
   // Se estiver autenticado e a rota for pública, redireciona para a página
   if (authToken && publicRoute?.whenAuthenticated === 'redirect') {
-    const userRole = (authToken.value = JSON.parse(authToken.value));
-    const redirectUrl = request.nextUrl.clone();
+    try {
+      const userRole = JSON.parse(authToken.value);
+      const redirectUrl = request.nextUrl.clone();
 
-    if (!userRole || !userRole.role) {
-      return console.error('User role is not defined in the auth token');
+      if (!userRole || !userRole.role) {
+        console.error('User role is not defined in the auth token');
+        return NextResponse.next();
+      }
+
+      redirectUrl.pathname = `/${userRole.role}`;
+      return NextResponse.redirect(redirectUrl);
+    } catch (error) {
+      console.error('Error parsing auth token:', error);
+      // Se não conseguir fazer o parse do token, remove o cookie inválido
+      const response = NextResponse.next();
+      response.cookies.delete('current_user');
+      return response;
     }
-
-    redirectUrl.pathname = `/${userRole.role}`;
-    return NextResponse.redirect(redirectUrl);
   }
 
   if (authToken && !publicRoute) {

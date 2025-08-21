@@ -10,6 +10,9 @@ export default defineConfig({
         defaultCommandTimeout: 10000,
         experimentalRunAllSpecs: true,
         video: false,
+        screenshotOnRunFailure: true,
+        screenshotsFolder: "cypress/screenshots",
+        trashAssetsBeforeRuns: true,
     },
 
     component: {

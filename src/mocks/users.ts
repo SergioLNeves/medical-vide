@@ -4,8 +4,8 @@ import { User } from './types';
 export const mockUsers: User[] = [
   {
     id: '1',
-    email: 'medico@example.com',
-    password: '123123',
+    email: 'medico@test.com',
+    password: '123456',
     name: 'Dr. João Silva',
     role: 'medico',
     createdAt: '2024-01-01T00:00:00.000Z',
@@ -13,8 +13,8 @@ export const mockUsers: User[] = [
   },
   {
     id: '2',
-    email: 'admin@example.com',
-    password: '123123',
+    email: 'admin@test.com',
+    password: '123456',
     name: 'Admin Sistema',
     role: 'admin',
     createdAt: '2024-01-01T00:00:00.000Z',
@@ -22,8 +22,8 @@ export const mockUsers: User[] = [
   },
   {
     id: '3',
-    email: 'medico2@example.com',
-    password: '123123',
+    email: 'medico2@test.com',
+    password: '123456',
     name: 'Dra. Maria Santos',
     role: 'medico',
     createdAt: '2024-01-01T00:00:00.000Z',
@@ -31,8 +31,8 @@ export const mockUsers: User[] = [
   },
   {
     id: '4',
-    email: 'paciente@example.com',
-    password: '123123',
+    email: 'paciente@test.com',
+    password: '123456',
     name: 'Carlos Oliveira',
     role: 'paciente',
     complementInfo: {
@@ -45,8 +45,8 @@ export const mockUsers: User[] = [
   },
   {
     id: '5',
-    email: 'paciente.completo@example.com',
-    password: '123123',
+    email: 'paciente.completo@test.com',
+    password: '123456',
     name: 'Ana Paula Costa',
     role: 'paciente',
     complementInfo: {
@@ -63,8 +63,8 @@ export const mockUsers: User[] = [
   },
   {
     id: '6',
-    email: 'paciente.basico@example.com',
-    password: '123123',
+    email: 'paciente.basico@test.com',
+    password: '123456',
     name: 'Pedro Santos',
     role: 'paciente',
     complementInfo: {

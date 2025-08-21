@@ -1,9 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
-import { checkEmailExists, registerUser } from '@/lib/auth';
+import { checkEmailExists, registerUser, initializeUsers } from '@/lib/auth';
 import { useAuth } from '@/hooks/useAuth';
 import { z } from 'zod';
 import Loading from '@/components/loading/loading';
@@ -28,11 +28,15 @@ export default function RegisterPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [, setError] = useState('');
+  const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
   const router = useRouter();
   const { login } = useAuth();
+
+  useEffect(() => {
+    initializeUsers(); // Ensure mock data is initialized
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -43,19 +47,20 @@ export default function RegisterPage() {
       const formData = { name, email, password, confirmPassword };
       registerSchema.parse(formData);
 
-      if (checkEmailExists(email)) {
-        setError('Email já cadastrado');
-        return;
-      }
+      console.log('Attempting to register with email:', email);
+      console.log('Email exists check:', checkEmailExists(email));
 
       const newUser = registerUser(email, password, name, 'paciente');
+      console.log('Register result:', newUser);
 
       if (newUser) {
         // Login automático após register
         login(newUser);
-        router.push(`/dashboard/${newUser.role}`);
+        router.push(`/${newUser.role}`);
       } else {
+        console.log('Setting error: Email já cadastrado');
         setError('Email já cadastrado');
+        return; // Don't continue after setting error
       }
     } catch (error) {
       if (error instanceof z.ZodError) {
@@ -103,7 +108,10 @@ export default function RegisterPage() {
                 type="text"
                 required
                 value={name}
-                onChange={(e) => setName(e.target.value)}
+                onChange={(e) => {
+                  setName(e.target.value);
+                  if (error) setError(''); // Clear error when user starts typing
+                }}
                 disabled={loading}
                 className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:ring-blue-500 focus:outline-none disabled:opacity-50 sm:text-sm dark:border-gray-600 dark:bg-gray-800 dark:text-white"
                 placeholder="Digite seu nome completo"
@@ -124,7 +132,10 @@ export default function RegisterPage() {
                 autoComplete="email"
                 required
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  if (error) setError(''); // Clear error when user starts typing
+                }}
                 disabled={loading}
                 className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:ring-blue-500 focus:outline-none disabled:opacity-50 sm:text-sm dark:border-gray-600 dark:bg-gray-800 dark:text-white"
                 placeholder="Digite seu email"
@@ -173,6 +184,18 @@ export default function RegisterPage() {
               />
             </div>
           </div>
+
+          {error && (
+            <div className="rounded-md bg-red-50 p-4 dark:bg-red-900/20" data-testid="error-message">
+              <div className="flex">
+                <div className="ml-3">
+                  <h3 className="text-sm font-medium text-red-800 dark:text-red-300">
+                    {error}
+                  </h3>
+                </div>
+              </div>
+            </div>
+          )}
 
           <div className="flex space-x-3">
             <Button
