@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { z } from 'zod';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
@@ -17,7 +17,7 @@ import { toast } from 'sonner';
 import { ArrowLeft, Lock, CheckCircle, Eye, EyeOff } from 'lucide-react';
 import { checkEmailExists, resetUserPassword } from '@/lib/auth';
 
-export default function ResetPasswordPage() {
+function ResetPasswordForm() {
   // Schema de validação para redefinição de senha usando Zod
   const resetPasswordSchema = z
     .object({
@@ -336,11 +336,13 @@ export default function ResetPasswordPage() {
           </form>
 
           {/* Informação sobre segurança */}
-          <div className="rounded-lg bg-blue-50 p-3 dark:bg-blue-900/20">
+          <div className="bg-muted/50 border-border rounded-lg border p-3">
             <div className="flex items-start">
-              <Lock className="mt-0.5 mr-2 h-4 w-4 text-blue-600 dark:text-blue-400" />
-              <div className="text-xs text-blue-700 dark:text-blue-400">
-                <p className="font-medium">Dica de segurança:</p>
+              <Lock className="text-muted-foreground mt-0.5 mr-2 h-4 w-4" />
+              <div className="text-muted-foreground text-xs">
+                <p className="text-foreground font-medium">
+                  Dica de segurança:
+                </p>
                 <p>Use uma senha forte com pelo menos 6 caracteres.</p>
               </div>
             </div>
@@ -348,5 +350,42 @@ export default function ResetPasswordPage() {
         </CardContent>
       </Card>
     </div>
+  );
+}
+
+// Loading component for suspense fallback
+function ResetPasswordLoading() {
+  return (
+    <div className="bg-background flex min-h-screen items-center justify-center p-4">
+      <Card className="w-full max-w-md">
+        <CardHeader>
+          <div className="animate-pulse space-y-2">
+            <div className="h-6 bg-gray-300 rounded w-3/4"></div>
+            <div className="h-4 bg-gray-200 rounded w-full"></div>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="animate-pulse space-y-4">
+            <div className="space-y-2">
+              <div className="h-4 bg-gray-200 rounded w-1/3"></div>
+              <div className="h-10 bg-gray-200 rounded"></div>
+            </div>
+            <div className="space-y-2">
+              <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+              <div className="h-10 bg-gray-200 rounded"></div>
+            </div>
+            <div className="h-10 bg-gray-200 rounded"></div>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
+export default function ResetPasswordPage() {
+  return (
+    <Suspense fallback={<ResetPasswordLoading />}>
+      <ResetPasswordForm />
+    </Suspense>
   );
 }

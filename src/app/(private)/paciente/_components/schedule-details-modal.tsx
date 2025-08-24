@@ -45,10 +45,10 @@ export default function ScheduleDetailsModal({
       agendado: 'bg-yellow-100 text-yellow-800 border-yellow-200',
       confirmado: 'bg-green-100 text-green-800 border-green-200',
       cancelado: 'bg-red-100 text-red-800 border-red-200',
-      realizado: 'bg-blue-100 text-blue-800 border-blue-200',
+      realizado: 'bg-chart-3/20 text-chart-3 border-chart-3/30',
     };
     return (
-      statusColorMap[status] || 'bg-gray-100 text-gray-800 border-gray-200'
+      statusColorMap[status] || 'bg-muted text-muted-foreground border-border'
     );
   };
 
@@ -67,8 +67,8 @@ export default function ScheduleDetailsModal({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-2xl">
         <DialogHeader className="border-b pb-4">
-          <DialogTitle className="flex items-center gap-2 text-xl font-bold text-gray-800">
-            <Calendar className="h-5 w-5 text-blue-600" />
+          <DialogTitle className="text-foreground flex items-center gap-2 text-xl font-bold">
+            <Calendar className="text-primary h-5 w-5" />
             Detalhes da Consulta
           </DialogTitle>
           <Button
@@ -148,11 +148,11 @@ export default function ScheduleDetailsModal({
           {/* Descrição */}
           {schedule.description && (
             <div className="space-y-2">
-              <div className="flex items-center gap-2 text-sm font-medium text-gray-600">
+              <div className="text-muted-foreground flex items-center gap-2 text-sm font-medium">
                 <FileText className="h-4 w-4" />
                 Descrição
               </div>
-              <div className="rounded-lg bg-gray-50 p-3 text-gray-700">
+              <div className="bg-muted/50 text-foreground rounded-lg p-3">
                 {schedule.description}
               </div>
             </div>

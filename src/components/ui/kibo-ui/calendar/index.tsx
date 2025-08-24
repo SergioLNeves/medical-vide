@@ -269,7 +269,7 @@ export const CalendarBody = ({
 
     days.push(
       <div
-        className="text-muted-foreground relative flex h-full w-full cursor-pointer flex-col gap-1 p-1 text-xs transition-colors hover:bg-gray-50"
+        className="text-muted-foreground hover:bg-muted/50 relative flex h-full w-full cursor-pointer flex-col gap-1 p-1 text-xs transition-colors"
         key={day}
         onClick={() => onDateClick?.(currentDate)}
         role="button"

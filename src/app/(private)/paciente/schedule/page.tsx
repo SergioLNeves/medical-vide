@@ -146,14 +146,14 @@ export default function SchedulePacientePage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="bg-muted/20 min-h-screen py-8">
       <div className="mx-auto max-w-4xl px-4">
         <section className="mb-8 flex items-center justify-between">
           <div className="mb-8">
-            <h1 className="text-3xl font-bold text-gray-900">
+            <h1 className="text-foreground text-3xl font-bold">
               Agendar Consulta
             </h1>
-            <p className="mt-2 text-gray-600">
+            <p className="text-muted-foreground mt-2">
               Olá, {profile?.name}! Selecione uma especialidade ou busque um
               médico pelo nome.
             </p>
@@ -220,19 +220,20 @@ export default function SchedulePacientePage() {
                 {filteredMedicos.map((medico) => (
                   <div
                     key={medico.id}
-                    className={`cursor-pointer rounded-lg border p-4 transition-colors ${selectedMedico?.id === medico.id
-                        ? 'border-blue-500 bg-blue-50'
-                        : 'border-gray-200 hover:border-gray-300'
-                      }`}
+                    className={`cursor-pointer rounded-lg border p-4 transition-colors ${
+                      selectedMedico?.id === medico.id
+                        ? 'border-primary bg-primary/10'
+                        : 'border-border hover:border-primary/50'
+                    }`}
                     onClick={() => handleSelectMedico(medico)}
                   >
                     <div className="flex items-start justify-between">
                       <div>
                         <h3 className="font-semibold">{medico.nome}</h3>
-                        <p className="text-sm text-gray-600">
+                        <p className="text-muted-foreground text-sm">
                           {medico.especialidade}
                         </p>
-                        <p className="text-sm text-gray-500">
+                        <p className="text-muted-foreground/70 text-sm">
                           CRM: {medico.crm}
                         </p>
                       </div>
@@ -258,19 +259,20 @@ export default function SchedulePacientePage() {
                 {filteredTratamentos.map((tratamento) => (
                   <div
                     key={tratamento.id}
-                    className={`cursor-pointer rounded-lg border p-4 transition-colors ${selectedTratamento?.id === tratamento.id
-                        ? 'border-blue-500 bg-blue-50'
-                        : 'border-gray-200 hover:border-gray-300'
-                      }`}
+                    className={`cursor-pointer rounded-lg border p-4 transition-colors ${
+                      selectedTratamento?.id === tratamento.id
+                        ? 'border-primary bg-primary/10'
+                        : 'border-border hover:border-primary/50'
+                    }`}
                     onClick={() => handleSelectTratamento(tratamento)}
                   >
                     <div className="flex items-start justify-between">
                       <div>
                         <h3 className="font-semibold">{tratamento.nome}</h3>
-                        <p className="text-sm text-gray-600">
+                        <p className="text-muted-foreground text-sm">
                           {tratamento.descricao}
                         </p>
-                        <div className="mt-2 flex gap-4 text-sm text-gray-500">
+                        <div className="text-muted-foreground/70 mt-2 flex gap-4 text-sm">
                           <span className="flex items-center">
                             <Clock className="mr-1 h-3 w-3" />
                             {tratamento.duracao} min

@@ -21,11 +21,11 @@ const getStatusColor = (status: string) => {
     agendado: 'bg-yellow-100 text-yellow-800 border-yellow-200',
     confirmado: 'bg-green-100 text-green-800 border-green-200',
     cancelado: 'bg-red-100 text-red-800 border-red-200',
-    realizado: 'bg-blue-100 text-blue-800 border-blue-200',
+    realizado: 'bg-chart-3/20 text-chart-3 border-chart-3/30',
   };
   return (
     statusColorMap[status.toLowerCase()] ||
-    'bg-gray-100 text-gray-800 border-gray-200'
+    'bg-muted text-muted-foreground border-border'
   );
 };
 

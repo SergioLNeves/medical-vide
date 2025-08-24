@@ -10,7 +10,7 @@ export default function UserInfoConfirmation({
   onChange,
 }: UserInfoConfirmationProps) {
   return (
-    <div className="rounded-lg bg-white p-4 shadow-md dark:bg-gray-800">
+    <div className="bg-card border-border rounded-lg border p-4 shadow-md">
       <h2 className="mb-4 text-lg font-semibold">Confirme suas Informações </h2>
       <div className="space-y-2">
         <label>

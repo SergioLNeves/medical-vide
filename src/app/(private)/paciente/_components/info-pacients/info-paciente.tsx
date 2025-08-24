@@ -45,12 +45,8 @@ const DetailList = ({
 }) => {
   return (
     <dl>
-      <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">
-        {title}
-      </dt>
-      <dd className="mt-1 text-sm text-gray-900 dark:text-white">
-        {description}
-      </dd>
+      <dt className="text-muted-foreground text-sm font-medium">{title}</dt>
+      <dd className="text-foreground mt-1 text-sm">{description}</dd>
     </dl>
   );
 };

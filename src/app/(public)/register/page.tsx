@@ -97,10 +97,10 @@ export default function RegisterPage() {
     <div className="bg-background flex min-h-screen items-center justify-center">
       <div className="w-full max-w-md space-y-8 p-8">
         <div className="text-center">
-          <h2 className="mt-6 text-3xl font-extrabold text-gray-900 dark:text-white">
+          <h2 className="text-foreground mt-6 text-3xl font-extrabold">
             Criar conta
           </h2>
-          <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
+          <p className="text-muted-foreground mt-2 text-sm">
             Cadastre-se como paciente para acessar o sistema
           </p>
         </div>
@@ -111,7 +111,7 @@ export default function RegisterPage() {
             <div>
               <label
                 htmlFor="name"
-                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                className="text-foreground block text-sm font-medium"
               >
                 Nome completo
               </label>
@@ -126,7 +126,7 @@ export default function RegisterPage() {
                   if (error) setError(''); // Clear error when user starts typing
                 }}
                 disabled={loading}
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:ring-blue-500 focus:outline-none disabled:opacity-50 sm:text-sm dark:border-gray-600 dark:bg-gray-800 dark:text-white"
+                className="border-input bg-background text-foreground placeholder-muted-foreground focus:border-ring focus:ring-ring mt-1 block w-full rounded-md border px-3 py-2 focus:ring-2 focus:outline-none disabled:opacity-50 sm:text-sm"
                 placeholder="Digite seu nome completo"
               />
             </div>
@@ -135,7 +135,7 @@ export default function RegisterPage() {
             <div>
               <label
                 htmlFor="email"
-                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                className="text-foreground block text-sm font-medium"
               >
                 Email
               </label>
@@ -151,7 +151,7 @@ export default function RegisterPage() {
                   if (error) setError(''); // Clear error when user starts typing
                 }}
                 disabled={loading}
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:ring-blue-500 focus:outline-none disabled:opacity-50 sm:text-sm dark:border-gray-600 dark:bg-gray-800 dark:text-white"
+                className="border-input bg-background text-foreground placeholder-muted-foreground focus:border-ring focus:ring-ring mt-1 block w-full rounded-md border px-3 py-2 focus:ring-2 focus:outline-none disabled:opacity-50 sm:text-sm"
                 placeholder="Digite seu email"
               />
             </div>
@@ -160,7 +160,7 @@ export default function RegisterPage() {
             <div>
               <label
                 htmlFor="password"
-                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                className="text-foreground block text-sm font-medium"
               >
                 Senha
               </label>
@@ -173,7 +173,7 @@ export default function RegisterPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 disabled={loading}
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:ring-blue-500 focus:outline-none disabled:opacity-50 sm:text-sm dark:border-gray-600 dark:bg-gray-800 dark:text-white"
+                className="border-input bg-background text-foreground placeholder-muted-foreground focus:border-ring focus:ring-ring mt-1 block w-full rounded-md border px-3 py-2 focus:ring-2 focus:outline-none disabled:opacity-50 sm:text-sm"
                 placeholder="Digite sua senha (mín. 6 caracteres)"
               />
             </div>
@@ -182,7 +182,7 @@ export default function RegisterPage() {
             <div>
               <label
                 htmlFor="confirmPassword"
-                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                className="text-foreground block text-sm font-medium"
               >
                 Confirmar senha
               </label>
@@ -195,7 +195,7 @@ export default function RegisterPage() {
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 disabled={loading}
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:ring-blue-500 focus:outline-none disabled:opacity-50 sm:text-sm dark:border-gray-600 dark:bg-gray-800 dark:text-white"
+                className="border-input bg-background text-foreground placeholder-muted-foreground focus:border-ring focus:ring-ring mt-1 block w-full rounded-md border px-3 py-2 focus:ring-2 focus:outline-none disabled:opacity-50 sm:text-sm"
                 placeholder="Confirme sua senha"
               />
             </div>
@@ -204,12 +204,12 @@ export default function RegisterPage() {
           {/* Exibição de mensagens de erro */}
           {error && (
             <div
-              className="rounded-md bg-red-50 p-4 dark:bg-red-900/20"
+              className="bg-destructive/10 border-destructive/20 rounded-md border p-4"
               data-testid="error-message"
             >
               <div className="flex">
                 <div className="ml-3">
-                  <h3 className="text-sm font-medium text-red-800 dark:text-red-300">
+                  <h3 className="text-destructive text-sm font-medium">
                     {error}
                   </h3>
                 </div>

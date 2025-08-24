@@ -75,7 +75,9 @@ export default function DashboardPacientePage() {
   // Função para buscar nome do médico
   const getDoctorName = (userId: string) => {
     const users = MockDatabase.getUsers();
-    const doctor = users.find((user: { id: string; name?: string }) => user.id === userId);
+    const doctor = users.find(
+      (user: { id: string; name?: string }) => user.id === userId
+    );
     return doctor?.name || 'Médico não encontrado';
   };
 

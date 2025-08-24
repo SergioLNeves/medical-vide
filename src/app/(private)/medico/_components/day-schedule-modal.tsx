@@ -164,7 +164,9 @@ export default function DayScheduleModal({
   // Função para obter nome do paciente
   const getPatientName = (pacienteId: string) => {
     const users = MockDatabase.getUsers();
-    const patient = users.find((user: { id: string; name?: string }) => user.id === pacienteId);
+    const patient = users.find(
+      (user: { id: string; name?: string }) => user.id === pacienteId
+    );
     return patient?.name || 'Paciente não encontrado';
   };
 
@@ -179,10 +181,10 @@ export default function DayScheduleModal({
       agendado: 'bg-yellow-100 text-yellow-800 border-yellow-200',
       confirmado: 'bg-green-100 text-green-800 border-green-200',
       cancelado: 'bg-red-100 text-red-800 border-red-200',
-      realizado: 'bg-blue-100 text-blue-800 border-blue-200',
+      realizado: 'bg-chart-3/20 text-chart-3 border-chart-3/30',
     };
     return (
-      statusColorMap[status] || 'bg-gray-100 text-gray-800 border-gray-200'
+      statusColorMap[status] || 'bg-muted text-muted-foreground border-border'
     );
   };
 
@@ -214,18 +216,18 @@ export default function DayScheduleModal({
         <div className="space-y-4">
           {daySchedules.length === 0 ? (
             <div className="py-8 text-center">
-              <CalendarIcon className="mx-auto mb-4 h-12 w-12 text-gray-400" />
-              <p className="text-lg text-gray-500">
+              <CalendarIcon className="text-muted-foreground mx-auto mb-4 h-12 w-12" />
+              <p className="text-muted-foreground text-lg">
                 Nenhuma consulta agendada para este dia
               </p>
-              <p className="mt-2 text-sm text-gray-400">
+              <p className="text-muted-foreground/80 mt-2 text-sm">
                 Você pode agendar novas consultas através do sistema
               </p>
             </div>
           ) : (
             <>
               <div className="mb-4">
-                <p className="text-sm text-gray-600">
+                <p className="text-muted-foreground text-sm">
                   {daySchedules.length} consulta
                   {daySchedules.length !== 1 ? 's' : ''} agendada
                   {daySchedules.length !== 1 ? 's' : ''}
@@ -254,11 +256,11 @@ export default function DayScheduleModal({
                       .map((schedule) => (
                         <TableRow
                           key={schedule.id}
-                          className="hover:bg-gray-50"
+                          className="hover:bg-muted/50"
                         >
                           <TableCell className="font-medium">
                             <div className="flex items-center gap-1">
-                              <ClockIcon className="h-4 w-4 text-gray-500" />
+                              <ClockIcon className="text-muted-foreground h-4 w-4" />
                               <span>
                                 {formatTime(schedule.start)} -{' '}
                                 {formatTime(schedule.end)}
@@ -266,13 +268,13 @@ export default function DayScheduleModal({
                             </div>
                           </TableCell>
                           <TableCell>
-                            <div className="font-semibold text-gray-900">
+                            <div className="text-foreground font-semibold">
                               {schedule.title}
                             </div>
                           </TableCell>
                           <TableCell>
                             <div className="flex items-center gap-2">
-                              <UserIcon className="h-4 w-4 text-gray-500" />
+                              <UserIcon className="text-muted-foreground h-4 w-4" />
                               <span>{getPatientName(schedule.pacienteId)}</span>
                             </div>
                           </TableCell>
@@ -286,11 +288,11 @@ export default function DayScheduleModal({
                           </TableCell>
                           <TableCell>
                             {schedule.description ? (
-                              <span className="text-sm text-gray-600">
+                              <span className="text-foreground/80 text-sm">
                                 {schedule.description}
                               </span>
                             ) : (
-                              <span className="text-sm text-gray-400 italic">
+                              <span className="text-muted-foreground text-sm italic">
                                 Sem descrição
                               </span>
                             )}
@@ -329,7 +331,7 @@ export default function DayScheduleModal({
                               {isPastDue(schedule) &&
                                 schedule.status !== 'realizado' &&
                                 schedule.status !== 'cancelado' && (
-                                  <span className="text-xs text-gray-500 italic">
+                                  <span className="text-muted-foreground text-xs italic">
                                     Consulta vencida
                                   </span>
                                 )}
@@ -338,7 +340,9 @@ export default function DayScheduleModal({
                               {(!canConfirm(schedule) &&
                                 !canCancel(schedule)) ||
                                 isPastDue(schedule) ? (
-                                <span className="text-xs text-gray-400">-</span>
+                                <span className="text-muted-foreground/60 text-xs">
+                                  -
+                                </span>
                               ) : null}
                             </div>
                           </TableCell>

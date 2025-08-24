@@ -94,16 +94,16 @@ export default function ForgotPasswordPage() {
           </CardHeader>
           <CardContent className="space-y-4">
             {/* Informações sobre o email enviado */}
-            <div className="rounded-lg bg-blue-50 p-4 dark:bg-blue-900/20">
+            <div className="bg-primary/10 border-primary/20 rounded-lg border p-4">
               <div className="flex items-start">
-                <Mail className="mt-0.5 mr-3 h-5 w-5 text-blue-600 dark:text-blue-400" />
+                <Mail className="text-primary mt-0.5 mr-3 h-5 w-5" />
                 <div className="text-sm">
-                  <p className="font-medium text-blue-800 dark:text-blue-300">
+                  <p className="text-primary font-medium">
                     Verifique sua caixa de entrada
                   </p>
-                  <p className="mt-1 text-blue-700 dark:text-blue-400">
+                  <p className="text-muted-foreground mt-1">
                     Enviamos um link de recuperação para{' '}
-                    <span className="font-medium">{email}</span>
+                    <span className="text-foreground font-medium">{email}</span>
                   </p>
                 </div>
               </div>
