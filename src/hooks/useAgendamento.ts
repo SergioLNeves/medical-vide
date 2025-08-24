@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useEffect } from 'react';
 import { MockDatabase, Schedule } from '@/mocks';
+import { especialidadesDisponiveis } from '@/constants/especialidades';
 
 // Tipos específicos para agendamento
 export interface Especialidade {
@@ -38,19 +39,17 @@ export interface Medico {
 }
 
 // Dados estáticos para especialidades e tratamentos
-const mockEspecialidades: Especialidade[] = [
-    { id: '1', nome: 'Cardiologia', descricao: 'Cuidados com o coração' },
-    { id: '2', nome: 'Dermatologia', descricao: 'Cuidados com a pele' },
-    { id: '3', nome: 'Neurologia', descricao: 'Cuidados com o sistema nervoso' },
-    { id: '4', nome: 'Ortopedia', descricao: 'Cuidados com ossos e músculos' },
-    { id: '5', nome: 'Pediatria', descricao: 'Cuidados com crianças' },
-];
+const mockEspecialidades: Especialidade[] = especialidadesDisponiveis.map(esp => ({
+    id: esp.id,
+    nome: esp.nome,
+    descricao: `Cuidados especializados em ${esp.nome.toLowerCase()}`
+}));
 
 const mockTratamentos: Tratamento[] = [
-    { id: '1', nome: 'Consulta Cardiológica', descricao: 'Avaliação geral do sistema cardiovascular', duracao: 60, preco: 200, medicoId: '1' },
-    { id: '2', nome: 'Eletrocardiograma', descricao: 'Exame do ritmo cardíaco', duracao: 30, preco: 80, medicoId: '1' },
-    { id: '3', nome: 'Consulta Dermatológica', descricao: 'Avaliação da pele e anexos', duracao: 45, preco: 180, medicoId: '3' },
-    { id: '4', nome: 'Biópsia de Pele', descricao: 'Coleta de amostra para análise', duracao: 30, preco: 300, medicoId: '3' },
+    // Tratamentos genéricos que podem ser oferecidos por qualquer médico
+    { id: '1', nome: 'Consulta Médica', descricao: 'Consulta geral com avaliação médica', duracao: 60, preco: 200, medicoId: 'any' },
+    { id: '2', nome: 'Consulta de Retorno', descricao: 'Consulta de acompanhamento', duracao: 30, preco: 100, medicoId: 'any' },
+    { id: '3', nome: 'Avaliação Clínica', descricao: 'Avaliação médica detalhada', duracao: 45, preco: 180, medicoId: 'any' },
 ];
 
 export function useAgendamento() {
@@ -69,20 +68,29 @@ export function useAgendamento() {
 
     const buscarMedicosPorEspecialidadeId = useCallback((especialidadeId: string): Medico[] => {
         const users = MockDatabase.getUsers();
+        const especialidade = especialidadesDisponiveis.find(esp => esp.id === especialidadeId);
+
+        if (!especialidade) return [];
+
         const medicos = users
             .filter(user => user.role === 'medico')
+            .filter(user => {
+                // Verifica se o médico tem a especialidade definida no complementInfo
+                const especialidadeMedico = user.complementInfo?.especialidade;
+                return especialidadeMedico === especialidade.nome;
+            })
             .map(user => ({
                 id: user.id,
                 nome: user.name,
-                especialidade: user.id === '1' ? 'Cardiologia' : 'Dermatologia',
-                especialidadeId: user.id === '1' ? '1' : '2',
-                crm: user.id === '1' ? '12345-SP' : '23456-SP',
-                avaliacoes: user.id === '1' ? 4.8 : 4.9,
-                telefone: `(11) 9999${user.id}-${user.id}${user.id}${user.id}${user.id}`,
+                especialidade: user.complementInfo?.especialidade || 'Não informado',
+                especialidadeId: especialidadeId,
+                crm: user.complementInfo?.crm || 'CRM não informado',
+                avaliacoes: 4.5, // Valor padrão
+                telefone: user.complementInfo?.telefone || 'Telefone não informado',
                 email: user.email
             }));
 
-        return medicos.filter(medico => medico.especialidadeId === especialidadeId);
+        return medicos;
     }, []);
 
     const buscarMedicosPorNome = useCallback((nome: string): Medico[] => {
@@ -92,23 +100,34 @@ export function useAgendamento() {
         const users = MockDatabase.getUsers();
         const medicos = users
             .filter(user => user.role === 'medico')
-            .map(user => ({
-                id: user.id,
-                nome: user.name,
-                especialidade: user.id === '1' ? 'Cardiologia' : 'Dermatologia',
-                especialidadeId: user.id === '1' ? '1' : '2',
-                crm: user.id === '1' ? '12345-SP' : '23456-SP',
-                avaliacoes: user.id === '1' ? 4.8 : 4.9,
-                telefone: `(11) 9999${user.id}-${user.id}${user.id}${user.id}${user.id}`,
-                email: user.email
-            }))
-            .filter(medico => medico.nome.toLowerCase().includes(nomeNormalizado));
+            .filter(user => user.name.toLowerCase().includes(nomeNormalizado))
+            .map(user => {
+                // Encontrar a especialidade do médico
+                const especialidadeMedico = user.complementInfo?.especialidade;
+                const especialidade = especialidadesDisponiveis.find(esp => esp.nome === especialidadeMedico);
+
+                return {
+                    id: user.id,
+                    nome: user.name,
+                    especialidade: especialidadeMedico || 'Não informado',
+                    especialidadeId: especialidade?.id || '0',
+                    crm: user.complementInfo?.crm || 'CRM não informado',
+                    avaliacoes: 4.5, // Valor padrão
+                    telefone: user.complementInfo?.telefone || 'Telefone não informado',
+                    email: user.email
+                };
+            });
 
         return medicos;
     }, []);
 
     const buscarTratamentosPorMedico = useCallback((medicoId: string): Tratamento[] => {
-        return mockTratamentos.filter(tratamento => tratamento.medicoId === medicoId);
+        // Retorna tratamentos genéricos para qualquer médico
+        // Em um sistema real, isso poderia ser mais específico por especialidade
+        return mockTratamentos.map(tratamento => ({
+            ...tratamento,
+            medicoId: medicoId // Associa o tratamento ao médico específico
+        }));
     }, []);
 
     const criarAgendamento = useCallback(async (request: AgendamentoRequest): Promise<Schedule> => {

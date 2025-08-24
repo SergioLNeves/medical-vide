@@ -11,9 +11,17 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
 import { ArrowLeft, Save, User, Stethoscope } from 'lucide-react';
 import { toast } from 'sonner';
 import Loading from '@/components/loading/loading';
+import { especialidadesDisponiveis } from '@/constants/especialidades';
 
 export default function MedicoComplementInfoPage() {
     const { user, refreshUser } = useAuth();
@@ -90,8 +98,7 @@ export default function MedicoComplementInfoPage() {
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-green-50 via-blue-50 to-green-50">
-            <Navbar />
+        <div className="min-h-screen bg-background">
             <div className="container mx-auto px-4 py-8">
                 {/* Header */}
                 <div className="mb-6">
@@ -111,158 +118,150 @@ export default function MedicoComplementInfoPage() {
                     </p>
                 </div>
 
-                <Card className="max-w-4xl mx-auto shadow-lg border-0 bg-white/50 backdrop-blur">
-                    <CardHeader className="text-center border-b bg-gradient-to-r from-green-600 to-blue-600 text-white">
-                        <div className="flex justify-center mb-4">
-                            <Stethoscope className="h-12 w-12" />
-                        </div>
-                        <CardTitle className="text-2xl">Perfil do Médico</CardTitle>
-                        <CardDescription className="text-green-100">
-                            Mantenha suas informações profissionais atualizadas
-                        </CardDescription>
-                    </CardHeader>
-
-                    <CardContent className="p-6">
-                        <form onSubmit={handleSubmit} className="space-y-6">
-                            {/* Informações Pessoais */}
+                <form onSubmit={handleSubmit} className="space-y-6">
+                    {/* Informações Pessoais */}
+                    <div>
+                        <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                            <User className="h-5 w-5 mr-2" />
+                            Informações Pessoais
+                        </h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
-                                <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
-                                    <User className="h-5 w-5 mr-2" />
-                                    Informações Pessoais
-                                </h3>
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    <div>
-                                        <Label htmlFor="cpf">CPF</Label>
-                                        <Input
-                                            id="cpf"
-                                            type="text"
-                                            placeholder="000.000.000-00"
-                                            value={formData.cpf}
-                                            onChange={(e) => handleInputChange('cpf', e.target.value)}
-                                            className="mt-1"
-                                        />
-                                    </div>
-                                    <div>
-                                        <Label htmlFor="rg">RG</Label>
-                                        <Input
-                                            id="rg"
-                                            type="text"
-                                            placeholder="00.000.000-0"
-                                            value={formData.rg}
-                                            onChange={(e) => handleInputChange('rg', e.target.value)}
-                                            className="mt-1"
-                                        />
-                                    </div>
-                                    <div>
-                                        <Label htmlFor="telefone">Telefone</Label>
-                                        <Input
-                                            id="telefone"
-                                            type="tel"
-                                            placeholder="(00) 00000-0000"
-                                            value={formData.telefone}
-                                            onChange={(e) => handleInputChange('telefone', e.target.value)}
-                                            className="mt-1"
-                                        />
-                                    </div>
-                                    <div>
-                                        <Label htmlFor="dataNascimento">Data de Nascimento</Label>
-                                        <Input
-                                            id="dataNascimento"
-                                            type="date"
-                                            value={formData.dataNascimento}
-                                            onChange={(e) => handleInputChange('dataNascimento', e.target.value)}
-                                            className="mt-1"
-                                        />
-                                    </div>
-                                </div>
-                                <div className="mt-4">
-                                    <Label htmlFor="endereco">Endereço</Label>
-                                    <Textarea
-                                        id="endereco"
-                                        placeholder="Rua, número, bairro, cidade, CEP"
-                                        value={formData.endereco}
-                                        onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => handleInputChange('endereco', e.target.value)}
-                                        className="mt-1"
-                                        rows={2}
-                                    />
-                                </div>
+                                <Label htmlFor="cpf">CPF</Label>
+                                <Input
+                                    id="cpf"
+                                    type="text"
+                                    placeholder="000.000.000-00"
+                                    value={formData.cpf}
+                                    onChange={(e) => handleInputChange('cpf', e.target.value)}
+                                    className="mt-1"
+                                />
                             </div>
+                            <div>
+                                <Label htmlFor="rg">RG</Label>
+                                <Input
+                                    id="rg"
+                                    type="text"
+                                    placeholder="00.000.000-0"
+                                    value={formData.rg}
+                                    onChange={(e) => handleInputChange('rg', e.target.value)}
+                                    className="mt-1"
+                                />
+                            </div>
+                            <div>
+                                <Label htmlFor="telefone">Telefone</Label>
+                                <Input
+                                    id="telefone"
+                                    type="tel"
+                                    placeholder="(00) 00000-0000"
+                                    value={formData.telefone}
+                                    onChange={(e) => handleInputChange('telefone', e.target.value)}
+                                    className="mt-1"
+                                />
+                            </div>
+                            <div>
+                                <Label htmlFor="dataNascimento">Data de Nascimento</Label>
+                                <Input
+                                    id="dataNascimento"
+                                    type="date"
+                                    value={formData.dataNascimento}
+                                    onChange={(e) => handleInputChange('dataNascimento', e.target.value)}
+                                    className="mt-1"
+                                />
+                            </div>
+                        </div>
+                        <div className="mt-4">
+                            <Label htmlFor="endereco">Endereço</Label>
+                            <Textarea
+                                id="endereco"
+                                placeholder="Rua, número, bairro, cidade, CEP"
+                                value={formData.endereco}
+                                onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => handleInputChange('endereco', e.target.value)}
+                                className="mt-1"
+                                rows={2}
+                            />
+                        </div>
+                    </div>
 
-                            {/* Informações Profissionais */}
-                            <div className="border-t pt-6">
-                                <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
-                                    <Stethoscope className="h-5 w-5 mr-2" />
-                                    Informações Profissionais
-                                </h3>
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    <div>
-                                        <Label htmlFor="crm">CRM</Label>
-                                        <Input
-                                            id="crm"
-                                            type="text"
-                                            placeholder="000000/UF"
-                                            value={formData.crm}
-                                            onChange={(e) => handleInputChange('crm', e.target.value)}
-                                            className="mt-1"
-                                        />
-                                    </div>
-                                    <div>
-                                        <Label htmlFor="especialidade">Especialidade</Label>
-                                        <Input
-                                            id="especialidade"
-                                            type="text"
-                                            placeholder="Ex: Cardiologia, Pediatria, Clínico Geral"
-                                            value={formData.especialidade}
-                                            onChange={(e) => handleInputChange('especialidade', e.target.value)}
-                                            className="mt-1"
-                                        />
-                                    </div>
-                                </div>
-                                <div className="mt-4">
-                                    <Label htmlFor="formacao">Formação Acadêmica</Label>
-                                    <Textarea
-                                        id="formacao"
-                                        placeholder="Descreva sua formação acadêmica, residência, especializações..."
-                                        value={formData.formacao}
-                                        onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => handleInputChange('formacao', e.target.value)}
-                                        className="mt-1"
-                                        rows={3}
-                                    />
-                                </div>
+                    {/* Informações Profissionais */}
+                    <div className="border-t pt-6">
+                        <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                            <Stethoscope className="h-5 w-5 mr-2" />
+                            Informações Profissionais
+                        </h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <Label htmlFor="crm">CRM</Label>
+                                <Input
+                                    id="crm"
+                                    type="text"
+                                    placeholder="000000/UF"
+                                    value={formData.crm}
+                                    onChange={(e) => handleInputChange('crm', e.target.value)}
+                                    className="mt-1"
+                                />
                             </div>
+                            <div>
+                                <Label htmlFor="especialidade">Especialidade</Label>
+                                <Select
+                                    value={formData.especialidade}
+                                    onValueChange={(value) => handleInputChange('especialidade', value)}
+                                >
+                                    <SelectTrigger className="mt-1">
+                                        <SelectValue placeholder="Selecione sua especialidade" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {especialidadesDisponiveis.map((especialidade) => (
+                                            <SelectItem key={especialidade.id} value={especialidade.nome}>
+                                                {especialidade.nome}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                            </div>
+                        </div>
+                        <div className="mt-4">
+                            <Label htmlFor="formacao">Formação Acadêmica</Label>
+                            <Textarea
+                                id="formacao"
+                                placeholder="Descreva sua formação acadêmica, residência, especializações..."
+                                value={formData.formacao}
+                                onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => handleInputChange('formacao', e.target.value)}
+                                className="mt-1"
+                                rows={3}
+                            />
+                        </div>
+                    </div>
 
-                            {/* Botões de ação */}
-                            <div className="flex justify-end space-x-4 pt-6 border-t">
-                                <Button
-                                    type="button"
-                                    variant="outline"
-                                    onClick={() => router.back()}
-                                    disabled={isLoading}
-                                >
-                                    Cancelar
-                                </Button>
-                                <Button
-                                    type="submit"
-                                    disabled={isLoading}
-                                    className="bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700"
-                                >
-                                    {isLoading ? (
-                                        <>
-                                            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
-                                            Salvando...
-                                        </>
-                                    ) : (
-                                        <>
-                                            <Save className="h-4 w-4 mr-2" />
-                                            Salvar Informações
-                                        </>
-                                    )}
-                                </Button>
-                            </div>
-                        </form>
-                    </CardContent>
-                </Card>
+                    {/* Botões de ação */}
+                    <div className="flex justify-end space-x-4 pt-6 border-t">
+                        <Button
+                            type="button"
+                            variant="outline"
+                            onClick={() => router.back()}
+                            disabled={isLoading}
+                        >
+                            Cancelar
+                        </Button>
+                        <Button
+                            type="submit"
+                            disabled={isLoading}
+                        >
+                            {isLoading ? (
+                                <>
+                                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
+                                    Salvando...
+                                </>
+                            ) : (
+                                <>
+                                    <Save className="h-4 w-4 mr-2" />
+                                    Salvar Informações
+                                </>
+                            )}
+                        </Button>
+                    </div>
+                </form>
             </div>
-        </div>
+        </div >
     );
 }

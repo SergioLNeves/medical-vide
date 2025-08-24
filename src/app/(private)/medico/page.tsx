@@ -20,6 +20,9 @@ import {
     type Feature,
     type Status,
 } from '@/components/ui/kibo-ui/calendar';
+import { Button } from '@/components/ui/button';
+import { UserCog2 } from 'lucide-react';
+import CardFunction from '@/components/card-function/card-function';
 
 export default function MedicoPage() {
     const router = useRouter();
@@ -131,14 +134,18 @@ export default function MedicoPage() {
                                     organizada.
                                 </p>
                             </div>
-                            <button
-                                onClick={() => router.push('/medico/complement-info')}
-                                className="bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors"
-                            >
-                                Editar Perfil
-                            </button>
                         </div>
+
                     </section>
+                    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                        <CardFunction
+                            icon={<UserCog2 />}
+                            title="Configurações do Perfil"
+                            onClick={() => router.push('/medico/complement-info')}
+                            description='Edite suas informações pessoais'
+                            buttonText=' Editar Perfil'
+                        />
+                    </div>
                     <section>
                         <h2 className="mb-4 text-2xl font-semibold">Agenda de Consultas</h2>
                         <CalendarProvider locale="pt-BR" className="max-w-6xl">
@@ -167,15 +174,16 @@ export default function MedicoPage() {
                         </CalendarProvider>
                     </section>
                 </div>
-            </div>
+            </div >
 
             {/* Modal para consultas do dia */}
-            <DayScheduleModal
+            < DayScheduleModal
                 isOpen={isModalOpen}
-                onClose={() => setIsModalOpen(false)}
+                onClose={() => setIsModalOpen(false)
+                }
                 selectedDate={selectedDate}
                 medicoId={user?.id || ''}
             />
-        </main>
+        </main >
     );
 }
