@@ -13,7 +13,8 @@ export const mockUsers: User[] = [
       crm: '12345-SP',
       especialidade: 'Cardiologia',
       telefone: '(11) 99999-1111',
-      formacao: 'Graduação em Medicina pela USP, Residência em Cardiologia pelo InCor',
+      formacao:
+        'Graduação em Medicina pela USP, Residência em Cardiologia pelo InCor',
     },
     createdAt: '2024-01-01T00:00:00.000Z',
     updatedAt: '2024-01-01T00:00:00.000Z',
@@ -29,7 +30,8 @@ export const mockUsers: User[] = [
       crm: '67890-SP',
       especialidade: 'Dermatologia',
       telefone: '(11) 99999-2222',
-      formacao: 'Graduação em Medicina pela UNIFESP, Especialização em Dermatologia',
+      formacao:
+        'Graduação em Medicina pela UNIFESP, Especialização em Dermatologia',
     },
     createdAt: '2024-01-01T00:00:00.000Z',
     updatedAt: '2024-01-01T00:00:00.000Z',
@@ -45,7 +47,8 @@ export const mockUsers: User[] = [
       crm: '34567-RJ',
       especialidade: 'Ortopedia',
       telefone: '(21) 99999-3333',
-      formacao: 'Graduação em Medicina pela UFRJ, Residência em Ortopedia e Traumatologia',
+      formacao:
+        'Graduação em Medicina pela UFRJ, Residência em Ortopedia e Traumatologia',
     },
     createdAt: '2024-01-01T00:00:00.000Z',
     updatedAt: '2024-01-01T00:00:00.000Z',
@@ -61,7 +64,8 @@ export const mockUsers: User[] = [
       crm: '78901-MG',
       especialidade: 'Ginecologia',
       telefone: '(31) 99999-4444',
-      formacao: 'Graduação em Medicina pela UFMG, Residência em Ginecologia e Obstetrícia',
+      formacao:
+        'Graduação em Medicina pela UFMG, Residência em Ginecologia e Obstetrícia',
     },
     createdAt: '2024-01-01T00:00:00.000Z',
     updatedAt: '2024-01-01T00:00:00.000Z',

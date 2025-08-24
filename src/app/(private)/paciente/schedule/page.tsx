@@ -2,11 +2,28 @@
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { DatePicker } from '@/components/ui/date-picker';
 import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { useAgendamento, type AgendamentoRequest, type Especialidade, type Tratamento, type Medico } from '@/hooks/useAgendamento';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import {
+  useAgendamento,
+  type AgendamentoRequest,
+  type Tratamento,
+  type Medico,
+} from '@/hooks/useAgendamento';
 import { useUserProfile } from '@/hooks/useUserProfile';
 import { format } from 'date-fns';
 import { ArrowLeftCircle, Clock } from 'lucide-react';
@@ -22,17 +39,20 @@ export default function SchedulePacientePage() {
     buscarMedicosPorEspecialidadeId,
     buscarMedicosPorNome,
     buscarTratamentosPorMedico,
-    criarAgendamento
+    criarAgendamento,
   } = useAgendamento();
 
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedEspecialidade, setSelectedEspecialidade] = useState('');
   const [selectedMedico, setSelectedMedico] = useState<Medico | null>(null);
-  const [selectedTratamento, setSelectedTratamento] = useState<Tratamento | null>(null);
+  const [selectedTratamento, setSelectedTratamento] =
+    useState<Tratamento | null>(null);
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
   const [selectedTime, setSelectedTime] = useState('');
   const [filteredMedicos, setFilteredMedicos] = useState<Medico[]>([]);
-  const [filteredTratamentos, setFilteredTratamentos] = useState<Tratamento[]>([]);
+  const [filteredTratamentos, setFilteredTratamentos] = useState<Tratamento[]>(
+    []
+  );
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSearch = () => {
@@ -49,7 +69,8 @@ export default function SchedulePacientePage() {
   const handleEspecialidadeChange = (especialidadeId: string) => {
     setSelectedEspecialidade(especialidadeId);
     if (especialidadeId) {
-      const medicosEspecialidade = buscarMedicosPorEspecialidadeId(especialidadeId);
+      const medicosEspecialidade =
+        buscarMedicosPorEspecialidadeId(especialidadeId);
       setFilteredMedicos(medicosEspecialidade);
     } else {
       setFilteredMedicos([]);
@@ -68,7 +89,8 @@ export default function SchedulePacientePage() {
     setSelectedTratamento(tratamento);
   };
 
-  const canSchedule = selectedMedico && selectedTratamento && selectedDate && selectedTime;
+  const canSchedule =
+    selectedMedico && selectedTratamento && selectedDate && selectedTime;
 
   const handleSchedule = async () => {
     if (!canSchedule) return;
@@ -94,7 +116,7 @@ export default function SchedulePacientePage() {
         medicoId: selectedMedico.id,
         tratamentoId: selectedTratamento.id,
         data: selectedDate ? format(selectedDate, 'yyyy-MM-dd') : '',
-        horaInicio: selectedTime
+        horaInicio: selectedTime,
       };
 
       await criarAgendamento(request);
@@ -113,21 +135,30 @@ export default function SchedulePacientePage() {
 
   // Gerar horários disponíveis (mock)
   const availableTimes = [
-    '08:00', '09:00', '10:00', '11:00',
-    '14:00', '15:00', '16:00', '17:00'
+    '08:00',
+    '09:00',
+    '10:00',
+    '11:00',
+    '14:00',
+    '15:00',
+    '16:00',
+    '17:00',
   ];
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-4xl mx-auto px-4">
-        <section className='flex justify-between items-center mb-8'>
+      <div className="mx-auto max-w-4xl px-4">
+        <section className="mb-8 flex items-center justify-between">
           <div className="mb-8">
-            <h1 className="text-3xl font-bold text-gray-900">Agendar Consulta</h1>
-            <p className="text-gray-600 mt-2">
-              Olá, {profile?.name}! Selecione uma especialidade ou busque um médico pelo nome.
+            <h1 className="text-3xl font-bold text-gray-900">
+              Agendar Consulta
+            </h1>
+            <p className="mt-2 text-gray-600">
+              Olá, {profile?.name}! Selecione uma especialidade ou busque um
+              médico pelo nome.
             </p>
           </div>
-          <Button onClick={() => router.push("/paciente")} className="mb-6">
+          <Button onClick={() => router.push('/paciente')} className="mb-6">
             <ArrowLeftCircle /> Voltar
           </Button>
         </section>
@@ -140,10 +171,13 @@ export default function SchedulePacientePage() {
           <CardContent className="space-y-4">
             {/* Dropdown para Especialidades */}
             <div>
-              <label className="block text-sm font-medium mb-2">
+              <label className="mb-2 block text-sm font-medium">
                 Primeiro, selecione uma especialidade:
               </label>
-              <Select value={selectedEspecialidade} onValueChange={handleEspecialidadeChange}>
+              <Select
+                value={selectedEspecialidade}
+                onValueChange={handleEspecialidadeChange}
+              >
                 <SelectTrigger>
                   <SelectValue placeholder="Selecione uma especialidade" />
                 </SelectTrigger>
@@ -159,7 +193,7 @@ export default function SchedulePacientePage() {
 
             {/* Input para buscar médico por nome */}
             <div>
-              <label className="block text-sm font-medium mb-2">
+              <label className="mb-2 block text-sm font-medium">
                 Ou busque por nome do médico:
               </label>
               <div className="flex gap-4">
@@ -175,7 +209,7 @@ export default function SchedulePacientePage() {
           </CardContent>
         </Card>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
           {/* Lista de Médicos */}
           {filteredMedicos.length > 0 && (
             <Card>
@@ -186,17 +220,21 @@ export default function SchedulePacientePage() {
                 {filteredMedicos.map((medico) => (
                   <div
                     key={medico.id}
-                    className={`p-4 border rounded-lg cursor-pointer transition-colors ${selectedMedico?.id === medico.id
-                      ? 'border-blue-500 bg-blue-50'
-                      : 'border-gray-200 hover:border-gray-300'
+                    className={`cursor-pointer rounded-lg border p-4 transition-colors ${selectedMedico?.id === medico.id
+                        ? 'border-blue-500 bg-blue-50'
+                        : 'border-gray-200 hover:border-gray-300'
                       }`}
                     onClick={() => handleSelectMedico(medico)}
                   >
-                    <div className="flex justify-between items-start">
+                    <div className="flex items-start justify-between">
                       <div>
                         <h3 className="font-semibold">{medico.nome}</h3>
-                        <p className="text-sm text-gray-600">{medico.especialidade}</p>
-                        <p className="text-sm text-gray-500">CRM: {medico.crm}</p>
+                        <p className="text-sm text-gray-600">
+                          {medico.especialidade}
+                        </p>
+                        <p className="text-sm text-gray-500">
+                          CRM: {medico.crm}
+                        </p>
                       </div>
                       {medico.avaliacoes && (
                         <Badge variant="secondary">
@@ -220,19 +258,21 @@ export default function SchedulePacientePage() {
                 {filteredTratamentos.map((tratamento) => (
                   <div
                     key={tratamento.id}
-                    className={`p-4 border rounded-lg cursor-pointer transition-colors ${selectedTratamento?.id === tratamento.id
-                      ? 'border-blue-500 bg-blue-50'
-                      : 'border-gray-200 hover:border-gray-300'
+                    className={`cursor-pointer rounded-lg border p-4 transition-colors ${selectedTratamento?.id === tratamento.id
+                        ? 'border-blue-500 bg-blue-50'
+                        : 'border-gray-200 hover:border-gray-300'
                       }`}
                     onClick={() => handleSelectTratamento(tratamento)}
                   >
-                    <div className="flex justify-between items-start">
+                    <div className="flex items-start justify-between">
                       <div>
                         <h3 className="font-semibold">{tratamento.nome}</h3>
-                        <p className="text-sm text-gray-600">{tratamento.descricao}</p>
-                        <div className="flex gap-4 mt-2 text-sm text-gray-500">
+                        <p className="text-sm text-gray-600">
+                          {tratamento.descricao}
+                        </p>
+                        <div className="mt-2 flex gap-4 text-sm text-gray-500">
                           <span className="flex items-center">
-                            <Clock className="w-3 h-3 mr-1" />
+                            <Clock className="mr-1 h-3 w-3" />
                             {tratamento.duracao} min
                           </span>
                           {tratamento.preco && (
@@ -258,9 +298,9 @@ export default function SchedulePacientePage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                 <div>
-                  <label className="block text-sm font-medium mb-2">Data</label>
+                  <label className="mb-2 block text-sm font-medium">Data</label>
                   <DatePicker
                     value={selectedDate}
                     onChange={setSelectedDate}
@@ -275,7 +315,9 @@ export default function SchedulePacientePage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium mb-2">Horário</label>
+                  <label className="mb-2 block text-sm font-medium">
+                    Horário
+                  </label>
                   <Select value={selectedTime} onValueChange={setSelectedTime}>
                     <SelectTrigger>
                       <SelectValue placeholder="Selecione um horário" />
@@ -294,7 +336,7 @@ export default function SchedulePacientePage() {
               <Button
                 onClick={handleSchedule}
                 disabled={!canSchedule || isSubmitting}
-                className="w-full mt-6"
+                className="mt-6 w-full"
                 size="lg"
               >
                 {isSubmitting ? 'Agendando...' : 'Confirmar Agendamento'}

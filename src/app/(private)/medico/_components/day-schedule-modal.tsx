@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import {
@@ -19,7 +19,13 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { CalendarIcon, ClockIcon, UserIcon, CheckCircle, XCircle } from 'lucide-react';
+import {
+  CalendarIcon,
+  ClockIcon,
+  UserIcon,
+  CheckCircle,
+  XCircle,
+} from 'lucide-react';
 import { MockDatabase } from '@/mocks/database';
 import { Schedule } from '@/mocks/types';
 import { toast } from 'sonner';
@@ -39,27 +45,7 @@ export default function DayScheduleModal({
 }: DayScheduleModalProps) {
   const [daySchedules, setDaySchedules] = useState<Schedule[]>([]);
 
-  useEffect(() => {
-    if (selectedDate && medicoId) {
-      loadDaySchedules();
-
-      // Escutar evento customizado de agendamento atualizado
-      const handleUpdatedSchedule = (event: CustomEvent) => {
-        const updatedSchedule = event.detail;
-        if (updatedSchedule.medicoId === medicoId) {
-          loadDaySchedules();
-        }
-      };
-
-      window.addEventListener('scheduleUpdated', handleUpdatedSchedule as EventListener);
-
-      return () => {
-        window.removeEventListener('scheduleUpdated', handleUpdatedSchedule as EventListener);
-      };
-    }
-  }, [selectedDate, medicoId, isOpen]);
-
-  const loadDaySchedules = () => {
+  const loadDaySchedules = useCallback(() => {
     if (!selectedDate || !medicoId) return;
 
     // Buscar agendamentos do médico no localStorage
@@ -74,8 +60,10 @@ export default function DayScheduleModal({
     // Verificar e atualizar consultas vencidas automaticamente
     const now = new Date();
     filtered.forEach((schedule) => {
-      if (new Date(schedule.end) < now &&
-        (schedule.status === 'agendado' || schedule.status === 'confirmado')) {
+      if (
+        new Date(schedule.end) < now &&
+        (schedule.status === 'agendado' || schedule.status === 'confirmado')
+      ) {
         MockDatabase.updateScheduleStatus(schedule.id, 'realizado');
       }
     });
@@ -88,12 +76,41 @@ export default function DayScheduleModal({
     });
 
     setDaySchedules(updatedFiltered);
-  };
+  }, [selectedDate, medicoId]);
+
+  useEffect(() => {
+    if (selectedDate && medicoId) {
+      loadDaySchedules();
+
+      // Escutar evento customizado de agendamento atualizado
+      const handleUpdatedSchedule = (event: CustomEvent) => {
+        const updatedSchedule = event.detail;
+        if (updatedSchedule.medicoId === medicoId) {
+          loadDaySchedules();
+        }
+      };
+
+      window.addEventListener(
+        'scheduleUpdated',
+        handleUpdatedSchedule as EventListener
+      );
+
+      return () => {
+        window.removeEventListener(
+          'scheduleUpdated',
+          handleUpdatedSchedule as EventListener
+        );
+      };
+    }
+  }, [selectedDate, medicoId, isOpen, loadDaySchedules]);
 
   // Função para confirmar agendamento
   const handleConfirmSchedule = async (schedule: Schedule) => {
     try {
-      const success = MockDatabase.updateScheduleStatus(schedule.id, 'confirmado');
+      const success = MockDatabase.updateScheduleStatus(
+        schedule.id,
+        'confirmado'
+      );
 
       if (success) {
         toast.success('Consulta confirmada com sucesso!');
@@ -109,7 +126,10 @@ export default function DayScheduleModal({
   // Função para cancelar agendamento
   const handleCancelSchedule = async (schedule: Schedule) => {
     try {
-      const success = MockDatabase.updateScheduleStatus(schedule.id, 'cancelado');
+      const success = MockDatabase.updateScheduleStatus(
+        schedule.id,
+        'cancelado'
+      );
 
       if (success) {
         toast.success('Consulta cancelada com sucesso!');
@@ -144,7 +164,7 @@ export default function DayScheduleModal({
   // Função para obter nome do paciente
   const getPatientName = (pacienteId: string) => {
     const users = MockDatabase.getUsers();
-    const patient = users.find((user: any) => user.id === pacienteId);
+    const patient = users.find((user: { id: string; name?: string }) => user.id === pacienteId);
     return patient?.name || 'Paciente não encontrado';
   };
 
@@ -161,7 +181,9 @@ export default function DayScheduleModal({
       cancelado: 'bg-red-100 text-red-800 border-red-200',
       realizado: 'bg-blue-100 text-blue-800 border-blue-200',
     };
-    return statusColorMap[status] || 'bg-gray-100 text-gray-800 border-gray-200';
+    return (
+      statusColorMap[status] || 'bg-gray-100 text-gray-800 border-gray-200'
+    );
   };
 
   // Função para obter texto do status
@@ -255,7 +277,10 @@ export default function DayScheduleModal({
                             </div>
                           </TableCell>
                           <TableCell>
-                            <Badge className={getStatusColor(schedule.status)} variant="outline">
+                            <Badge
+                              className={getStatusColor(schedule.status)}
+                              variant="outline"
+                            >
                               {getStatusText(schedule.status)}
                             </Badge>
                           </TableCell>
@@ -277,10 +302,12 @@ export default function DayScheduleModal({
                                 <Button
                                   size="sm"
                                   variant="outline"
-                                  onClick={() => handleConfirmSchedule(schedule)}
-                                  className="text-green-600 hover:text-green-700 hover:bg-green-50 border-green-200"
+                                  onClick={() =>
+                                    handleConfirmSchedule(schedule)
+                                  }
+                                  className="border-green-200 text-green-600 hover:bg-green-50 hover:text-green-700"
                                 >
-                                  <CheckCircle className="h-4 w-4 mr-1" />
+                                  <CheckCircle className="mr-1 h-4 w-4" />
                                   Confirmar
                                 </Button>
                               )}
@@ -291,25 +318,27 @@ export default function DayScheduleModal({
                                   size="sm"
                                   variant="outline"
                                   onClick={() => handleCancelSchedule(schedule)}
-                                  className="text-red-600 hover:text-red-700 hover:bg-red-50 border-red-200"
+                                  className="border-red-200 text-red-600 hover:bg-red-50 hover:text-red-700"
                                 >
-                                  <XCircle className="h-4 w-4 mr-1" />
+                                  <XCircle className="mr-1 h-4 w-4" />
                                   Cancelar
                                 </Button>
                               )}
 
                               {/* Indicador de consulta passada */}
-                              {isPastDue(schedule) && schedule.status !== 'realizado' && schedule.status !== 'cancelado' && (
-                                <span className="text-xs text-gray-500 italic">
-                                  Consulta vencida
-                                </span>
-                              )}
+                              {isPastDue(schedule) &&
+                                schedule.status !== 'realizado' &&
+                                schedule.status !== 'cancelado' && (
+                                  <span className="text-xs text-gray-500 italic">
+                                    Consulta vencida
+                                  </span>
+                                )}
 
                               {/* Sem ações disponíveis */}
-                              {(!canConfirm(schedule) && !canCancel(schedule)) || isPastDue(schedule) ? (
-                                <span className="text-xs text-gray-400">
-                                  -
-                                </span>
+                              {(!canConfirm(schedule) &&
+                                !canCancel(schedule)) ||
+                                isPastDue(schedule) ? (
+                                <span className="text-xs text-gray-400">-</span>
                               ) : null}
                             </div>
                           </TableCell>

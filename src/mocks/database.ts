@@ -23,7 +23,10 @@ export class MockDatabase {
     // Inicializa agendamentos
     const existingSchedules = localStorage.getItem(STORAGE_KEYS.schedules);
     if (!existingSchedules) {
-      localStorage.setItem(STORAGE_KEYS.schedules, JSON.stringify(mockSchedules));
+      localStorage.setItem(
+        STORAGE_KEYS.schedules,
+        JSON.stringify(mockSchedules)
+      );
     }
   }
 
@@ -110,7 +113,9 @@ export class MockDatabase {
   // Atualiza apenas a senha do usuário (para reset de senha)
   static updateUserPassword(email: string, newPassword: string): boolean {
     const users = this.getUsers();
-    const userIndex = users.findIndex((user) => user.email.toLowerCase() === email.toLowerCase());
+    const userIndex = users.findIndex(
+      (user) => user.email.toLowerCase() === email.toLowerCase()
+    );
 
     if (userIndex === -1) {
       return false; // Usuário não encontrado
@@ -128,7 +133,10 @@ export class MockDatabase {
   }
 
   // Atualiza as informações complementares do usuário
-  static updateUserComplementInfo(id: string, complementInfo: Partial<ComplementInfo>): boolean {
+  static updateUserComplementInfo(
+    id: string,
+    complementInfo: Partial<ComplementInfo>
+  ): boolean {
     const users = this.getUsers();
     const userIndex = users.findIndex((user) => user.id === id);
 
@@ -155,9 +163,11 @@ export class MockDatabase {
 
       // Disparar evento customizado para notificar mudanças no usuário
       if (typeof window !== 'undefined') {
-        window.dispatchEvent(new CustomEvent('userUpdated', {
-          detail: users[userIndex]
-        }));
+        window.dispatchEvent(
+          new CustomEvent('userUpdated', {
+            detail: users[userIndex],
+          })
+        );
       }
     }
 
@@ -176,7 +186,8 @@ export class MockDatabase {
       for (let i = 0; i < ca.length; i++) {
         let c = ca[i];
         while (c.charAt(0) === ' ') c = c.substring(1, c.length);
-        if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+        if (c.indexOf(nameEQ) === 0)
+          return c.substring(nameEQ.length, c.length);
       }
       return null;
     };
@@ -242,9 +253,11 @@ export class MockDatabase {
 
     // Disparar evento customizado para notificar outras páginas
     if (typeof window !== 'undefined') {
-      window.dispatchEvent(new CustomEvent('scheduleCreated', {
-        detail: newSchedule
-      }));
+      window.dispatchEvent(
+        new CustomEvent('scheduleCreated', {
+          detail: newSchedule,
+        })
+      );
     }
 
     return newSchedule;
@@ -270,9 +283,11 @@ export class MockDatabase {
 
     // Disparar evento customizado para notificar outras páginas
     if (typeof window !== 'undefined') {
-      window.dispatchEvent(new CustomEvent('scheduleUpdated', {
-        detail: updatedSchedule
-      }));
+      window.dispatchEvent(
+        new CustomEvent('scheduleUpdated', {
+          detail: updatedSchedule,
+        })
+      );
     }
 
     return true;
@@ -293,11 +308,11 @@ export class MockDatabase {
 
   static getSchedulesByMedico(medicoId: string): Schedule[] {
     const schedules = this.getSchedules();
-    return schedules.filter(schedule => schedule.medicoId === medicoId);
+    return schedules.filter((schedule) => schedule.medicoId === medicoId);
   }
 
   static getSchedulesByPaciente(pacienteId: string): Schedule[] {
     const schedules = this.getSchedules();
-    return schedules.filter(schedule => schedule.pacienteId === pacienteId);
+    return schedules.filter((schedule) => schedule.pacienteId === pacienteId);
   }
 }

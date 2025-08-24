@@ -1,12 +1,9 @@
-
 // Importa tipos e funções do Next.js para criar o middleware
 import {
   type MiddlewareConfig,
   type NextRequest,
   NextResponse,
 } from 'next/server';
-import path from 'path';
-
 
 // Rotas públicas: podem ser acessadas sem autenticação
 // Se o usuário estiver autenticado e acessar uma dessas rotas, será redirecionado
@@ -17,10 +14,8 @@ const publicRoutes = [
   { path: '/reset-password', whenAuthenticated: 'allow' }, // Permite acesso mesmo autenticado
 ] as const;
 
-
 // Página para onde o usuário será redirecionado se não estiver autenticado
 const REDIRECT_WHEN_NOT_AUTHENTICATED = '/';
-
 
 // Função principal do middleware
 export function middleware(request: NextRequest) {
@@ -88,7 +83,6 @@ export function middleware(request: NextRequest) {
   // Caso padrão: permite seguir
   return NextResponse.next();
 }
-
 
 // Configuração do middleware para Next.js
 // Define quais rotas o middleware deve interceptar

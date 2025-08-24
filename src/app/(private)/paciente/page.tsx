@@ -1,24 +1,24 @@
-"use client"
+'use client';
 
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/hooks/useAuth';
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/navbar/navbar';
 import CardFunction from '@/components/card-function/card-function';
-import InfoPaciente from './_components/info-pacients/info-paciente';
 import ListPatientSchedules from './_components/list-patient-schedules';
 import CancelScheduleModal from './_components/cancel-schedule-modal';
 import ScheduleDetailsModal from './_components/schedule-details-modal';
 import { MockDatabase } from '@/mocks/database';
 import { Schedule } from '@/mocks/types';
-import { Calendar, CalendarDays, UserCog2 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Calendar, UserCog2 } from 'lucide-react';
 
 export default function DashboardPacientePage() {
   const { user, logout } = useAuth();
   const router = useRouter();
   const [schedules, setSchedules] = useState<Schedule[]>([]);
-  const [selectedSchedule, setSelectedSchedule] = useState<Schedule | null>(null);
+  const [selectedSchedule, setSelectedSchedule] = useState<Schedule | null>(
+    null
+  );
   const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
   const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
 
@@ -48,14 +48,20 @@ export default function DashboardPacientePage() {
       };
 
       window.addEventListener('storage', handleStorageChange);
-      window.addEventListener('scheduleCreated', handleNewSchedule as EventListener);
+      window.addEventListener(
+        'scheduleCreated',
+        handleNewSchedule as EventListener
+      );
 
       // Atualizar a cada 5 segundos para sincronizar
       const interval = setInterval(loadSchedules, 5000);
 
       return () => {
         window.removeEventListener('storage', handleStorageChange);
-        window.removeEventListener('scheduleCreated', handleNewSchedule as EventListener);
+        window.removeEventListener(
+          'scheduleCreated',
+          handleNewSchedule as EventListener
+        );
         clearInterval(interval);
       };
     }
@@ -69,7 +75,7 @@ export default function DashboardPacientePage() {
   // Função para buscar nome do médico
   const getDoctorName = (userId: string) => {
     const users = MockDatabase.getUsers();
-    const doctor = users.find((user: any) => user.id === userId);
+    const doctor = users.find((user: { id: string; name?: string }) => user.id === userId);
     return doctor?.name || 'Médico não encontrado';
   };
 
@@ -134,8 +140,8 @@ export default function DashboardPacientePage() {
               icon={<UserCog2 />}
               title="Configurações do Perfil"
               onClick={() => router.push('/paciente/complement-info')}
-              description='Edite suas informações pessoais'
-              buttonText=' Editar Perfil'
+              description="Edite suas informações pessoais"
+              buttonText=" Editar Perfil"
             />
           </div>
           {/* Listagem de agendamentos */}

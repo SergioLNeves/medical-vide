@@ -18,7 +18,6 @@ import { ArrowLeft, Mail, CheckCircle } from 'lucide-react';
 import { checkEmailExists } from '@/lib/auth';
 
 export default function ForgotPasswordPage() {
-
   // Schema de validação para o campo de email usando Zod
   const forgotSchema = z.object({
     email: z
@@ -120,9 +119,13 @@ export default function ForgotPasswordPage() {
               {/* Botão para testar o fluxo de reset (apenas para desenvolvimento) */}
               <div className="rounded-lg bg-yellow-50 p-3 dark:bg-yellow-900/20">
                 <div className="text-xs text-yellow-700 dark:text-yellow-400">
-                  <p className="font-medium mb-2">🔧 Modo Teste (Mock):</p>
+                  <p className="mb-2 font-medium">🔧 Modo Teste (Mock):</p>
                   <Button
-                    onClick={() => router.push(`/reset-password?email=${encodeURIComponent(email)}`)}
+                    onClick={() =>
+                      router.push(
+                        `/reset-password?email=${encodeURIComponent(email)}`
+                      )
+                    }
                     variant="outline"
                     size="sm"
                     className="w-full text-xs"

@@ -91,7 +91,8 @@ export default function ResetPasswordPage() {
       if (!result.success) {
         result.error.errors.forEach((err) => {
           if (err.path[0] === 'password') setPasswordError(err.message);
-          if (err.path[0] === 'confirmPassword') setConfirmPasswordError(err.message);
+          if (err.path[0] === 'confirmPassword')
+            setConfirmPasswordError(err.message);
         });
         return;
       }
@@ -110,7 +111,6 @@ export default function ResetPasswordPage() {
       // Simula sucesso e muda para tela de confirmação
       setPasswordChanged(true);
       toast.success('Senha redefinida com sucesso!');
-
     } catch (error) {
       console.error('Erro ao redefinir senha:', error);
       setPasswordError('Erro interno do sistema');
@@ -151,9 +151,8 @@ export default function ResetPasswordPage() {
                     Nova senha configurada
                   </p>
                   <p className="mt-1 text-green-700 dark:text-green-400">
-                    Sua senha para{' '}
-                    <span className="font-medium">{email}</span>
-                    {' '}foi alterada com sucesso.
+                    Sua senha para <span className="font-medium">{email}</span>{' '}
+                    foi alterada com sucesso.
                   </p>
                 </div>
               </div>
@@ -164,10 +163,7 @@ export default function ResetPasswordPage() {
               <p className="text-muted-foreground text-sm">
                 Agora você pode fazer login com sua nova senha.
               </p>
-              <Button
-                onClick={handleBackToLogin}
-                className="w-full"
-              >
+              <Button onClick={handleBackToLogin} className="w-full">
                 Fazer Login
               </Button>
             </div>
@@ -271,7 +267,7 @@ export default function ResetPasswordPage() {
                   type="button"
                   variant="ghost"
                   size="sm"
-                  className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                  className="absolute top-0 right-0 h-full px-3 py-2 hover:bg-transparent"
                   onClick={() => setShowPassword(!showPassword)}
                   disabled={isLoading}
                 >
@@ -310,7 +306,7 @@ export default function ResetPasswordPage() {
                   type="button"
                   variant="ghost"
                   size="sm"
-                  className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                  className="absolute top-0 right-0 h-full px-3 py-2 hover:bg-transparent"
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                   disabled={isLoading}
                 >
@@ -322,7 +318,9 @@ export default function ResetPasswordPage() {
                 </Button>
               </div>
               {confirmPasswordError && (
-                <p className="mt-1 text-sm text-red-500">{confirmPasswordError}</p>
+                <p className="mt-1 text-sm text-red-500">
+                  {confirmPasswordError}
+                </p>
               )}
             </div>
 

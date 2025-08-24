@@ -7,6 +7,7 @@ import Loading from '@/components/loading/loading';
 import Navbar from '@/components/navbar/navbar';
 import { useRouter } from 'next/navigation';
 import { MockDatabase } from '@/mocks/database';
+import { Schedule } from '@/mocks/types';
 import DayScheduleModal from './_components/day-schedule-modal';
 import {
     CalendarProvider,
@@ -20,7 +21,6 @@ import {
     type Feature,
     type Status,
 } from '@/components/ui/kibo-ui/calendar';
-import { Button } from '@/components/ui/button';
 import { UserCog2 } from 'lucide-react';
 import CardFunction from '@/components/card-function/card-function';
 
@@ -29,7 +29,7 @@ export default function MedicoPage() {
     const { user, logout } = useAuth();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-    const [schedules, setSchedules] = useState<any[]>([]);
+    const [schedules, setSchedules] = useState<Schedule[]>([]);
 
     // Debug: Mostrar informações do usuário
     useEffect(() => {
@@ -65,14 +65,20 @@ export default function MedicoPage() {
             };
 
             window.addEventListener('storage', handleStorageChange);
-            window.addEventListener('scheduleCreated', handleNewSchedule as EventListener);
+            window.addEventListener(
+                'scheduleCreated',
+                handleNewSchedule as EventListener
+            );
 
             // Atualizar a cada 5 segundos para sincronizar (reduzido para menos polling)
             const interval = setInterval(loadSchedules, 5000);
 
             return () => {
                 window.removeEventListener('storage', handleStorageChange);
-                window.removeEventListener('scheduleCreated', handleNewSchedule as EventListener);
+                window.removeEventListener(
+                    'scheduleCreated',
+                    handleNewSchedule as EventListener
+                );
                 clearInterval(interval);
             };
         }
@@ -97,18 +103,17 @@ export default function MedicoPage() {
 
         console.log('Schedules for calendar:', schedules); // Debug log
 
-        return schedules
-            .map((schedule) => ({
-                id: schedule.id,
-                name: schedule.title,
-                startAt: new Date(schedule.start), // Converter para Date se for string
-                endAt: new Date(schedule.end),     // Converter para Date se for string
-                status: {
-                    id: schedule.status,
-                    name: schedule.status,
-                    color: colorMap[schedule.color || 'default'],
-                } as Status,
-            }));
+        return schedules.map((schedule) => ({
+            id: schedule.id,
+            name: schedule.title,
+            startAt: new Date(schedule.start), // Converter para Date se for string
+            endAt: new Date(schedule.end), // Converter para Date se for string
+            status: {
+                id: schedule.status,
+                name: schedule.status,
+                color: colorMap[schedule.color || 'default'],
+            } as Status,
+        }));
     }, [user, schedules]);
 
     const handleDateClick = (date: Date) => {
@@ -125,25 +130,26 @@ export default function MedicoPage() {
             <div className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
                 <div className="flex flex-col gap-12 px-4 py-6 sm:px-0">
                     <section className="flex flex-col gap-4">
-                        <div className="flex justify-between items-start">
+                        <div className="flex items-start justify-between">
                             <div>
-                                <h1 className="text-3xl font-bold md:text-4xl">Painel do Médico</h1>
+                                <h1 className="text-3xl font-bold md:text-4xl">
+                                    Painel do Médico
+                                </h1>
                                 <p className="text-muted-foreground max-w-3xl text-lg md:text-xl">
-                                    Bem-vindo ao seu painel médico. Gerencie suas consultas, visualize
-                                    agendamentos e acompanhe seus pacientes de forma eficiente e
-                                    organizada.
+                                    Bem-vindo ao seu painel médico. Gerencie suas consultas,
+                                    visualize agendamentos e acompanhe seus pacientes de forma
+                                    eficiente e organizada.
                                 </p>
                             </div>
                         </div>
-
                     </section>
                     <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                         <CardFunction
                             icon={<UserCog2 />}
                             title="Configurações do Perfil"
                             onClick={() => router.push('/medico/complement-info')}
-                            description='Edite suas informações pessoais'
-                            buttonText=' Editar Perfil'
+                            description="Edite suas informações pessoais"
+                            buttonText=" Editar Perfil"
                         />
                     </div>
                     <section>
@@ -174,16 +180,15 @@ export default function MedicoPage() {
                         </CalendarProvider>
                     </section>
                 </div>
-            </div >
+            </div>
 
             {/* Modal para consultas do dia */}
-            < DayScheduleModal
+            <DayScheduleModal
                 isOpen={isModalOpen}
-                onClose={() => setIsModalOpen(false)
-                }
+                onClose={() => setIsModalOpen(false)}
                 selectedDate={selectedDate}
                 medicoId={user?.id || ''}
             />
-        </main >
+        </main>
     );
 }

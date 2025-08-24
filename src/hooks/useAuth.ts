@@ -22,7 +22,10 @@ export const useAuth = () => {
     window.addEventListener('userUpdated', handleUserUpdate as EventListener);
 
     return () => {
-      window.removeEventListener('userUpdated', handleUserUpdate as EventListener);
+      window.removeEventListener(
+        'userUpdated',
+        handleUserUpdate as EventListener
+      );
     };
   }, []);
 

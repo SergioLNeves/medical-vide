@@ -45,7 +45,7 @@ export default function EditUserModal({
 }: EditUserModalProps) {
   // Estados para armazenar os dados do formulário de edição
   const [name, setName] = useState(''); // Nome do usuário
-  const [email, setEmail] = useState(''); // Email do usuário  
+  const [email, setEmail] = useState(''); // Email do usuário
   const [role, setRole] = useState<UserRole>('user' as UserRole); // Função/role do usuário
 
   // Atualiza os valores do formulário quando o prop user é alterado

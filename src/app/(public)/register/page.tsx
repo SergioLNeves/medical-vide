@@ -203,7 +203,10 @@ export default function RegisterPage() {
 
           {/* Exibição de mensagens de erro */}
           {error && (
-            <div className="rounded-md bg-red-50 p-4 dark:bg-red-900/20" data-testid="error-message">
+            <div
+              className="rounded-md bg-red-50 p-4 dark:bg-red-900/20"
+              data-testid="error-message"
+            >
               <div className="flex">
                 <div className="ml-3">
                   <h3 className="text-sm font-medium text-red-800 dark:text-red-300">
