@@ -1,7 +1,10 @@
 'use client';
 
+// Tipos do sistema de dados mockados
 import { User } from '@/mocks/types';
 import { MockDatabase } from '@/mocks/database';
+
+// Componentes de UI do shadcn/ui
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -11,13 +14,16 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
+
+// Toast para notificações do usuário
 import { toast } from 'sonner';
 
+// Interface TypeScript definindo as props do modal de exclusão
 interface DeleteUserModalProps {
-  isOpen: boolean;
-  user: User | null;
-  onClose: () => void;
-  onUserDeleted: (deletedUser: User) => void;
+  isOpen: boolean; // Controla se o modal está visível
+  user: User | null; // Dados do usuário a ser excluído (null quando fechado)
+  onClose: () => void; // Callback para fechar o modal
+  onUserDeleted: (deletedUser: User) => void; // Callback executado após exclusão bem-sucedida
 }
 
 export default function DeleteUserModal({
@@ -26,11 +32,13 @@ export default function DeleteUserModal({
   onClose,
   onUserDeleted,
 }: DeleteUserModalProps) {
+  // Função principal para confirmar e processar a exclusão do usuário
   const handleConfirmDelete = () => {
     if (user) {
-      // Deletar usuário do localStorage usando MockDatabase
+      // Remove o usuário do localStorage usando MockDatabase
       const success = MockDatabase.deleteUser(user.id);
 
+      // Processa o resultado da exclusão
       if (success) {
         toast.success('Usuário deletado com sucesso!', {
           description: `${user.name} foi removido do sistema`,
@@ -38,7 +46,7 @@ export default function DeleteUserModal({
 
         console.log(`User ${user.name} deleted successfully`);
 
-        // Notifica o componente pai que o usuário foi deletado
+        // Notifica o componente pai sobre a exclusão bem-sucedida
         onUserDeleted(user);
       } else {
         toast.error('Erro ao deletar usuário', {
@@ -47,10 +55,11 @@ export default function DeleteUserModal({
       }
     }
 
-    // Fechar modal
+    // Fecha o modal independentemente do resultado
     onClose();
   };
 
+  // Função para cancelar a operação de exclusão
   const handleCancel = () => {
     onClose();
   };
@@ -58,6 +67,7 @@ export default function DeleteUserModal({
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent>
+        {/* Cabeçalho do modal com título e aviso de confirmação */}
         <DialogHeader>
           <DialogTitle>Confirmar Exclusão</DialogTitle>
           <DialogDescription>
@@ -69,6 +79,8 @@ export default function DeleteUserModal({
             </span>
           </DialogDescription>
         </DialogHeader>
+
+        {/* Rodapé do modal com botões de cancelamento e confirmação */}
         <DialogFooter>
           <Button type="button" variant="outline" onClick={handleCancel}>
             Cancelar

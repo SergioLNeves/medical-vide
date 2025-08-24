@@ -12,6 +12,18 @@ export const useAuth = () => {
     const currentUser = getCurrentUser();
     setUser(currentUser);
     setLoading(false);
+
+    // Escutar evento customizado de atualização de usuário
+    const handleUserUpdate = (event: CustomEvent) => {
+      const updatedUser = event.detail;
+      setUser(updatedUser);
+    };
+
+    window.addEventListener('userUpdated', handleUserUpdate as EventListener);
+
+    return () => {
+      window.removeEventListener('userUpdated', handleUserUpdate as EventListener);
+    };
   }, []);
 
   const login = (user: User) => {
@@ -24,11 +36,17 @@ export const useAuth = () => {
     setUser(null);
   };
 
+  const refreshUser = () => {
+    const currentUser = getCurrentUser();
+    setUser(currentUser);
+  };
+
   return {
     user,
     loading,
     login,
     logout,
+    refreshUser,
     isAuthenticated: !!user,
   };
 };

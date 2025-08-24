@@ -19,6 +19,7 @@ import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
 
 export default function LoginPage() {
+  // Schema de validação do formulário de login usando Zod
   const loginSchema = z.object({
     email: z
       .string()
@@ -26,27 +27,35 @@ export default function LoginPage() {
       .email('Por favor, insira um email válido'),
     password: z.string().min(1, 'Por favor, insira sua senha'),
   });
+
+  // Estados do formulário
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+
+  // Estados de erro para cada campo
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
 
   const router = useRouter();
   const { login } = useAuth();
 
+  // Inicializa usuários mock no localStorage quando o componente é montado
   useEffect(() => {
     initializeUsers();
   }, []);
 
+  // Função que processa o envio do formulário de login
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
 
+    // Limpa erros anteriores
     setEmailError('');
     setPasswordError('');
 
     try {
+      // Valida os dados do formulário usando o schema Zod
       const result = loginSchema.safeParse({ email, password });
       if (!result.success) {
         result.error.errors.forEach((err) => {
@@ -56,16 +65,18 @@ export default function LoginPage() {
         return;
       }
 
+      // Verifica se o email existe no sistema
       if (!checkEmailExists(email)) {
         setEmailError('Email não encontrado');
         return;
       }
 
+      // Tenta fazer login com as credenciais fornecidas
       const user = validateLogin(email, password);
       if (user) {
         toast.success(`Bem-vindo(a), ${user.name}!`);
-        login(user);
-        router.refresh();
+        login(user); // Salva o usuário na sessão
+        router.refresh(); // Atualiza a página para disparar o middleware
       } else {
         setPasswordError('Senha incorreta. Tente novamente.');
       }
@@ -87,6 +98,7 @@ export default function LoginPage() {
         </CardHeader>
         <CardContent className="space-y-4">
           <form className="space-y-4" onSubmit={handleSubmit}>
+            {/* Campo de email com validação e feedback de erro */}
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
               <Input
@@ -108,6 +120,8 @@ export default function LoginPage() {
                 <p className="mt-1 text-sm text-red-500">{emailError}</p>
               )}
             </div>
+
+            {/* Campo de senha com validação e feedback de erro */}
             <div className="space-y-2">
               <Label htmlFor="password">Senha</Label>
               <Input
@@ -130,6 +144,7 @@ export default function LoginPage() {
               )}
             </div>
 
+            {/* Botão de submit com estado de loading */}
             <Button
               type="submit"
               className="w-full"
@@ -139,6 +154,8 @@ export default function LoginPage() {
               {isLoading ? 'Entrando...' : 'Entrar'}
             </Button>
           </form>
+
+          {/* Links de navegação para outras páginas */}
           <div className="flex justify-between">
             <div className="flex justify-end">
               <Button

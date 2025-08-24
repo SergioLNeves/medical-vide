@@ -15,15 +15,20 @@ import EditUserModal from './_components/edit-user-modal';
 
 export default function DashboardAdminPage() {
   const { user, logout } = useAuth();
-  const [users, setUsers] = useState<User[]>([]);
-  const [allUsers, setAllUsers] = useState<User[]>([]);
-  const [searchTerm, setSearchTerm] = useState('');
+  const router = useRouter();
+
+  // Estados para gerenciamento de usuários
+  const [users, setUsers] = useState<User[]>([]); // Lista filtrada exibida na tela
+  const [allUsers, setAllUsers] = useState<User[]>([]); // Lista completa para referência
+  const [searchTerm, setSearchTerm] = useState(''); // Termo de busca para filtrar usuários
+
+  // Estados para modais de ação
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [userToDelete, setUserToDelete] = useState<User | null>(null);
   const [userToEdit, setUserToEdit] = useState<User | null>(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const router = useRouter();
 
+  // Carrega todos os usuários do MockDatabase quando o componente monta
   // Busca usuários do localStorage ao carregar a página
   // Isso simula a busca de dados de um banco de dados real
   // Em uma aplicação real, você substituiria isso por uma chamada de API
@@ -33,6 +38,7 @@ export default function DashboardAdminPage() {
     setUsers(fetchedUsers);
   }, []);
 
+  // Sistema de filtro/busca em tempo real
   // Filtrar usuários baseado no termo de busca
   useEffect(() => {
     if (!searchTerm.trim()) {
@@ -48,16 +54,20 @@ export default function DashboardAdminPage() {
       setUsers(filteredUsers);
     }
   }, [searchTerm, allUsers]);
+
+  // Função para fazer logout e redirecionar para login
   const handleLogout = () => {
     logout(); // Clear user session
     router.push('/'); // Refresh the page to reflect the logout state
   };
 
+  // Função para abrir modal de edição de usuário
   const handleUserUpdated = (user: User) => {
     setUserToEdit(user);
     setIsEditModalOpen(true);
   };
 
+  // Função para recarregar dados após mudanças
   const handleRefreshData = () => {
     // Recarrega os dados dos usuários do localStorage
     const fetchedUsers = MockDatabase.getUsers();
@@ -65,21 +75,25 @@ export default function DashboardAdminPage() {
     setUsers(fetchedUsers);
   };
 
+  // Função para fechar modal de edição
   const handleCloseEditModal = () => {
     setIsEditModalOpen(false);
     setUserToEdit(null);
   };
 
+  // Função para abrir modal de confirmação de exclusão
   const handleDeleteUser = (user: User) => {
     setUserToDelete(user);
     setIsDeleteModalOpen(true);
   };
 
+  // Função para fechar modal de exclusão
   const handleCloseDeleteModal = () => {
     setIsDeleteModalOpen(false);
     setUserToDelete(null);
   };
 
+  // Função chamada após exclusão bem-sucedida para atualizar a lista local
   const handleUserDeleted = (deletedUser: User) => {
     // Remover usuário da lista local e da lista completa
     setUsers((prevUsers) => prevUsers.filter((u) => u.id !== deletedUser.id));
@@ -108,7 +122,9 @@ export default function DashboardAdminPage() {
               plataforma.
             </p>
           </section>
+          {/* Seção de controles e lista de usuários */}
           <section className="flex flex-col gap-4">
+            {/* Barra de busca e botão de adicionar usuário */}
             <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
               <div className="relative w-full flex-1 md:max-w-md">
                 <Input
@@ -128,7 +144,9 @@ export default function DashboardAdminPage() {
               </Button>
             </div>
 
+            {/* Container da lista de usuários */}
             <div className="rounded-md border">
+              {/* Componente ListUsers - Renderiza tabela com usuários, ações de editar/excluir */}
               <ListUsers
                 users={users}
                 onEditUser={handleUserUpdated}
@@ -139,7 +157,7 @@ export default function DashboardAdminPage() {
         </div>
       </div>
 
-      {/* Modal de Edição de Usuário */}
+      {/* Modal de Edição de Usuário - Permite editar informações do usuário selecionado */}
       <EditUserModal
         isOpen={isEditModalOpen}
         user={userToEdit}
@@ -147,7 +165,7 @@ export default function DashboardAdminPage() {
         onRefreshData={handleRefreshData}
       />
 
-      {/* Modal de Confirmação de Exclusão */}
+      {/* Modal de Confirmação de Exclusão - Confirma antes de remover usuário */}
       <DeleteUserModal
         isOpen={isDeleteModalOpen}
         user={userToDelete}

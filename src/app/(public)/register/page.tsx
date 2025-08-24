@@ -8,6 +8,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { z } from 'zod';
 import Loading from '@/components/loading/loading';
 
+// Schema de validação do formulário de registro usando Zod
 const registerSchema = z
   .object({
     name: z.string().min(1, 'Por favor, insira seu nome'),
@@ -18,26 +19,32 @@ const registerSchema = z
     password: z.string().min(6, 'A senha deve ter pelo menos 6 caracteres'),
     confirmPassword: z.string().min(1, 'Por favor, confirme sua senha'),
   })
+  // Validação customizada para confirmar se as senhas coincidem
   .refine((data) => data.password === data.confirmPassword, {
     message: 'As senhas não coincidem',
     path: ['confirmPassword'],
   });
 
 export default function RegisterPage() {
+  // Estados dos campos do formulário
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+
+  // Estados de controle da interface
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
   const router = useRouter();
   const { login } = useAuth();
 
+  // Inicializa usuários mock no localStorage quando o componente é montado
   useEffect(() => {
     initializeUsers(); // Ensure mock data is initialized
   }, []);
 
+  // Função que processa o envio do formulário de registro
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
@@ -45,24 +52,27 @@ export default function RegisterPage() {
 
     try {
       const formData = { name, email, password, confirmPassword };
+      // Valida todos os campos usando o schema Zod
       registerSchema.parse(formData);
 
       console.log('Attempting to register with email:', email);
       console.log('Email exists check:', checkEmailExists(email));
 
+      // Tenta criar um novo usuário com role 'paciente'
       const newUser = registerUser(email, password, name, 'paciente');
       console.log('Register result:', newUser);
 
       if (newUser) {
-        // Login automático após register
+        // Login automático após registro bem-sucedido
         login(newUser);
-        router.push(`/${newUser.role}`);
+        router.push(`/${newUser.role}`); // Redireciona para a página do role do usuário
       } else {
         console.log('Setting error: Email já cadastrado');
         setError('Email já cadastrado');
-        return; // Don't continue after setting error
+        return;
       }
     } catch (error) {
+      // Tratamento de erros de validação Zod
       if (error instanceof z.ZodError) {
         setError(error.errors[0].message);
       } else {
@@ -73,10 +83,12 @@ export default function RegisterPage() {
     }
   };
 
+  // Função para voltar à página de login
   const handleBackToLogin = () => {
     router.push('/');
   };
 
+  // Mostra componente de loading enquanto processa o registro
   if (loading) {
     return <Loading />;
   }
@@ -95,6 +107,7 @@ export default function RegisterPage() {
 
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="space-y-4">
+            {/* Campo de nome completo */}
             <div>
               <label
                 htmlFor="name"
@@ -118,6 +131,7 @@ export default function RegisterPage() {
               />
             </div>
 
+            {/* Campo de email com validação */}
             <div>
               <label
                 htmlFor="email"
@@ -142,6 +156,7 @@ export default function RegisterPage() {
               />
             </div>
 
+            {/* Campo de senha com requisitos mínimos */}
             <div>
               <label
                 htmlFor="password"
@@ -163,6 +178,7 @@ export default function RegisterPage() {
               />
             </div>
 
+            {/* Campo de confirmação de senha */}
             <div>
               <label
                 htmlFor="confirmPassword"
@@ -185,6 +201,7 @@ export default function RegisterPage() {
             </div>
           </div>
 
+          {/* Exibição de mensagens de erro */}
           {error && (
             <div className="rounded-md bg-red-50 p-4 dark:bg-red-900/20" data-testid="error-message">
               <div className="flex">
@@ -197,6 +214,7 @@ export default function RegisterPage() {
             </div>
           )}
 
+          {/* Botões de ação: Voltar e Cadastrar */}
           <div className="flex space-x-3">
             <Button
               type="button"

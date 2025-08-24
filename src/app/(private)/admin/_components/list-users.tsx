@@ -1,22 +1,29 @@
+// Componentes de UI do shadcn/ui
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+
+// Tipos do sistema
 import { User } from '@/mocks/types';
+
+// Ícones do Lucide React para ações dos usuários
 import { UserRoundCog, UserX2Icon } from 'lucide-react';
 
+// Interface TypeScript definindo as props do componente de listagem
 type ListUsersProps = {
-  users: User[];
-  onEditUser: (user: User) => void;
-  onDeleteUser: (user: User) => void;
+  users: User[]; // Array de usuários para exibição na tabela
+  onEditUser: (user: User) => void; // Callback executado quando usuário clica em editar
+  onDeleteUser: (user: User) => void; // Callback executado quando usuário clica em excluir
 };
 
+// Função utilitária para determinar a variante do badge baseada no role
 const getRoleBadgeVariant = (role: string) => {
   switch (role) {
     case 'medico':
-      return 'default';
+      return 'default'; // Badge padrão para médicos
     case 'admin':
-      return 'info';
+      return 'info'; // Badge informativo para administradores
     default:
-      return 'secondary';
+      return 'secondary'; // Badge secundário para pacientes e outros
   }
 };
 

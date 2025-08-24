@@ -104,3 +104,15 @@ export const removeCurrentUser = (): void => {
 export const deleteUser = (userId: string): boolean => {
   return MockDatabase.deleteUser(userId);
 };
+
+// Redefine a senha de um usuário (para recuperação de senha)
+export const resetUserPassword = (email: string, newPassword: string): boolean => {
+  const user = MockDatabase.getUserByEmail(email);
+
+  if (!user) {
+    return false;
+  }
+
+  // Atualiza a senha do usuário usando a função específica
+  return MockDatabase.updateUserPassword(email, newPassword);
+};

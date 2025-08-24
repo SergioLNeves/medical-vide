@@ -1,21 +1,37 @@
 'use client';
 
+// Importações dos componentes de UI do shadcn/ui
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { ArrowLeftIcon, ChevronDownIcon } from 'lucide-react';
-import { useRouter } from 'next/navigation';
-import React, { useState } from 'react';
-import { z } from 'zod';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+
+// Ícones do Lucide React para navegação e interação
+import { ArrowLeftIcon, ChevronDownIcon } from 'lucide-react';
+
+// Next.js hooks para navegação
+import { useRouter } from 'next/navigation';
+
+// React hooks para estado e eventos
+import React, { useState } from 'react';
+
+// Zod para validação de formulário
+import { z } from 'zod';
+
+// Funções de autenticação e verificação de usuários
 import { checkEmailExists, registerUser } from '@/lib/auth';
+
+// Toast para notificações do usuário
 import { toast } from 'sonner';
+
+// Componente de loading
 import Loading from '@/components/loading/loading';
 
+// Schema de validação Zod para os dados do novo usuário
 const registerSchema = z.object({
   fullName: z.string().min(1, 'insira o nome completo do usuário'),
   email: z.string().min(1, 'insira o email').email('insira um email válido'),
@@ -24,13 +40,14 @@ const registerSchema = z.object({
   }),
 });
 
+// Tipo TypeScript para os dados do formulário de registro
 type RegisterFormData = {
   fullName: string;
   email: string;
   role: string; // Permite qualquer string para permitir validação customizada
 };
 
-// código para gerar senha aleatória
+// Função utilitária para gerar senha aleatória de 6 caracteres
 const generateRandomPassword = (): string => {
   const chars =
     'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -42,15 +59,23 @@ const generateRandomPassword = (): string => {
 };
 
 export default function CreateUserPage() {
+  // Hook de navegação do Next.js
   const router = useRouter();
+
+  // Estado para controle de mensagens de erro do formulário
   const [error, setError] = useState('');
+
+  // Estado para controle de loading durante operações assíncronas
   const [loading, setLoading] = useState(false);
+
+  // Estado para armazenar os dados do formulário de criação de usuário
   const [formData, setFormData] = useState<RegisterFormData>({
     fullName: '',
     email: '',
     role: '', // Começa vazio para forçar seleção
   });
 
+  // Função utilitária para atualizar campos específicos do formulário
   const updateField = (field: keyof RegisterFormData, value: string) => {
     setFormData((prev) => ({
       ...prev,
@@ -58,6 +83,7 @@ export default function CreateUserPage() {
     }));
   };
 
+  // Função para converter roles técnicos em nomes amigáveis para exibição
   const getRoleDisplayName = (role: string) => {
     const roles = {
       admin: 'Administrador',
@@ -67,13 +93,14 @@ export default function CreateUserPage() {
     return roles[role as keyof typeof roles] || 'Selecione uma função';
   };
 
+  // Função principal para processar a criação de novos usuários
   const handleCreateUser = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     setLoading(true);
 
     try {
-      // Validação customizada para role vazio
+      // Validação customizada para campo role obrigatório
       if (!formData.role || formData.role === '') {
         setError('Por favor, selecione uma função para o usuário');
         toast.error('Erro de validação', {
@@ -82,16 +109,17 @@ export default function CreateUserPage() {
         return;
       }
 
-      // Valida os dados do formulário
+      // Aplica validação Zod nos dados do formulário
       const validatedData = registerSchema.parse(formData);
 
-      // Gera senha aleatória e adiciona no forms
+      // Gera senha aleatória automaticamente para o novo usuário
       const password = generateRandomPassword();
       const userDataWithPassword = {
         ...validatedData,
         password,
       };
 
+      // Verifica se o email já existe no sistema antes de criar
       if (checkEmailExists(userDataWithPassword.email)) {
         setError('Email já cadastrado');
         toast.error('Erro ao criar usuário', {
@@ -100,6 +128,7 @@ export default function CreateUserPage() {
         return;
       }
 
+      // Registra o novo usuário no sistema usando a função registerUser
       const newUser = registerUser(
         userDataWithPassword.email,
         userDataWithPassword.password,
@@ -107,26 +136,30 @@ export default function CreateUserPage() {
         userDataWithPassword.role
       );
 
+      // Processa resultado da criação do usuário
       if (newUser) {
         console.log('Senha:', userDataWithPassword.password);
 
-        // Reseta o formulário após o envio para novas entradas
+        // Reseta o formulário após criação bem-sucedida
         setFormData({
           fullName: '',
           email: '',
           role: '', // Reseta para vazio
         });
 
+        // Exibe notificação de sucesso com informações da senha
         toast.success('Usuário criado com sucesso!', {
           description: `Senha enviada para: ${userDataWithPassword.email}`,
         });
 
-        router.push('/admin'); // Redireciona para a página de administração
+        // Redireciona de volta para o painel administrativo
+        router.push('/admin');
       } else {
         setError('Erro ao criar usuário');
         toast.error('Erro ao criar usuário');
       }
     } catch (error) {
+      // Tratamento específico para erros de validação Zod
       if (error instanceof z.ZodError) {
         const firstError = error.errors[0];
         setError(firstError.message);
@@ -144,20 +177,25 @@ export default function CreateUserPage() {
     }
   };
 
+  // Renderiza componente de loading durante operações assíncronas
   if (loading) {
     return <Loading />;
   }
 
   return (
     <main className="bg-background min-h-screen">
+      {/* Barra de navegação superior com botão de voltar */}
       <nav className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
         <Button variant={'outline'} onClick={() => router.push('/admin')}>
           <ArrowLeftIcon className="mr-2 h-4 w-4" />
           Voltar
         </Button>
       </nav>
+
+      {/* Container principal da página */}
       <div className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
         <div className="flex flex-col gap-12 px-4 py-6 sm:px-0">
+          {/* Seção do cabeçalho da página */}
           <section className="flex flex-col gap-4">
             <h1 className="text-3xl font-bold md:text-4xl">
               Criar Novo Usuário
@@ -170,7 +208,9 @@ export default function CreateUserPage() {
             </p>
           </section>
 
+          {/* Formulário de criação de usuário */}
           <form onSubmit={handleCreateUser} className="max-w-5xl space-y-6">
+            {/* Campo de seleção de função/role do usuário */}
             <div className="space-y-2">
               <label
                 htmlFor="role"
@@ -210,6 +250,7 @@ export default function CreateUserPage() {
               </DropdownMenu>
             </div>
 
+            {/* Campo de nome completo do usuário */}
             <div className="space-y-2">
               <label
                 htmlFor="fullName"
@@ -229,6 +270,7 @@ export default function CreateUserPage() {
               />
             </div>
 
+            {/* Campo de email do usuário */}
             <div className="space-y-2">
               <label
                 htmlFor="email"
@@ -248,10 +290,12 @@ export default function CreateUserPage() {
               />
             </div>
 
+            {/* Exibição de mensagens de erro */}
             {error && (
               <div className="text-center text-sm text-red-600">{error}</div>
             )}
 
+            {/* Botões de ação do formulário */}
             <div className="flex gap-4">
               <Button
                 type="button"

@@ -3,13 +3,21 @@
 export type UserRole = 'paciente' | 'medico' | 'admin';
 
 export interface ComplementInfo {
+  // Campos comuns
   cpf?: string;
   rg?: string;
-  convenio?: string;
   telefone?: string;
   endereco?: string;
   dataNascimento?: string;
+
+  // Campos específicos para paciente
+  convenio?: string;
   contatoEmergencia?: string;
+
+  // Campos específicos para médico
+  crm?: string;
+  especialidade?: string;
+  formacao?: string;
 }
 
 export interface User {
@@ -33,7 +41,7 @@ export interface Schedule {
   end: Date;
   title: string;
   description?: string;
-  status: 'agendado' | 'realizado' | 'cancelado';
+  status: 'agendado' | 'confirmado' | 'realizado' | 'cancelado';
   color?: 'blue' | 'green' | 'pink' | 'purple' | 'default';
   createdAt: string;
   updatedAt: string;
