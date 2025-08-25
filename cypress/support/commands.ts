@@ -30,18 +30,19 @@ Cypress.Commands.add('screenshotStep', (stepName: string) => {
   const testName = Cypress.currentTest.title;
   const specName = Cypress.spec.name;
 
-  // Extrair a categoria da pasta do arquivo de teste
-  const pathParts = specName.split('/');
-  const category =
-    pathParts.length > 1 ? pathParts[pathParts.length - 2] : 'general';
+  // Extrair o nome do arquivo spec sem extensão e caminho
+  const specFileName = specName.split('/').pop()?.replace('.cy.ts', '') || 'unknown';
 
-  // Criar nome do screenshot organizando por categoria
-  const screenshotPath = `${category}/${testName.replace(/\s+/g, '-')}-${stepName}`;
+  // Formato: "spec - nome do teste"
+  const screenshotName = `${specFileName} - ${testName.replace(/\s+/g, ' ')}`;
+
+  // Criar caminho de screenshot com pasta "general" para manter compatibilidade
+  const screenshotPath = `general/${screenshotName}/${stepName}`;
 
   cy.screenshot(screenshotPath, { capture: 'viewport' });
 });
 
-export {}; // Make this a module
+export { }; // Make this a module
 
 // Extend Cypress namespace
 declare global {

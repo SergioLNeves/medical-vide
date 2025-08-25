@@ -1,272 +1,89 @@
-# 🧪 Testes E2E com Cypress - Medical Video
+# 🧪 Testes E2E Simplificados - Medical Vide
 
 ## 📋 Visão Geral
 
-Este projeto utiliza **Cypress** para testes end-to-end, garantindo que toda a aplicação funcione corretamente do ponto de vista do usuário. Os testes foram projetados com uma abordagem **híbrida e pragmática**, combinando testes de componentes reais com simulações quando necessário.
+Este projeto utiliza **Cypress** para testes end-to-end simplificados, focando apenas nas funcionalidades essenciais. Os testes foram projetados para serem **mínimos e eficientes** enquanto garantem a funcionalidade básica do aplicativo.
 
-## 🗂️ Estrutura dos Testes
+## 🎯 Princípios de Simplificação
 
-```
-cypress/e2e/
-├── admin.cy.ts                    # Testes de acesso à área administrativa
-├── admin-forms.cy.ts              # Testes de formulários e modais admin (simulados)
-├── admin-create-user-real.cy.ts   # Testes do componente real de criação de usuário
-├── login.cy.ts                    # Testes do formulário de login
-├── patient-schedule.cy.ts         # Testes de agendamento de pacientes
-├── register.cy.ts                 # Testes do formulário de registro
-├── user-flows.cy.ts               # Testes de fluxos completos de usuário
-└── README.md                      # Este arquivo
-```
+1. **Foco no Essencial**
+   - Testar apenas os fluxos principais de cada funcionalidade
+   - Reduzir a quantidade de testes para maior eficiência
+   - Manter o padrão de nomeação "NOME DA ROTA - NOME DO TESTE" para screenshots
 
-## 🎯 Filosofia de Testes
+2. **Objetividade**
+   - Usar seletores flexíveis com expressões regulares (ex: `/Agendar|Agendar Consulta/i`)
+   - Evitar testes de navegação que possam falhar devido a mudanças na UI
+   - Verificar apenas elementos e comportamentos críticos
 
-### 1. **Abordagem Pragmática**
+3. **Robustez**
+   - Evitar dependência de textos exatos que podem mudar
+   - Focar em seletores de elementos mais estáveis
+   - Limpar adequadamente o estado entre testes
 
-- **Testes reais** quando possível (formulários públicos, navegação básica)
-- **Testes simulados** quando necessário (áreas protegidas por middleware)
-- **Interceptações inteligentes** para contornar autenticação complexa
+## 🚀 Testes Essenciais
 
-### 2. **Foco na Experiência do Usuário**
+### 🔐 **Autenticação**
+- **Login**: Validação de formulário, login com diferentes papéis
+- **Registro**: Validação de formulário, criação de conta
+- **Esqueci a Senha**: Submissão de e-mail, reenvio de e-mail
 
-- Testa o que o usuário realmente vê e faz
-- Valida fluxos completos, não apenas componentes isolados
-- Garante que o middleware de segurança funcione corretamente
+### 👤 **Área do Paciente**
+- **Dashboard**: Exibição de elementos principais (sem testes de navegação)
+- **Informações Complementares**: Preenchimento e submissão do formulário
+- **Agendamento**: Seleção de especialidade, médico e horário
 
-### 3. **Manutenibilidade**
+### 👨‍⚕️ **Área do Médico**
+- **Dashboard**: Exibição de elementos principais (calendário e configurações)
+- **Informações Complementares**: Preenchimento e submissão do formulário profissional
 
-- Testes simples e claros
-- Evita dependências complexas de autenticação
-- Documentação clara de cada estratégia
+### 👑 **Área do Admin**
+- **Dashboard**: Exibição da interface de gerenciamento de usuários
+- **Criar Usuário**: Preenchimento e submissão do formulário de criação
+- **Formulário de Usuário**: Validação e interação com o formulário
 
-## 📊 Cobertura Atual (34 testes)
+## 📸 Screenshots nos Testes
 
-### 🔐 **Autenticação & Segurança (7 testes)**
-
-| Arquivo       | Testes | Foco                                      |
-| ------------- | ------ | ----------------------------------------- |
-| `login.cy.ts` | 5      | Formulário de login, validação, navegação |
-| `admin.cy.ts` | 2      | Proteção de middleware em rotas admin     |
-
-**Estratégia:** Testa formulários reais + validação de redirecionamentos do middleware
-
-### 👥 **Gestão de Usuários (15 testes)**
-
-| Arquivo             | Testes | Foco                                   |
-| ------------------- | ------ | -------------------------------------- |
-| `register.cy.ts`    | 6      | Cadastro de usuários, validações       |
-| `admin-forms.cy.ts` | 9      | Modais de CRUD de usuários (simulados) |
-
-**Estratégia:** Formulário real + simulações para área administrativa
-
-### 🏥 **Área Administrativa (11 testes)**
-
-| Arquivo                        | Testes | Foco                                         |
-| ------------------------------ | ------ | -------------------------------------------- |
-| `admin.cy.ts`                  | 5      | Redirecionamentos e proteção                 |
-| `admin-create-user-real.cy.ts` | 6      | Componente real de criação via interceptação |
-
-**Estratégia:** Interceptações para testar componentes reais sem autenticação
-
-### 📅 **Agendamentos (2 testes)**
-
-| Arquivo                  | Testes | Foco                             |
-| ------------------------ | ------ | -------------------------------- |
-| `patient-schedule.cy.ts` | 2      | Proteção de rotas de agendamento |
-
-**Estratégia:** Validação de middleware
-
-### 🔄 **Fluxos Completos (1 teste)**
-
-| Arquivo            | Testes | Foco                         |
-| ------------------ | ------ | ---------------------------- |
-| `user-flows.cy.ts` | 1      | Jornada completa de registro |
-
-**Estratégia:** Teste de integração end-to-end
-
-## 🚀 Estratégias de Teste Detalhadas
-
-### 📝 **1. Formulários Públicos**
+Todos os testes utilizam a função `cy.screenshotStep()` para capturar imagens em momentos importantes:
 
 ```typescript
-// Abordagem: Teste direto do componente real
-cy.visit('/register');
-cy.get('input[name="fullName"]').type('João Silva');
-cy.get('input[name="email"]').type('joao@email.com');
-// Validação real do formulário
+// Exemplo de uso
+cy.screenshotStep('pagina-inicial');
 ```
 
-**Usado em:** `login.cy.ts`, `register.cy.ts`
+Os screenshots seguem o padrão de nomeação:
+- `general/<spec> - <nome do teste>/<etapa>.png`
 
-### 🔒 **2. Áreas Protegidas - Middleware**
+Exemplos:
+- `general/login - should display login form and validate inputs/pagina-inicial.png`
+- `general/dashboard - should display dashboard elements/dashboard-inicial.png`
 
-```typescript
-// Abordagem: Testa o redirecionamento
-cy.visit('/admin', { failOnStatusCode: false });
-cy.url().should('eq', Cypress.config().baseUrl + '/');
-```
+## 🛠️ Como Executar os Testes
 
-**Usado em:** `admin.cy.ts`, `patient-schedule.cy.ts`
-
-### 🎭 **3. Componentes Simulados**
-
-```typescript
-// Abordagem: Mock da estrutura HTML para testar interações
-cy.intercept('GET', '/admin', {
-  statusCode: 200,
-  body: `<html><!-- estrutura simulada --></html>`,
-});
-```
-
-**Usado em:** `admin-forms.cy.ts`
-
-### 🔄 **4. Interceptação de Componentes Reais**
-
-```typescript
-// Abordagem: Intercepta a rota para contornar middleware
-cy.intercept('GET', '/admin/create-user', (req) => {
-  req.reply({
-    statusCode: 200,
-    body: '<!-- HTML real do componente -->',
-  });
-});
-```
-
-**Usado em:** `admin-create-user-real.cy.ts`
-
-## 🧭 Roadmap de Desenvolvimento
-
-### ✅ **Fase 1: Fundação (Concluída)**
-
-- [x] Setup básico do Cypress
-- [x] Remoção completa do Jest
-- [x] Configuração de scripts automatizados
-- [x] Testes básicos de formulários
-
-### ✅ **Fase 2: Segurança (Concluída)**
-
-- [x] Testes de middleware de autenticação
-- [x] Validação de redirecionamentos
-- [x] Proteção de rotas administrativas
-
-### ✅ **Fase 3: Área Administrativa (Concluída)**
-
-- [x] Testes de modais de usuário (simulados)
-- [x] Testes de componentes reais (interceptados)
-- [x] Validação de formulários complexos
-- [x] Testes de dropdown e interações
-
-### 🚧 **Fase 4: Próximas Melhorias**
-
-- [ ] Testes específicos da área médica
-- [ ] Testes de agendamento completo
-- [ ] Testes de upload de arquivos
-- [ ] Testes de responsividade mobile
-
-### 🔮 **Fase 5: Avançado (Futuro)**
-
-- [ ] Testes de performance
-- [ ] Testes de acessibilidade (a11y)
-- [ ] Testes de diferentes navegadores
-- [ ] Integração com CI/CD
-
-## 📈 Métricas de Qualidade
-
-### 📊 **Cobertura por Área**
-
-- **Autenticação:** 100% (login, registro, middleware)
-- **Admin CRUD:** 90% (criação, edição, exclusão de usuários)
-- **Navegação:** 100% (redirecionamentos, links)
-- **Validações:** 95% (formulários, campos obrigatórios)
-- **Segurança:** 100% (proteção de rotas)
-
-### ⚡ **Performance dos Testes**
-
-- **Tempo médio:** ~22 segundos para 34 testes
-- **Taxa de sucesso:** 100%
-- **Paralelização:** Suportada (specs independentes)
-
-## 🛠️ Como Executar
-
-### **Executar todos os testes:**
+### **Executar apenas os testes essenciais:**
 
 ```bash
-pnpm test
-# ou
-pnpm start-server-and-test dev http://localhost:3000 cypress:run
-```
-
-### **Executar teste específico:**
-
-```bash
-pnpm start-server-and-test dev http://localhost:3000 "cypress run --spec 'cypress/e2e/admin.cy.ts'"
+make cypress-essential
 ```
 
 ### **Modo interativo (desenvolvimento):**
 
 ```bash
-pnpm cypress:open
+make cypress
 ```
 
-## 🎯 Princípios de Design
+## 💡 Boas Práticas
 
-### 1. **Simplicidade**
-
-- Testes fáceis de entender e manter
-- Evita configurações complexas
-- Foca no comportamento, não na implementação
-
-### 2. **Realismo**
-
-- Testa a aplicação como o usuário real usaria
-- Não bypassa validações importantes
-- Respeita o middleware de segurança
-
-### 3. **Flexibilidade**
-
-- Combina diferentes estratégias conforme necessário
-- Adapta-se às limitações de autenticação
-- Permite evolução incremental
-
-### 4. **Documentação**
-
-- Cada estratégia está claramente documentada
-- Testes são auto-explicativos
-- Facilita onboarding de novos desenvolvedores
-
-## 🔧 Arquivos de Configuração
-
-- **`cypress.config.ts`** - Configuração principal
-- **`cypress/support/commands.ts`** - Comandos customizados
-- **`cypress/support/e2e.ts`** - Setup global
-
-## 📚 Referências
-
-- [Cypress Documentation](https://docs.cypress.io/)
-- [Best Practices](https://docs.cypress.io/guides/references/best-practices)
-- [Testing Strategies](https://docs.cypress.io/guides/core-concepts/testing-types)
+1. **Teste apenas o fluxo principal** (happy path)
+2. **Use seletores flexíveis** que não dependam de texto exato
+3. **Evite testes de navegação** que podem falhar com mudanças na UI
+4. **Adicione screenshots** em pontos importantes com nomes descritivos:
+   ```typescript
+   // Nomeia o screenshot como "spec - nome do teste/etapa"
+   cy.screenshotStep('etapa-do-teste');
+   ```
+5. **Mantenha os testes independentes** com limpeza adequada no `beforeEach`
 
 ---
 
-## 💡 Contribuindo
-
-Ao adicionar novos testes:
-
-1. **Identifique a estratégia adequada:**
-   - Público → teste direto
-   - Protegido → interceptação ou simulação
-
-2. **Mantenha a consistência:**
-   - Use os padrões estabelecidos
-   - Documente estratégias novas
-
-3. **Teste a experiência do usuário:**
-   - Foque no que o usuário vê
-   - Valide fluxos completos
-
-4. **Atualize esta documentação:**
-   - Adicione novos testes ao roadmap
-   - Mantenha as métricas atualizadas
-
----
-
-**📊 Status Atual:** ✅ **34/34 testes passando** | **🎯 Cobertura: 95%** | **⚡ Performance: Excelente**
+**⚠️ Nota**: Estes testes foram simplificados para maior eficiência e estabilidade. Eles focam apenas na verificação de funcionalidades essenciais e evitam testes de navegação complexos que podem falhar devido a mudanças na UI.
