@@ -28,8 +28,6 @@ Sistema médico completo com autenticação baseada em roles, agendamento de con
 - [🔒 Segurança](#-segurança)
 - [🎨 Sistema de Design](#-sistema-de-design)
 - [📋 Comandos Utilitários](#-comandos-utilitários)
-- [🤝 Contribuição](#-contribuição)
-- [📞 Contato](#-contato)
 
 ## 🎯 Visão Geral
 
@@ -428,42 +426,3 @@ make help             # Lista todos os comandos
   "test": "start-server-and-test dev http://localhost:3000 cypress:run"
 }
 ```
-
-## 🤝 Contribuição
-
-### Como Contribuir
-1. **Fork** o projeto
-2. Crie uma **branch** para sua feature (`git checkout -b feature/nova-funcionalidade`)
-3. **Commit** suas mudanças (`git commit -m 'feat: adiciona nova funcionalidade'`)
-4. **Push** para a branch (`git push origin feature/nova-funcionalidade`)
-5. Abra um **Pull Request**
-
-### Padrões de Desenvolvimento
-- **Conventional Commits**: Mensagens padronizadas
-- **TypeScript**: Tipagem obrigatória
-- **ESLint + Prettier**: Código formatado automaticamente
-- **Testes**: Cobertura de funcionalidades críticas
-
-### Estrutura de Commits
-```
-feat: nova funcionalidade
-fix: correção de bug
-docs: atualização de documentação
-style: mudanças de estilo/formatação
-refactor: refatoração de código
-test: adição ou modificação de testes
-```
-
-## 📞 Contato
-
-- **Autor**: Sergio L. Neves
-- **GitHub**: [SergioLNeves](https://github.com/SergioLNeves)
-- **LinkedIn**: [sergio-neves-dev](https://linkedin.com/in/sergio-neves-dev)
-- **Email**: sergiolneves.dev@gmail.com
-
----
-
-<div align="center">
-  <p>⭐ Se este projeto foi útil para você, considere dar uma estrela!</p>
-  <p>Feito com ❤️ por <a href="https://github.com/SergioLNeves">Sergio L. Neves</a></p>
-</div>
